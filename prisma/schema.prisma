@@ -1,0 +1,236 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider  = "postgresql"
+    url       = env("POSTGRES_URL")
+}
+
+model User {
+    id                  Int @id @default(autoincrement())
+    fullName            String
+    email               String @unique
+    password            String
+    verified            DateTime?
+    provider            String?
+    providerId          String?
+    role                UserRole @default(USER)
+    createdAt           DateTime @default(now())
+    updatedAt           DateTime @updatedAt
+    cart                Cart?
+    orders              Order[]
+    verificationCode    VerificationCode?
+    passwordResetTokens PasswordResetToken[]
+}
+
+model Category {
+  id            Int           @id @default(autoincrement())
+  name          String
+  description   String?
+  categoryUrl   String @unique
+  subcategories Subcategory[]
+  products      ProductCategory[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model Subcategory {
+  id            Int           @id @default(autoincrement())
+  name          String
+  description   String?
+  subcategoryUrl String
+  categoryId    Int
+  category      Category      @relation(fields: [categoryId], references: [id])
+  products      ProductSubcategory[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model Product {
+  id            Int                    @id @default(autoincrement())
+  name          String
+  description   String?
+  productUrl    String @unique
+  imageUrl      String[]               @default([])
+  price         Int
+  oldPrice      Int?
+  sticker       ProductStickers[]
+  popularity    Int                 @default(0)
+  currency      String                 @default("UAH")
+  color         String?
+  items         ProductItem[]
+  categories    ProductCategory[]
+  subcategories ProductSubcategory[]
+  complects     ProductComplect[]      @relation("ProductComplects")
+  createdAt     DateTime               @default(now())
+  updatedAt     DateTime               @default(now())
+}
+
+model ProductComplect {
+  id          Int       @id @default(autoincrement())
+  products    Product[] @relation("ProductComplects")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now())
+}
+
+
+model ProductCategory {
+  productId  Int
+  categoryId Int
+  product    Product  @relation(fields: [productId], references: [id])
+  category   Category @relation(fields: [categoryId], references: [id])
+  @@id([productId, categoryId])
+}
+
+model ProductSubcategory {
+  productId     Int
+  subcategoryId Int
+  product       Product      @relation(fields: [productId], references: [id])
+  subcategory   Subcategory  @relation(fields: [subcategoryId], references: [id])
+  @@id([productId, subcategoryId])
+}
+
+
+model ProductItem {
+  id            Int         @id @default(autoincrement())
+  price         Int
+  oldPrice      Int?
+  currency      String      @default("UAH")
+  size          String
+  sku           String      @unique
+  stock         Boolean
+  product       Product     @relation(fields: [productId], references: [id])
+  productId     Int
+  cartItems     CartItem[] 
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @default(now())
+}
+
+
+model Cart {
+    id                  Int @id @default(autoincrement())
+    user                User? @relation(fields: [userId], references: [id])
+    userId              Int? @unique
+    items               CartItem[]
+    token               String
+    totalAmount         Int @default(0)
+    createdAt           DateTime @default(now())
+    updatedAt           DateTime @default(now())
+}
+
+model CartItem {
+    id           Int         @id @default(autoincrement())
+    quantity     Int
+    productItem  ProductItem @relation(fields: [productItemId], references: [id])
+    productItemId Int
+    cart         Cart        @relation(fields: [cartId], references: [id])
+    cartId       Int
+}
+
+model Order {
+    id                  Int @id @default(autoincrement())
+    user                User? @relation(fields: [userId], references: [id])
+    userId              Int?
+    token               String
+    totalAmount         Int
+    status              OrderStatus
+    paymentId           String?
+    items               Json
+    fullName            String
+    recipientFullName   String
+    recipientPhone      String 
+    typeDelivery        String
+    address             String
+    email               String
+    phone               String
+    dontCall            Boolean
+    comment             String?
+    createdAt           DateTime @default(now())
+    updatedAt           DateTime @default(now())
+}
+
+model VerificationCode {
+    id                  Int @id @default(autoincrement())
+    user                User? @relation(fields: [userId], references: [id])
+    userId              Int @unique
+    code                String
+    createdAt           DateTime @default(now())
+    @@unique([userId, code])
+}
+
+model PasswordResetToken {
+    id        Int      @id @default(autoincrement())
+    userId    Int
+    user      User     @relation(fields: [userId], references: [id])
+    token     String   @unique
+    expiresAt DateTime
+    createdAt DateTime @default(now())
+
+    @@index([userId]) // Додано індекс для userId для швидшого пошуку
+}
+
+
+model SliderImage {
+  id          Int      @id @default(autoincrement())
+  imageUrl    String
+  altText     String? 
+  link        String?
+  position    Int?    
+  isActive    Boolean
+  isMobile    Boolean  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+}
+
+model BannerImage {
+  id          Int      @id @default(autoincrement())
+  imageUrl    String
+  altText     String?
+  link        String? 
+  position    Int?  
+  isActive    Boolean
+  isMobile    Boolean     
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+}
+
+model BottomBannerImage {
+  id          Int      @id @default(autoincrement())
+  imageUrl    String
+  altText     String?
+  link        String? 
+  position    Int      
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+}
+
+model FooterPage {
+  id        Int      @id @default(autoincrement())
+  title     String
+  secondTitle String?
+  footerUrl       String @unique
+  content   String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+enum OrderStatus {
+  PENDING
+  SUCCEEDED
+  CANCELLED
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum ProductStickers {
+  HITS
+  NEW
+  SALE
+  PRICEPARTY
+}

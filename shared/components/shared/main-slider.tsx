@@ -1,0 +1,46 @@
+'use client';
+
+import React, { useMemo } from 'react';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from './main-carousel';
+import Link from 'next/link';
+import { Skeleton } from '../ui';
+import { useCarousel, useIsMobile } from '@/shared/hooks';
+
+export const MainSlider = () => {
+    const isMobile = useIsMobile();
+    const { carousel, loading } = useCarousel();
+
+    const sliderContent = useMemo(
+        () =>
+            carousel.map((item, i) => (
+                <CarouselItem key={i}>
+                    <Link href={item.link || '#'}>
+                        <img className="rounded-lg mx-auto" src={item.imageUrl} alt={item.altText ?? ''} />
+                    </Link>
+                </CarouselItem>
+            )),
+        [carousel]
+    );
+
+    if (loading) {
+        return (
+            <section className="h-[500px] flex">
+                <Skeleton
+                    className={`rounded-xl mx-auto ${
+                        isMobile ? 'w-full h-[500px]' : 'w-full min-h-[400px] max-h-[500px]'
+                    }`}
+                />
+            </section>
+        );
+    }
+
+    return (
+        <section>
+            <Carousel>
+                <CarouselContent>{sliderContent}</CarouselContent>
+                {!isMobile && <CarouselPrevious />}
+                {!isMobile && <CarouselNext />}
+            </Carousel>
+        </section>
+    );
+};
