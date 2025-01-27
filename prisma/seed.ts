@@ -994,7 +994,7 @@ const products = [
 const sliderImages = [
   {
     imageUrl: 'https://riksi.ua/content/images/7/1440x576e90nn0/46132421340665.webp',
-    link: 'http://localhost:3000/catalog/body',
+    link: 'catalog/body',
     altText: 'Колекція PRE-WINTERʼ25 від RIKSI',
     isMobile: false,
     isActive: true,
@@ -1002,7 +1002,7 @@ const sliderImages = [
   },
   {
     imageUrl: 'https://riksi.ua/content/images/12/1440x576e90nn0/41800258047833.webp',
-    link: 'http://localhost:3000/umovy-uchasti-v-rozihrashi',
+    link: 'umovy-uchasti-v-rozihrashi',
     altText: 'RIKSI Shopping',
     isMobile: false,
     isActive: true,
@@ -1010,7 +1010,7 @@ const sliderImages = [
   },
   {
     imageUrl: 'https://riksi.ua/content/images/34/1440x576e90nn0/28681354717475.webp',
-    link: 'http://localhost:3000/catalog/domashniy-odiah',
+    link: 'catalog/domashniy-odiah',
     altText: 'Колекція NEW-YEARʼ25 від RIKSI',
     isMobile: false,
     isActive: true,
@@ -1129,7 +1129,7 @@ const bottomBannerImage = [
   {
     imageUrl: 'https://riksi.ua/content/images/40/1440x216e90nn0/51054835940617.webp',
     altText: 'Price Party Bottom Banner',
-    link: 'http://localhost:3000/catalog/price-party',
+    link: 'catalog/price-party',
     position: 1
   }
 ];

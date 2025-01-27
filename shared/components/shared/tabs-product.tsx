@@ -5,7 +5,7 @@ export const TabsProduct = () => {
     <div>
         <Tabs defaultValue="delivery" className="max-w-[700px]">
             <TabsList>
-                <TabsTrigger className='p-1 data-[state=active]:border-t-2 data-[state=active]:border-black data-[state=active]:text-black' value="delivery">Доставка</TabsTrigger>
+                <TabsTrigger className='data-[state=active]:border-t-2 data-[state=active]:border-black data-[state=active]:text-black' value="delivery">Доставка</TabsTrigger>
                 <TabsTrigger className='data-[state=active]:border-t-2 data-[state=active]:border-black data-[state=active]:text-black' value="payment">Оплата</TabsTrigger>
                 <TabsTrigger className='data-[state=active]:border-t-2 data-[state=active]:border-black data-[state=active]:text-black' value="guarantee">Гарантія</TabsTrigger>
                 <TabsTrigger className='data-[state=active]:border-t-2 data-[state=active]:border-black data-[state=active]:text-black' value="bonuses">Бонуси</TabsTrigger>
