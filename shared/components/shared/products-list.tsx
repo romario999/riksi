@@ -54,7 +54,7 @@ export function ProductList({
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [total, setTotal] = useState<number>(initialTotal);
   const [page, setPage] = useState<number>(currentPage);
-  const isMobile = useIsMobile(784); // Використовуємо хук
+  const isMobile = useIsMobile(784);
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -108,7 +108,7 @@ export function ProductList({
                 isMobile ? (
                   <div className="flex justify-center" key={product.id}>
                     <MiniProductCard
-                      className="relative"
+                      className={`relative ${product.stock ? '' : 'opacity-50'}`}
                       id={product.id}
                       url={product.productUrl}
                       name={product.name}
@@ -123,7 +123,7 @@ export function ProductList({
                   </div>
                 ) : (
                   <ProductCard
-                    className="relative"
+                    className={`relative ${product.stock ? '' : 'opacity-50'}`}
                     key={product.id}
                     id={product.id}
                     url={product.productUrl}

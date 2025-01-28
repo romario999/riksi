@@ -195,19 +195,24 @@ export async function registerUser(body: Prisma.UserCreateInput) {
 }
 
 export async function handleVerification(userId: string, email: string) {
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    try {
+        const code = Math.floor(100000 + Math.random() * 900000).toString();
 
-    await prisma.verificationCode.upsert({
-        where: { userId: Number(userId) },
-        update: { code },
-        create: { userId: Number(userId), code },
-    });
+        await prisma.verificationCode.upsert({
+            where: { userId: Number(userId) },
+            update: { code },
+            create: { userId: Number(userId), code },
+        });
 
-    await sendEmail(
-        email,
-        'Підтвердження реєстрації 📝',
-        VerificationUserTemplate({ code })
-    );
+        await sendEmail(
+            email,
+            'Підтвердження реєстрації 📝',
+            VerificationUserTemplate({ code })
+        );
+    } catch (error) {
+        console.error('Error [HANDLE_VERIFICATION]', error);
+        throw error;
+    }
 }
 
 export async function verifyUser(code: string) {
@@ -264,7 +269,7 @@ export async function createLinkResetPassword(email: string) {
             create: { userId: user.id, token: resetToken, expiresAt: expirationTime },
         });
 
-        const resetLink = `${process.env.NEXT_PUBLIC_SITE_URL}/reset-password?token=${resetToken}`;
+        const resetLink = `${process.env.NEXT_PUBLIC_SITE_URL}/reset-password/${resetToken}`;
         await sendEmail(email, 'Скидання пароля 🔒', ResetPassword({ resetLink }));
 
     } catch(error) {

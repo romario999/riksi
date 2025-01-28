@@ -58,7 +58,7 @@ export const ProductCard: React.FC<Props> = ({ id, url, name, price, imageUrl, c
                             )}
                         </b>
                     </span>
-                    {showBtn && (<Button variant="outline" className='mt-2 sm:mt-0 text-base font-bold'>
+                    {showBtn && (<Button variant="outline" className='mt-2 sm:mt-0 text-sm font-bold'>
                         <Plus className='w-5 h-5 mr-1' />
                         До кошику
                     </Button>)}

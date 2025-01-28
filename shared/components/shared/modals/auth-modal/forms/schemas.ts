@@ -21,11 +21,20 @@ export const verifyEmailSchema = z.object({
     code: z.string().min(6, { message: 'Код повинен містити 6 символів' }),
 });
 
-export const resetPasswordSchema = z.object({
+export const resetPasswordEmailSchema = z.object({
     emailReset: z.string().email({ message: 'Введіть коректний email' }),
-})
+});
+
+export const resetPasswordSchema = z.object({
+    newPassword: passwordSchema,
+    confirmNewPassword: passwordSchema,
+}).refine(data => data.newPassword === data.confirmNewPassword, {
+    message: 'Паролі не співпадають',
+    path: ['confirmNewPassword'],
+});
 
 export type TFormLoginValues = z.infer<typeof formLoginSchema>;
 export type TFormRegisterValues = z.infer<typeof formRegisterSchema>;
 export type TFormVerifyEmailValues = z.infer<typeof verifyEmailSchema>;
+export type TFormResetPasswordEmailValues = z.infer<typeof resetPasswordEmailSchema>;
 export type TFormResetPasswordValues = z.infer<typeof resetPasswordSchema>;

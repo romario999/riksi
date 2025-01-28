@@ -38,12 +38,13 @@ export const CartButton: React.FC<Props> = ({ className }) => {
 
         {/* Іконка кошика на маленьких екранах */}
         <div className="block sm:hidden">
-  <div className="bg-transparent relative">
-    <ShoppingCart size={28} className="text-black" strokeWidth={2} />
-    <div className="absolute top-[-5px] right-[-5px] bg-black text-white text-[9px] font-bold rounded-full w-3 h-3 flex items-center justify-center">
-      {items.length} {/* тут має бути змінна, яка містить кількість елементів у кошику */}
-    </div>
+        <div className="relative">
+  <ShoppingCart size={28} className="text-black duration-200 ease-in-out" strokeWidth={2} />
+  <div className="absolute top-[-8px] right-[-8px] bg-black text-white text-[10px] font-medium rounded-full w-4 h-4 flex items-center justify-center shadow-lg ring-2 ring-white">
+    {items.length}
   </div>
+</div>
+
 </div>
 
       </div>

@@ -55,6 +55,7 @@ model Product {
   imageUrl      String[]               @default([])
   price         Int
   oldPrice      Int?
+  stock         Boolean
   sticker       ProductStickers[]
   popularity    Int                 @default(0)
   currency      String                 @default("UAH")

@@ -5,6 +5,7 @@ import * as auth from './auth';
 import * as subcategories from './subcategories';
 import * as carousel from './carousel';
 import * as banner from './banner';
+import * as footerPages from './footer';
 
 export const Api = {
     products,
@@ -14,4 +15,5 @@ export const Api = {
     subcategories,
     carousel,
     banner,
+    footerPages
 }

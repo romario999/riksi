@@ -37,7 +37,6 @@
     "clsx": "^2.1.1",
     "crypto-js": "^4.2.0",
     "embla-carousel-react": "^8.5.1",
-    "git-filter-repo": "^0.0.30",
     "input-otp": "^1.4.2",
     "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.451.0",

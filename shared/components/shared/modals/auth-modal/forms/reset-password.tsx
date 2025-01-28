@@ -2,9 +2,9 @@ import { Button, FormInput, Title } from '@/shared/components';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { resetPasswordSchema, TFormResetPasswordValues } from './schemas';
 import toast from 'react-hot-toast';
 import { createLinkResetPassword } from '@/app/actions';
+import { resetPasswordEmailSchema, TFormResetPasswordEmailValues } from './schemas';
 
 interface Props {
     onClose?: VoidFunction;
@@ -12,14 +12,14 @@ interface Props {
 
 export const ResetPassword: React.FC<Props> = ({ onClose }) => {
 
-    const form = useForm<TFormResetPasswordValues>({
-        resolver: zodResolver(resetPasswordSchema),
+    const form = useForm<TFormResetPasswordEmailValues>({
+        resolver: zodResolver(resetPasswordEmailSchema),
         defaultValues: {
             emailReset: '',
         },
     });
 
-    const onSubmit = async (data: TFormResetPasswordValues) => {
+    const onSubmit = async (data: TFormResetPasswordEmailValues) => {
         try {
             await createLinkResetPassword(data.emailReset);
             onClose?.();

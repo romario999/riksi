@@ -3,6 +3,13 @@ import { ProfileForm } from "@/shared/components";
 import { getUserSession } from "@/shared/lib/get-user-session";
 import { redirect } from "next/navigation";
 
+export async function generateMetadata() {
+    return {
+        title: 'Профіль користувача | RIKSI',
+        description: 'Особистий кабінет користувача'
+    }
+}
+
 export default async function ProfilePage() {
 
     const session = await getUserSession();

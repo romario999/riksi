@@ -5,3 +5,4 @@ export { useCart } from './use-cart';
 export { useIsMobile } from './use-is-mobile';
 export { useCarousel } from './use-carousel';
 export { useBanner } from './use-banner';
+export { useFooter } from './use-footer';

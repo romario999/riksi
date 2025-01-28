@@ -5,6 +5,34 @@ import { getProducts } from "@/shared/lib/get-products";
 import { FilterProductsSection } from "@/shared/components/shared/filter-products-section";
 import Link from "next/link";
 import { Slash } from "lucide-react";
+import { Metadata } from "next";
+
+export async function generateMetadata({ params }: { params: { categoryLink: string; } }): Promise<Metadata> {
+  const { categoryLink } = params;
+  const category = await prisma.category.findFirst({
+    where: {
+      categoryUrl: categoryLink
+    },
+    select: {
+      name: true
+    }
+  });
+
+  // Можна завантажити дані з API або БД для метаданих
+  const title = `${category?.name} | Каталог товарів RIKSI`;
+  const description = `Ознайомтесь з нашими товарами в категорії ${categoryLink}. Найкраща якість за доступними цінами.`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      url: `https://example.com/catalog/${categoryLink}`,
+    },
+  };
+}
 
 const ITEMS_PER_PAGE = 18;
 

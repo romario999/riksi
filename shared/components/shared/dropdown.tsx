@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "../ui/accordion";
-import { useCategories } from "@/shared/hooks";
+import { useCategories, useFooter } from "@/shared/hooks";
 import Link from "next/link";
 import { ArrowRight, ChevronRight } from "lucide-react";
 
@@ -27,6 +27,8 @@ interface Subcategory {
 
 export const DropdownMenu = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => {
   const { categories } = useCategories();
+  const {footerPages} = useFooter();
+
   const [visible, setVisible] = useState(isOpen);
   const [openItems, setOpenItems] = useState<string[]>([]);
   const [isTouchDevice, setIsTouchDevice] = useState(false);  // Додаємо стан для перевірки сенсорного екрану
@@ -153,6 +155,23 @@ export const DropdownMenu = ({ isOpen, onClose }: { isOpen: boolean, onClose: ()
             </li>
           </ul>
         </div>
+        <div className="block xl:hidden">
+  <hr />
+  <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4 w-[90%] mx-auto">
+    {footerPages.map((page) => (
+      <li key={page.id} className="border-none hover:underline cursor-pointer">
+        <Link
+          href={page.footerUrl}
+          onClick={onClose}
+          className="flex justify-between items-center px-4 py-2 text-gray-800 text-xl w-full"
+        >
+          {page.title}
+        </Link>
+      </li>
+    ))}
+  </ul>
+</div>
+
       </Accordion>
     )}
   </div>

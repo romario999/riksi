@@ -989,12 +989,38 @@ const products = [
       { price: 1095, size: 'XXL', sku: 'ШТАН-88-XXL-BLACK', stock: true },
     ],
   },
+  {
+    name: 'Комбінезон Slim Milk',
+    description: 'Комбінезон Slim Milk виконаний із трикотажу. Застібка на кнопках. Склад: 95% бавовна, 5% лайкра.',
+    imageUrl: ["https://riksi.ua/content/images/2/579x869l95mc0/kombinezon-slim-milk-63894401349358.webp", "https://riksi.ua/content/images/2/579x869l95mc0/kombinezon-slim-milk-91805349193968.webp", "https://riksi.ua/content/images/2/579x869l95mc0/kombinezon-slim-milk-57204488016166.webp"],
+    productUrl: 'kombinezon-slim-milk',
+    price: 1095,
+    oldPrice: 2190,
+    sticker: [ProductStickers.PRICEPARTY],
+    currency: 'UAH',
+    color: 'Молочний',
+    categories: [
+      {id: 5},
+      {id: 4}
+    ],
+    subcategories: [
+      {id: 16}
+    ],
+    items: [
+      { price: 1095, oldPrice: 2190, size: 'XS', sku: 'КОМБ-100-XS-MILK', stock: false },
+      { price: 1095, oldPrice: 2190, size: 'S', sku: 'КОМБ-100-S-MILK', stock: false },
+      { price: 1095, oldPrice: 2190, size: 'M', sku: 'КОМБ-100-M-MILK', stock: false },
+      { price: 1095, oldPrice: 2190, size: 'L', sku: 'КОМБ-100-L-MILK', stock: false },
+      { price: 1095, oldPrice: 2190, size: 'XL', sku: 'КОМБ-100-XL-MILK', stock: false },
+      { price: 1095, oldPrice: 2190, size: 'XXL', sku: 'КОМБ-100-XXL-MILK', stock: false },
+    ],
+  },
 ];
 
 const sliderImages = [
   {
     imageUrl: 'https://riksi.ua/content/images/7/1440x576e90nn0/46132421340665.webp',
-    link: 'catalog/body',
+    link: 'http://localhost:3000/catalog/body',
     altText: 'Колекція PRE-WINTERʼ25 від RIKSI',
     isMobile: false,
     isActive: true,
@@ -1002,7 +1028,7 @@ const sliderImages = [
   },
   {
     imageUrl: 'https://riksi.ua/content/images/12/1440x576e90nn0/41800258047833.webp',
-    link: 'umovy-uchasti-v-rozihrashi',
+    link: 'http://localhost:3000/umovy-uchasti-v-rozihrashi',
     altText: 'RIKSI Shopping',
     isMobile: false,
     isActive: true,
@@ -1010,7 +1036,7 @@ const sliderImages = [
   },
   {
     imageUrl: 'https://riksi.ua/content/images/34/1440x576e90nn0/28681354717475.webp',
-    link: 'catalog/domashniy-odiah',
+    link: 'http://localhost:3000/catalog/domashniy-odiah',
     altText: 'Колекція NEW-YEARʼ25 від RIKSI',
     isMobile: false,
     isActive: true,
@@ -1129,7 +1155,7 @@ const bottomBannerImage = [
   {
     imageUrl: 'https://riksi.ua/content/images/40/1440x216e90nn0/51054835940617.webp',
     altText: 'Price Party Bottom Banner',
-    link: 'catalog/price-party',
+    link: 'http://localhost:3000/catalog/price-party',
     position: 1
   }
 ];
@@ -1222,12 +1248,14 @@ async function seed() {
   }
 
   for (const product of products) {
+    const isInStock = product.items.some((item: any) => item.stock === true);
     const createdProduct = await prisma.product.create({
       data: {
         name: product.name,
         description: product.description,
         imageUrl: product.imageUrl,
         productUrl: product.productUrl,
+        stock: isInStock,
         price: product.price,
         sticker: product.sticker,
         oldPrice: product.oldPrice,

@@ -96,10 +96,14 @@ export async function getProducts({
       },
       skip: (page - 1) * itemsPerPage,
       take: itemsPerPage,
-      ...(orderBy && { orderBy }),
+      orderBy: [
+        { stock: 'desc' },
+        ...(orderBy ? [orderBy] : []),
+      ],
     }),
     prisma.product.count({ where: whereConditions }),
   ]);
+  
 
   const totalPages = Math.ceil(totalCount / itemsPerPage);
 
