@@ -107,11 +107,11 @@ export async function createOrder(data: CheckoutFormValues, paymentUrl: string, 
         }
 
 
-        await sendEmail(data.email, 'Оплата замовлення ' + order.id, PayOrderTemplate({
+       /* await sendEmail(data.email, 'Оплата замовлення ' + order.id, PayOrderTemplate({
             orderId: order.id,
             totalAmount: order.totalAmount,
             paymentUrl,
-        }));
+        }));*/
 
     } catch (err) {
         console.error('[CreateOrder] Server error', err);
@@ -304,6 +304,17 @@ export async function resetPassword(token: string, newPassword: string) {
 
     } catch (error) {
         console.error('Error [RESET_PASSWORD]', error);
+        throw error;
+    }
+}
+
+export async function callMe(body: Prisma.CallMeCreateInput) {
+    try {
+        await prisma.callMe.create({
+            data: body,
+        });
+    } catch (error) {
+        console.error('Error [CALL_ME]', error);
         throw error;
     }
 }

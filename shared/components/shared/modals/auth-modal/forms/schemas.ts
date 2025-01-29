@@ -33,8 +33,14 @@ export const resetPasswordSchema = z.object({
     path: ['confirmNewPassword'],
 });
 
+export const callMeSchema = z.object({
+    callMeName: z.string().min(2, { message: 'Введіть ваше імʼя' }),
+    callMePhone: z.string().min(9, { message: 'Некоректний номер телефону' }),
+});
+
 export type TFormLoginValues = z.infer<typeof formLoginSchema>;
 export type TFormRegisterValues = z.infer<typeof formRegisterSchema>;
 export type TFormVerifyEmailValues = z.infer<typeof verifyEmailSchema>;
 export type TFormResetPasswordEmailValues = z.infer<typeof resetPasswordEmailSchema>;
 export type TFormResetPasswordValues = z.infer<typeof resetPasswordSchema>;
+export type TFormCallMeValues = z.infer<typeof callMeSchema>;

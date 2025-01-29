@@ -80,11 +80,11 @@ export const FormChoosePhoneNumber: React.FC<Props> = ({ className, name, label,
                         <button
                             type="button"
                             onClick={toggleDropdown} // Використовуємо toggleDropdown для переключення
-                            className="h-11 w-12 text-md rounded-lg bg-white border-none pl-2 mr-2 focus:outline-none flex items-center justify-between"
+                            className="h-11 w-12 text-md rounded-lg bg-white border-none pl-3 mr-2 focus:outline-none flex items-center justify-between"
                             ref={buttonRef} // Додаємо реф до кнопки
                         >
                             {selectedCountry.emoji} {/* Прапор вибраної країни */}
-                            <FiChevronDown className="ml-2" /> {/* Стрілка вниз */}
+                            <FiChevronDown className="ml-0" /> {/* Стрілка вниз */}
                         </button>
                     </div>
 

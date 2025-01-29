@@ -1,4 +1,6 @@
-import { Container, Title } from "@/shared/components/shared";
+import Head from 'next/head'
+import { Container, Filters, ProductList, Title } from "@/shared/components/shared";
+import { Suspense, useEffect } from "react";
 import { getProducts } from "@/shared/lib/get-products";
 import { FilterProductsSection } from "@/shared/components/shared/filter-products-section";
 import Link from "next/link";
@@ -28,6 +30,7 @@ export default async function Catalog({ searchParams }: { searchParams: Record<s
     searchParams,
     itemsPerPage: ITEMS_PER_PAGE,
   });
+
 
   return (
     <>

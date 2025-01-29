@@ -24,6 +24,13 @@ model User {
     passwordResetTokens PasswordResetToken[]
 }
 
+model CallMe {
+  id                  Int @id @default(autoincrement())
+  callMeName                String 
+  callMePhone               String
+  createdAt           DateTime @default(now())
+}
+
 model Category {
   id            Int           @id @default(autoincrement())
   name          String

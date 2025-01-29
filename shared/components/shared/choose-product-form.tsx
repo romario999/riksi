@@ -4,7 +4,7 @@ import { cn } from '@/shared/lib/utils';
 import React, { useState } from 'react';
 import { Title } from './title';
 import { Button } from '../ui';
-import { BellRing, ShoppingCart, Slash } from 'lucide-react';
+import { Ban, BellRing, ShoppingCart, Slash } from 'lucide-react';
 import { ProductComplect, ProductItem } from '@prisma/client';
 import { TabsProduct } from './tabs-product';
 import { SizesTableModal } from './modals';
@@ -165,8 +165,8 @@ export const ChooseProductForm: React.FC<Props> = ({
                         {!selectedSize && <Tooltip id="add-to-cart-tooltip" />}
                     </>
                 ) : (
-                    <Button loading={loading} variant="outline" className="h-[55px] px-8 text-base rounded-[18px] w-full md:w-[45%] mb-8 mt-10">
-                        <BellRing size={22} className="mr-3" /> Повідомити про наявність
+                    <Button loading={loading} variant="outline" className="h-[55px] px-8 text-base rounded-[18px] w-[300px] mb-8 mt-10">
+                       <Ban className='mr-2' size={22} /> Немає в наявності
                     </Button>
                 )}
                 <hr />

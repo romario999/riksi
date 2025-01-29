@@ -11,8 +11,10 @@ export const metadata: Metadata = {
 
 export default function HomeLayout({
   children,
+  modal
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
   return (
     <>
@@ -21,6 +23,7 @@ export default function HomeLayout({
           <Header />
         </Suspense>
         {children}
+        {modal}
         <SocialLinks/>
         <Footer />
       </main>

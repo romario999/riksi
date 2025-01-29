@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
+export async function GET(req: any, res: any) {
     try {
         const user = await getUserSession();
         //const user = await getServerSession(req, res, authOptions);
