@@ -48,7 +48,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
     try {
         let token = req.cookies.get('cartToken')?.value;
-        let session = await getUserSession();
+        const session = await getUserSession();
 
         if (!token) {
             token = crypto.randomUUID();

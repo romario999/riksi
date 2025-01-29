@@ -18,6 +18,7 @@ export async function GET(req: Request) {
 
         return new Response(JSON.stringify(sliderItems), { status: 200 });
     } catch (error) {
+        console.log(error);
         return new Response(JSON.stringify({ error: 'Не вдалося отримати дані' }), { status: 500 });
     }
 }

@@ -1,4 +1,4 @@
-import { Container, Footer, MainBanners, MainBenefits, MainBottomBanner, MainSlider, MainTabs } from "@/shared/components";
+import { Container, MainBanners, MainBenefits, MainBottomBanner, MainSlider, MainTabs } from "@/shared/components";
 
 export default async function Home() {
   return (

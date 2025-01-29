@@ -1,5 +1,5 @@
 import { prisma } from '@/prisma/prisma-client';
-import { Button, FormInput } from '@/shared/components';
+import { Button } from '@/shared/components';
 import Link from 'next/link';
 import Image from 'next/image';
 import React from 'react';

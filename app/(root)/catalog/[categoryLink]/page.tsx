@@ -1,5 +1,4 @@
-import { Container, Filters, ProductList, Title } from "@/shared/components/shared";
-import { Suspense } from "react";
+import { Container, Title } from "@/shared/components/shared";
 import CategoryDescription from "@/shared/components/shared/category-description";
 import { prisma } from "@/prisma/prisma-client";
 import { getProducts } from "@/shared/lib/get-products";

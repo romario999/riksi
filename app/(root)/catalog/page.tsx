@@ -1,6 +1,4 @@
-import Head from 'next/head'
-import { Container, Filters, ProductList, Title } from "@/shared/components/shared";
-import { Suspense, useEffect } from "react";
+import { Container, Title } from "@/shared/components/shared";
 import { getProducts } from "@/shared/lib/get-products";
 import { FilterProductsSection } from "@/shared/components/shared/filter-products-section";
 import Link from "next/link";
