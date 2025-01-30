@@ -1,6 +1,5 @@
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
+import React, { useState, useEffect, useRef } from "react";
 
 interface ImageViewerProps {
   images: string[]; // Масив зображень
@@ -18,9 +17,13 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
   onChangeImage,
 }) => {
   const [zoomed, setZoomed] = useState(false);
+  const [fadeIn, setFadeIn] = useState(false); // Стан для анімації відкриття
+  const viewerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     document.body.style.overflow = "hidden"; // Заборона прокручування
+    setFadeIn(true); // Активуємо анімацію при відкритті
+
     return () => {
       document.body.style.overflow = ""; // Відновлення прокручування при закритті
     };
@@ -40,12 +43,20 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
     onChangeImage(prevIndex);
   };
 
-  return ReactDOM.createPortal(
-    <div className="fixed inset-0 bg-white flex flex-col justify-center items-center z-[9999]">
+  const handleClose = () => {
+    setFadeIn(false); // Активуємо анімацію закриття
+    setTimeout(onClose, 300); // Закриваємо компонент після завершення анімації
+  };
+
+  return (
+    <div
+      ref={viewerRef}
+      className={`fixed inset-0 bg-white flex flex-col justify-center items-center z-[9999] transition-opacity duration-300 ${fadeIn ? 'opacity-100' : 'opacity-0'}`}
+    >
       <div className="p-3 text-black text-xl flex text-left w-full">{productName}</div>
       <hr className="w-full border-t-[1px] border-gray-600" />
       <button
-        onClick={onClose}
+        onClick={handleClose}
         className="absolute top-2 right-4 text-black text-2xl z-[10000]" // Задаємо вищий z-index для кнопки
       >
         ✕
@@ -70,7 +81,6 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
           <ArrowRight size={32} />
         </button>
       </div>
-    </div>,
-    document.body
+    </div>
   );
 };
