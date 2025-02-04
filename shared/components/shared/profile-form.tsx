@@ -6,7 +6,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { formRegisterSchema, TFormRegisterValues } from './modals/auth-modal/forms/schemas';
 import { User } from '@prisma/client';
 import toast from 'react-hot-toast';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { Container } from './container';
 import { Title } from './title';
 import { FormInput, FormInputPassword } from './form';
@@ -49,7 +49,7 @@ export const ProfileForm: React.FC<Props> = ({ data }) => {
     const onClickSignOut = () => {
         signOut({
             callbackUrl: '/',
-        })
+        });
     };
 
   return (

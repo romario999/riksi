@@ -5,56 +5,65 @@ import { findOrCreateCart } from "@/shared/lib/find-or-create-cart";
 import { CreateCartItemValues } from "@/shared/services/dto/cart.dto";
 import { updateCartTotalAmount } from "@/shared/lib/update-cart-total-amount";
 import { getUserSession } from "@/shared/lib/get-user-session";
+import { mergeCarts } from "@/shared/lib/merge-carts";
 
 export async function GET(req: NextRequest) {
     try {
-        const token = req.cookies.get('cartToken')?.value;
+        const session = await getUserSession();
+        const token = req.cookies.get("cartToken")?.value;
 
-        if(!token) {
+        if (!session?.id && !token) {
             return NextResponse.json({ totalAmount: 0, items: [] });
+        }
+
+        if (session?.id && token) {
+            await mergeCarts(Number(session.id), token);
         }
 
         const userCart = await prisma.cart.findFirst({
             where: {
-                OR: [
-                    {
-                      token,
-                    }
-                ]
+                userId: session?.id ? Number(session.id) : undefined,
+                token: session?.id ? undefined : token,
             },
             include: {
                 items: {
-                    orderBy: {
-                        id: 'desc'
-                    },
-                    include: {
-                        productItem: {
-                            include: {
-                                product: true,
-                            }
-                        }
-                    }
+                    orderBy: { id: "desc" },
+                    include: { productItem: { include: { product: true } } },
                 },
-            }
+            },
         });
 
-        return NextResponse.json(userCart);
+        return NextResponse.json(userCart ?? { totalAmount: 0, items: [] });
     } catch (error) {
-        console.log('[CART_GET] Server error', error);
-        return NextResponse.json({ message: 'Не вдалося отримати кошик' }, { status: 500 });
+        console.error("[CART_GET] Server error", error);
+        return NextResponse.json(
+            { message: "Не вдалося отримати кошик" },
+            { status: 500 }
+        );
     }
 }
 
 export async function POST(req: NextRequest) {
     try {
-        let token = req.cookies.get('cartToken')?.value;
         const session = await getUserSession();
+        let token = req.cookies.get('cartToken')?.value;
 
         if (!token) {
             token = crypto.randomUUID();
         }
 
-        const userCart = await findOrCreateCart(token, session?.id);
+        const userCart = await findOrCreateCart(
+            session?.id ? undefined : token, 
+            session?.id ? Number(session.id) : undefined 
+        );
+        
+
+        if (!session?.id) {
+            await prisma.cart.update({
+                where: { id: userCart.id },
+                data: { userId: null },
+            });
+        }
 
         const data = (await req.json()) as CreateCartItemValues;
 
@@ -80,17 +89,22 @@ export async function POST(req: NextRequest) {
             });
         }
 
-        const updatedUserCart = await updateCartTotalAmount(token);
+        const updatedUserCart = await updateCartTotalAmount(token, Number(session?.id));
+
         const resp = NextResponse.json(updatedUserCart);
-        resp.cookies.set('cartToken', token, {
-            path: '/',
-            maxAge: 2592000, // 30 days
-            httpOnly: true, // Забезпечуємо безпеку кукі
-        });
+
+        if (!session?.id) {
+            resp.cookies.set('cartToken', token, {
+                path: '/',
+                maxAge: 2592000, // 30 днів
+                httpOnly: true,
+            });
+        }
+
         return resp;
 
     } catch (error) {
-        console.log('[CART_POST] Server error', error);
+        console.error('[CART_POST] Server error', error);
         return NextResponse.json({ message: 'Не вдалося додати в кошик' }, { status: 500 });
     }
 }

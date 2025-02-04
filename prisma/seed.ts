@@ -1,5 +1,6 @@
 import { ProductStickers } from '@prisma/client';
 import { prisma } from './prisma-client';
+import { hashSync } from 'bcrypt';
 
 const categories = [
   {
@@ -1171,9 +1172,29 @@ const complects = [
     { productUrl: products[18].productUrl },
     { productUrl: products[19].productUrl },
   ]
+];
+
+const users = [
+  {
+    fullName: 'Roma',
+    email: 'rbondarenko211@gmail.com',
+    password: hashSync('roma2310', 10),
+    verified: new Date()
+  }
 ]
 
 async function seed() {
+  for (const user of users) {
+    const createdUser = await prisma.user.create({
+      data: {
+        fullName: user.fullName,
+        email: user.email,
+        password: user.password,
+        verified: user.verified
+      }
+    })
+    console.log(`Created user: ${createdUser.fullName}`)
+  }
   for (const category of categories) {
     const createdCategory = await prisma.category.create({
       data: {
