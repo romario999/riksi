@@ -33,6 +33,7 @@ export async function getProducts({
   const minPrice = searchParams.priceFrom ? Number(searchParams.priceFrom) : DEFAULT_MIN_PRICE;
   const maxPrice = searchParams.priceTo ? Number(searchParams.priceTo) : DEFAULT_MAX_PRICE;
   const sortOptions = searchParams.sortBy || 'popular';
+  console.log("⏳ Запит до БД через Prisma...", searchParams);
 
   const whereConditions: any = {
     items: {
@@ -106,6 +107,9 @@ export async function getProducts({
   
 
   const totalPages = Math.ceil(totalCount / itemsPerPage);
+
+  console.log("✅ Отримано продукти з БД:", products.length);
+
 
   return { products, total: totalCount, totalPages, currentPage: page };
 }
