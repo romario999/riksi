@@ -4,6 +4,7 @@ import Link from 'next/link';
 import React from 'react';
 import { Title } from './title';
 import { cn } from '@/shared/lib/utils';
+import Image from 'next/image';
 
 interface Props {
     id: number;
@@ -38,7 +39,9 @@ export const MiniProductCard: React.FC<Props> = ({ id, url, name, price, imageUr
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
             >
-                <img 
+                <Image 
+                    width={142}
+                    height={240}
                     className='w-full h-[240px] object-cover' // Збільшена висота зображення
                     src={currentImage} 
                     alt={name} 

@@ -6,6 +6,7 @@ import * as subcategories from './subcategories';
 import * as carousel from './carousel';
 import * as banner from './banner';
 import * as footerPages from './footer';
+import * as orders from './orders';
 
 export const Api = {
     products,
@@ -15,5 +16,6 @@ export const Api = {
     subcategories,
     carousel,
     banner,
-    footerPages
+    footerPages,
+    orders
 }

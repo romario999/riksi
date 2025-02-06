@@ -1,10 +1,11 @@
 'use client';
 import React, { Suspense, useState } from 'react';
-import { ProductList } from './products-list';
-import { Product } from '@prisma/client';
+import { Category, Product } from '@prisma/client';
 import { Filters } from './filters';
 import { Button } from '../ui';
 import { Filter } from 'lucide-react';
+import dynamic from 'next/dynamic';
+import { ProductSkeleton } from './product-skeleton';
 
 interface FilterProductsBlockProps {
   isCatalog?: boolean;
@@ -17,9 +18,24 @@ interface FilterProductsBlockProps {
   searchParams: Record<string, string>;
   categoryLink?: string;
   subcategoryLink?: string;
-  category?: any;
-  subcategory?: any;
+  category?: {
+    id: number;
+    name: string;
+    categoryUrl?: string;
+  } | null;
+  subcategory?: {
+    id: number;
+    name: string;
+    description?: string | null;
+    subcategoryUrl?: string;
+    category: Category;
+  } | null | undefined;
 }
+
+const ProductList = dynamic(() => import('./products-list'), {
+  ssr: false,
+  loading: () => <ProductSkeleton />
+});
 
 export const FilterProductsSection: React.FC<FilterProductsBlockProps> = ({
   isCatalog = false,
@@ -83,17 +99,17 @@ export const FilterProductsSection: React.FC<FilterProductsBlockProps> = ({
 
       {/* Секція списку продуктів */}
       <div className="flex-1">
-        <ProductList
-          loading={loading}
-          setLoading={setLoading}
-          category={categoryLink}
-          subcategory={subcategoryLink}
-          initialProducts={products}
-          initialTotal={total}
-          totalPages={totalPages}
-          currentPage={currentPage}
-          initialSearchParams={Object.fromEntries(Object.entries(searchParams))}
-        />
+          <ProductList
+            loading={loading}
+            setLoading={setLoading}
+            category={categoryLink}
+            subcategory={subcategoryLink}
+            initialProducts={products}
+            initialTotal={total}
+            totalPages={totalPages}
+            currentPage={currentPage}
+            initialSearchParams={Object.fromEntries(Object.entries(searchParams))}
+          />
       </div>
     </div>
   );

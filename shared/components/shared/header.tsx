@@ -14,9 +14,8 @@ import { useRouter } from "next/navigation";
 import { DropdownMenu } from "./dropdown";
 import { MenuButton } from "./menu-button";
 import { useClickAway } from "react-use";
-import { AuthModal } from "./modals";
 import { Search } from "lucide-react";
-import { SearchOverlay } from "./search-overlay"; // Імпортуємо компонент
+import dynamic from "next/dynamic";
 
 interface Props {
     hasSearch?: boolean;
@@ -25,6 +24,10 @@ interface Props {
     classname?: string;
     bg?: string;
 }
+
+const AuthModal = dynamic(() => import('./modals/auth-modal/auth-modal'), { ssr: false });
+const SearchOverlay = dynamic(() => import("./search-overlay"), { ssr: false });
+
 
 export const Header: React.FC<Props> = ({ hasSearch = true, hasCart = true, classname, hasMenu = true, bg = 'bg-white' }) => {
     const router = useRouter();

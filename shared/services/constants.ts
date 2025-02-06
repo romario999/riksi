@@ -4,5 +4,6 @@ export enum ApiRoutes {
     SUBCATEGORIES = 'subcategories',
     CAROUSEL = 'getSliderItems',
     BANNER = 'getBannerItems',
-    FOOTERPAGE = 'getFooterPages'
+    FOOTERPAGE = 'getFooterPages',
+    ORDERS = 'orders'
 }

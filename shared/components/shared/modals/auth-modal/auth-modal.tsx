@@ -14,7 +14,7 @@ interface Props {
   onClose: () => void;
 }
 
-export const AuthModal: React.FC<Props> = ({ open, onClose }) => {
+const AuthModal: React.FC<Props> = ({ open, onClose }) => {
   const [type, setType] = useState<'login' | 'register'>('login');
   const [isRegistered, setIsRegistered] = useState(false);
   const [isResetPassword, setIsResetPassword] = useState(false);
@@ -93,3 +93,5 @@ export const AuthModal: React.FC<Props> = ({ open, onClose }) => {
     </Dialog>
   );
 };
+
+export default AuthModal;

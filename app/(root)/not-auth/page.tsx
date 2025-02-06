@@ -1,10 +1,8 @@
 import { InfoBlock } from "@/shared/components";
+import { generateOptimizedMetadata } from "@/shared/lib";
 
 export async function generateMetadata() {
-    return {
-        title: "Ви не авторизовані | RIKSI",
-        description: "Будь ласка, авторизуйтесь, щоб отримати доступ до цієї сторінки сайту.",
-    }
+    return generateOptimizedMetadata({ notAuth: true });
 }
 
 export default function UnathorizedPage() {

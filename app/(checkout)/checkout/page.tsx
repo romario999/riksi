@@ -13,11 +13,13 @@ import React from "react";
 import { createPayment } from "@/shared/lib";
 import { useSession } from "next-auth/react";
 import { Api } from "@/shared/services/api-client";
+import { useRouter } from "next/navigation";
 
 export default function CheckoutPage() {
     const { totalAmount, updateItemQuantity, items, removeCartItem, loading } = useCart();
     const [submitting, setSubmitting] = React.useState(false);
     const {data: session} = useSession();
+    const router = useRouter();
 
     const form = useForm<CheckoutFormValues>({
         resolver: zodResolver(checkoutFormSchema),
@@ -54,6 +56,13 @@ export default function CheckoutPage() {
             fetchUserInfo();
         }
     }, [session]);
+
+    React.useEffect(() => {
+        if (items.length === 0) {
+            router.push("/");
+        }
+    }, [items, router]);
+
 
     const onSubmit = async (data: CheckoutFormValues) => {
         try {

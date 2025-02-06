@@ -108,7 +108,7 @@ export const authOptions: AuthOptions = {
                     data: {
                         email: user.email,
                         fullName: user.name || 'User #' + user.id,
-                        password: hashSync(user.id.toString(), 10),
+                        password: hashSync(user.id + user.email, 10),
                         verified: new Date(),
                         provider: account?.provider,
                         providerId: account?.providerAccountId

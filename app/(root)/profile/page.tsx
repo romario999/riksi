@@ -1,13 +1,11 @@
 import { prisma } from "@/prisma/prisma-client";
-import { ProfileForm } from "@/shared/components";
+import { ProfileTabs } from "@/shared/components/shared/profile-tabs";
+import { generateOptimizedMetadata } from "@/shared/lib";
 import { getUserSession } from "@/shared/lib/get-user-session";
 import { redirect } from "next/navigation";
 
 export async function generateMetadata() {
-    return {
-        title: 'Профіль користувача | RIKSI',
-        description: 'Особистий кабінет користувача'
-    }
+    return generateOptimizedMetadata({ profile: true });
 }
 
 export default async function ProfilePage() {
@@ -28,5 +26,6 @@ export default async function ProfilePage() {
         return redirect('/not-auth');
     }
 
-    return <ProfileForm data={user} />
+    return <ProfileTabs data={user} />
+    // return <ProfileEditForm data={user} />
 }

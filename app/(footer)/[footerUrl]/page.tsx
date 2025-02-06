@@ -1,32 +1,15 @@
 import { prisma } from '@/prisma/prisma-client';
 import { Container } from '@/shared/components';
+import { generateOptimizedMetadata } from '@/shared/lib';
 import { Slash } from 'lucide-react';
-import { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import React from 'react';
 
-export async function generateMetadata({ params }: { params: { footerUrl: string } }): Promise<Metadata> {
-  const { footerUrl } = params;
-  const pageInfo = await prisma.footerPage.findUnique({
-    where: { footerUrl: footerUrl },
-    select: { title: true },
-  });
-  
-  const title = `${pageInfo?.title} | RIKSI`;
-  const description = `Ознайомтесь з ${pageInfo?.title} на сайті RIKSI.`;
-
-  return {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      type: "website",
-      url: `https://example.com/${footerUrl}`,
-    },
-  };
+export async function generateMetadata({ params }: { params: { footerUrl: string } }) {
+  return generateOptimizedMetadata({ footerUrl: params.footerUrl });
 }
+
 
 export default async function FooterPage({ params: { footerUrl } }: { params: { footerUrl: string } }) {
   const pages = await prisma.footerPage.findMany();

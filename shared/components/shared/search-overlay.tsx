@@ -12,7 +12,7 @@ interface Props {
     closeSearch: () => void;
 }
 
-export const SearchOverlay: React.FC<Props> = ({ closeSearch }) => {
+const SearchOverlay: React.FC<Props> = ({ closeSearch }) => {
     const [searchQuery, setSearchQuery] = React.useState('');
     const [products, setProducts] = React.useState<Product[]>([]);
     const [focused, setFocused] = React.useState(false);
@@ -122,3 +122,5 @@ export const SearchOverlay: React.FC<Props> = ({ closeSearch }) => {
         </div>
     );
 };
+
+export default SearchOverlay;

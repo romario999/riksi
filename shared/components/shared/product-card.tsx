@@ -6,6 +6,7 @@ import { Title } from './title';
 import { Button } from '../ui';
 import { Plus } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
+import Image from 'next/image';
 
 interface Props {
     id: number;
@@ -40,7 +41,7 @@ export const ProductCard: React.FC<Props> = ({ id, url, name, price, imageUrl, c
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
                 >
-                    <img className='h-[320px] object-cover' src={currentImage} alt={name} />
+                    <Image width={270} height={320} className='h-[320px] object-cover' src={currentImage} alt={name} />
                 </div>
 
                 <Title text={name} size="sm" className='mb-1 mt-3 font-bold text-center sm:text-left' />

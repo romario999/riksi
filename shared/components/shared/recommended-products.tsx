@@ -1,6 +1,8 @@
 import { prisma } from '@/prisma/prisma-client';
+import dynamic from 'next/dynamic';
 import React from 'react';
-import { RecommendedCarousel } from './recommended-carousel';
+
+const RecommendedCarousel = dynamic(() => import('./recommended-carousel'), { ssr: false });
 
 export const RecommendedProducts: React.FC<{ category: number | undefined, productId: number }> = async ({ category, productId }) => {
     const products = await prisma.product.findMany({

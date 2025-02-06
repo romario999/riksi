@@ -5,8 +5,11 @@ import { FaViber, FaTelegram } from "react-icons/fa6";
 import { LuInstagram, LuFacebook } from "react-icons/lu";
 import React from 'react';
 import Link from 'next/link';
-import { CallMeModal } from './modals';
 import { useCategories, useFooter } from '@/shared/hooks';
+import Image from 'next/image';
+import dynamic from 'next/dynamic';
+
+const CallMeModal = dynamic(() => import('./modals/call-me-modal'), { ssr: false });
 
 export const Footer =  () => {
     const [openCallModal, setOpenCallModal] = React.useState(false);
@@ -20,11 +23,13 @@ export const Footer =  () => {
             <footer className="flex flex-wrap justify-around p-10 bg-black text-white">
                 <div className="max-w-[800px] mb-6 xl:mb-0">
                     <Link href="/">
-                        <img
-                            src="https://riksi.ua/content/images/2/400x200l90nn0/39929893234509.webp"
-                            alt="RIKSI Logo Footer"
-                            className="w-[120px] sm:w-[180px]"
-                        />
+                    <Image
+  src="https://riksi.ua/content/images/2/400x200l90nn0/39929893234509.webp"
+  alt="RIKSI Logo Footer"
+  width={120} // Встановіть ширину в пікселях
+  height={60} // Встановіть висоту в пікселях (пропорційно)
+  className="sm:w-[180px]"
+/>
                     </Link>
                     <p className="text-sm">©2020-{new Date().getFullYear()}</p>
                 </div>

@@ -4,15 +4,15 @@ import { cn } from '@/shared/lib/utils';
 import React, { useState } from 'react';
 import { Title } from './title';
 import { Button } from '../ui';
-import { Ban, BellRing, ShoppingCart, Slash } from 'lucide-react';
+import { Ban, ShoppingCart, Slash } from 'lucide-react';
 import { ProductComplect, ProductItem } from '@prisma/client';
 import { TabsProduct } from './tabs-product';
-import { SizesTableModal } from './modals';
 import CarouselProductImg from './carousel-product-img';
 import { ComplectProductForm } from './complect-product-form';
 import Link from 'next/link';
 import { Category } from './product-form';
 import { Tooltip } from 'react-tooltip';
+import dynamic from 'next/dynamic';
 
 interface Props {
     id: number;
@@ -35,6 +35,8 @@ type BreadcrumbsProps = {
     categoryName?: string | null;
     productName: string;
 }
+
+const SizesTableModal = dynamic(() => import('./modals/sizes-table-modal'));
 
 const Breadcrumbs = ({ categoryUrl, categoryName, productName }: BreadcrumbsProps) => {
     return (
@@ -179,7 +181,7 @@ export const ChooseProductForm: React.FC<Props> = ({
                 <hr />
                 <TabsProduct />
             </div>
-            <SizesTableModal open={openSizeModal} onClose={() => setOpenSizeModal(false)} />
+            {openSizeModal && <SizesTableModal open={openSizeModal} onClose={() => setOpenSizeModal(false)} />}
         </div>
     );
 };

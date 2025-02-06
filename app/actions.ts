@@ -33,7 +33,10 @@ export async function createOrder(data: CheckoutFormValues, paymentUrl: string, 
                 },
             },
             where: {
-                token: cartToken,
+                OR: [
+                    { token: cartToken },
+                    { userId: Number(user?.id) }
+                ]
             },
         });
 

@@ -3,22 +3,10 @@ import { getProducts } from "@/shared/lib/get-products";
 import { FilterProductsSection } from "@/shared/components/shared/filter-products-section";
 import Link from "next/link";
 import { Slash } from "lucide-react";
-import { Metadata } from 'next';
+import { generateOptimizedMetadata } from "@/shared/lib";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const title = `Каталог товарів RIKSI | Жіночий одяг та білизна`;
-  const description = `Ознайомтесь з каталогом RIKSI. Найкраща якість за доступними цінами.`;
-
-  return {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      type: "website",
-      url: `https://example.com/catalog`,
-    },
-  };
+export async function generateMetadata() {
+  return generateOptimizedMetadata({ catalog: true });
 }
 
 const ITEMS_PER_PAGE = 18;

@@ -40,7 +40,7 @@ interface ProductListProps {
   setLoading: (loading: boolean) => void;
 }
 
-export function ProductList({
+export default function ProductList({
   initialProducts,
   initialTotal,
   totalPages,

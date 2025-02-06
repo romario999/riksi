@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Skeleton } from '../ui';
 import { useCarousel, useIsMobile } from '@/shared/hooks';
 
+
 export const MainSlider = () => {
     const isMobile = useIsMobile();
     const { carousel, loading } = useCarousel();

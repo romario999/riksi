@@ -15,7 +15,7 @@ interface Props {
     onClose: () => void;
 }
 
-export const CallMeModal: React.FC<Props> = ({open, onClose}) => {
+const CallMeModal: React.FC<Props> = ({open, onClose}) => {
     const form = useForm<TFormCallMeValues>({
         resolver: zodResolver(callMeSchema),
         defaultValues: {
@@ -66,3 +66,5 @@ export const CallMeModal: React.FC<Props> = ({open, onClose}) => {
     </FormProvider>
   );
 };
+
+export default CallMeModal;

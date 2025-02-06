@@ -7,7 +7,7 @@ interface Props {
     onClose: () => void;
 }
 
-export const SizesTableModal: React.FC<Props> = ({ open, onClose }) => {
+const SizesTableModal: React.FC<Props> = ({ open, onClose }) => {
     const handleClose = () => {
         onClose();
     };
@@ -93,3 +93,5 @@ export const SizesTableModal: React.FC<Props> = ({ open, onClose }) => {
         </Dialog>
     );
 };
+
+export default SizesTableModal;

@@ -6,31 +6,22 @@ import { FilterProductsSection } from "@/shared/components/shared/filter-product
 import Link from "next/link";
 import { Slash } from "lucide-react";
 import { Metadata } from "next";
+import { generateOptimizedMetadata } from "@/shared/lib";
 
 export async function generateMetadata({ params }: { params: { categoryLink: string, subcategoryLink: string } }): Promise<Metadata> {
-  const { subcategoryLink, categoryLink } = params;
   const subcategory = await prisma.subcategory.findFirst({
     where: {
-      subcategoryUrl: subcategoryLink
+      subcategoryUrl: params.subcategoryLink,
+      category: {
+        categoryUrl: params.categoryLink
+      }
     },
     select: {
       name: true,
     }
   });
 
-  const title = `${subcategory?.name} | Каталог товарів RIKSI`;
-  const description = `Ознайомтесь з нашими товарами в підкатегорії ${subcategory?.name}. Найкраща якість за доступними цінами.`;
-
-  return {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      type: "website",
-      url: `https://example.com/catalog/${categoryLink}/${subcategoryLink}`,
-    },
-  };
+  return generateOptimizedMetadata({ subcategoryLink: subcategory?.name });
 }
 
 const ITEMS_PER_PAGE = 18;

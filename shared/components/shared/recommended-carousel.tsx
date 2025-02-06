@@ -9,7 +9,7 @@ type Props = {
     products: any[];
 };
 
-export const RecommendedCarousel = ({   products  }: Props) => {
+const RecommendedCarousel = ({   products  }: Props) => {
     const isMobile = useIsMobile(680);
 
     return (
@@ -52,3 +52,5 @@ export const RecommendedCarousel = ({   products  }: Props) => {
         </div>
     );
 };
+
+export default RecommendedCarousel;
