@@ -11,8 +11,6 @@ export async function generateMetadata() {
 
 const ITEMS_PER_PAGE = 18;
 
-export const revalidate = 60; // Перегенерація сторінки через 60 секунд
-
 export default async function Catalog({ searchParams }: { searchParams: Record<string, string> }) {
   const { products, total, totalPages, currentPage } = await getProducts({
     searchParams,
@@ -42,7 +40,11 @@ export default async function Catalog({ searchParams }: { searchParams: Record<s
         />
         {currentPage === 1 && (
           <div className="mt-10 text-wrap">
-            Ласкаво просимо до каталогу товарів RIKSI...
+            Ласкаво просимо до каталогу товарів RIKSI - українського бренду жіночого одягу та білизни. У нашому асортименті ви знайдете лімітовані колекції, які завжди відображають найактуальніші трендові моди. Наш асортимент включає в себе: білизну, боді, домашній одяг, трикотажний одяг, комбінезони та спортивний одяг - кожен з ними допоможе вам відчути комфорт та вишуканість. <br /> <br />
+
+            Ми віримо, що кожна жінка заслуговує на особливий образ, тому пропонуємо різноманітність стилів та моделей - від класичних до сучасних. Наша білизна надійно забезпечує вам комфорт і натхнення, а кожен одяг здатний підкреслити вашу неповторну красу. <br/> <br />
+
+            RIKSI - це бренд, який прагне зробити кожен день особливим. Обирайте якість та ексклюзивність. 
           </div>
         )}
       </Container>
