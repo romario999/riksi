@@ -112,7 +112,7 @@ export const Header: React.FC<Props> = ({ hasSearch = true, hasCart = true, clas
                     {/* Лого по центру */}
                     <Link href="/" className={`${!hasSearch && !hasMenu && !hasCart ? '' : 'mx-auto'}`}>
                         <div className="flex items-center gap-4 justify-center">
-                            <Image src="/riksi.webp" alt="Logo" width={102} height={102} />
+                            <img src="/riksi.webp" alt="Logo" className="w-24 h-12" />
                         </div>
                     </Link>
 

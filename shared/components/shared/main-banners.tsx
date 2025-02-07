@@ -24,7 +24,7 @@ export const MainBanners = () => {
         [banner]
     );
 
-    if (loading) {
+    if (banner.length === 0 || loading) {
         return (
             <section className="mt-5 flex gap-5">
                 <Skeleton className="rounded-xl w-full aspect-[16/9]" /> {/* Skeleton з пропорцією 16:9 */}

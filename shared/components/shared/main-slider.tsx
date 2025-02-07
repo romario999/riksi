@@ -24,7 +24,7 @@ export const MainSlider = () => {
         [carousel]
     );
 
-    if (loading) {
+    if (carousel.length === 0 || loading) {
         return (
             <section className="h-[500px] flex">
                 <Skeleton
