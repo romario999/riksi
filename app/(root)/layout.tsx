@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Header } from "@/shared/components/shared/header";
+import { Suspense } from "react";
 import { SocialLinks } from "@/shared/components/shared/social-links";
 import { Footer } from "@/shared/components";
 
@@ -16,9 +17,9 @@ export default function HomeLayout({
   return (
     <>
       <main className="min-h-screen">
-        
-        <Header />
-        
+        <Suspense>
+          <Header />
+        </Suspense>
         {children}
         <SocialLinks/>
         <Footer />
