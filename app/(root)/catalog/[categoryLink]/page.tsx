@@ -52,6 +52,10 @@ export default async function CatalogCategory({
     { revalidate: 60 }
   );
 
+  const sortedParams = JSON.stringify(
+    Object.fromEntries(Object.entries(searchParams).sort())
+  );
+  
   const getCachedProducts = unstable_cache(
     async () =>
       getProducts({
@@ -59,9 +63,10 @@ export default async function CatalogCategory({
         categoryUrl: params.categoryLink,
         itemsPerPage: ITEMS_PER_PAGE,
       }),
-    [`products-${params.categoryLink}`, JSON.stringify(searchParams)],
+    [`products-${params.categoryLink}`, sortedParams],
     { revalidate: 60 }
   );
+  
 
   // Виконуємо кешовані запити
   const [category, subcategory, { products, total, totalPages, currentPage }] = await Promise.all([
