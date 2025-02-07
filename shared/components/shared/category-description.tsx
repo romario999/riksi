@@ -24,7 +24,7 @@ const CategoryDescription = ({ description, page }: any) => {
         <div>
           <div
             ref={descriptionRef}
-            className="mt-24"
+            className="mt-24 p-3"
             style={{
               maxHeight: isExpanded ? `${descriptionRef.current?.scrollHeight}px` : "220px",
               overflow: "hidden",

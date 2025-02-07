@@ -1,31 +1,32 @@
+import useSWR from 'swr';
 import { Api } from "@/shared/services/api-client";
-import { SliderImage } from "@prisma/client";
-import React from "react";
 import { useIsMobile } from "@/shared/hooks";
+import { SliderImage } from '@prisma/client';
+
+const fetchCarouselItems = async (isMobile: boolean) => {
+  try {
+    return await Api.carousel.getAll(isMobile);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
 
 export const useCarousel = () => {
-    const [carousel, setCarousel] = React.useState<SliderImage[]>([]);
-    const [loading, setLoading] = React.useState(true);
-    const isMobile = useIsMobile();
+  const isMobile = useIsMobile();
 
-    React.useEffect(() => {
-        async function fetchCarouselItems() {
-            try {
-                if (isMobile === null) return;
-                setLoading(true);
-                const carouselItems = await Api.carousel.getAll(isMobile);
-                setCarousel(carouselItems);
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setLoading(false);
-            }
-        }
-        fetchCarouselItems();
-    }, [isMobile]);
+  const { data: carousel, error, isLoading } = useSWR<SliderImage[]>(
+    isMobile !== null ? `carousel-${isMobile}` : null,
+    () => fetchCarouselItems(isMobile as boolean),
+    {
+      revalidateOnFocus: false,
+      refreshInterval: 60000,
+    }
+  );
 
-    return {
-        carousel,
-        loading,
-    };
+  return {
+    carousel: carousel || [], 
+    loading: isLoading,
+    error,
+  };
 };

@@ -55,7 +55,7 @@ export const MiniProductCard: React.FC<Props> = ({ id, url, name, price, imageUr
                     <b>
                         {discountPrice ? (
                             <>
-                                <span>{price}₴</span> 
+                                <span className='text-lg'>{price}₴</span> 
                                 <span className='ml-3 text-gray-400 line-through text-sm'>{discountPrice}₴</span>
                             </>
                         ) : (

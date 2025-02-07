@@ -1069,22 +1069,23 @@ const sliderImages = [
     position: 3,
   },
   {
-    imageUrl: 'https://riksi.ua/content/images/37/1440x576e90nn0/24647040547500.webp',
+    imageUrl: 'https://riksi.ua/content/images/17/640x800e90nn0/73852982768550.webp',
     altText: 'RIKSI',
+    position: 1,
     isMobile: true,
-    isActive: false,
+    isActive: true,
   },
   {
     imageUrl: 'https://riksi.ua/content/images/24/640x800e80nn0/55459669888553.webp',
     altText: 'Riksi',
-    position: 1,
+    position: 2,
     isMobile: true,
     isActive: true,
   },
   {
     imageUrl: 'https://riksi.ua/content/images/46/640x800e80nn0/98991891637710.webp',
     altText: 'Riksi',
-    position: 2,
+    position: 3,
     isMobile: true,
     isActive: true,
   }

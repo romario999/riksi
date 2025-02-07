@@ -5,6 +5,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import Link from 'next/link';
 import { Skeleton } from '../ui';
 import { useCarousel, useIsMobile } from '@/shared/hooks';
+import { SliderImage } from '@prisma/client';
 
 
 export const MainSlider = () => {
@@ -13,7 +14,7 @@ export const MainSlider = () => {
 
     const sliderContent = useMemo(
         () =>
-            carousel.map((item, i) => (
+            carousel.map((item: SliderImage, i: number) => (
                 <CarouselItem key={i}>
                     <Link href={item.link || '#'}>
                         <img className="rounded-lg mx-auto" src={item.imageUrl} alt={item.altText ?? ''} />

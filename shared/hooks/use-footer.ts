@@ -1,27 +1,29 @@
+import useSWR from 'swr';
 import { Api } from "@/shared/services/api-client";
 import { FooterPage } from "@prisma/client";
-import React from "react";
+
+const fetchFooterPages = async () => {
+  try {
+    return await Api.footerPages.getAll();
+  } catch (error) {
+    console.error("Помилка завантаження сторінок футера:", error);
+    throw error;
+  }
+};
 
 export const useFooter = () => {
-    const [footerPages, setFooterPages] = React.useState<FooterPage[]>([]);
-    const [loading, setLoading] = React.useState(true);
-    React.useEffect(() => {
-        async function fetchFooterPages() {
-            try {
-                setLoading(true);
-                const pages = await Api.footerPages.getAll();
-                setFooterPages(pages);
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setLoading(false);
-            }
-        }
-        fetchFooterPages();
-    }, []);
+  const { data: footerPages, error, isLoading } = useSWR<FooterPage[]>(
+    "footer-pages", // Унікальний ключ для кешування
+    fetchFooterPages,
+    {
+      revalidateOnFocus: false, // Не оновлювати при поверненні на сторінку
+      dedupingInterval: 300000, // Кешувати дані на 5 хвилин
+    }
+  );
 
-    return {
-        footerPages,
-        loading,
-    };
+  return {
+    footerPages: footerPages || [],
+    loading: isLoading,
+    error,
+  };
 };
