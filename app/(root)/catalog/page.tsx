@@ -10,21 +10,25 @@ export async function generateMetadata() {
   return generateOptimizedMetadata({ catalog: true });
 }
 
-const getCachedProducts = unstable_cache(
-  async ({ searchParams }: { searchParams: Record<string, string> }) => {
-    return await getProducts({
-      searchParams,
-      itemsPerPage: ITEMS_PER_PAGE,
-    });
-  },
-  ['products'],
-  { revalidate: 60, tags: ['products'] }
-)
-
 const ITEMS_PER_PAGE = 18;
 
 export default async function Catalog({ searchParams }: { searchParams: Record<string, string> }) {
-  const { products, total, totalPages, currentPage } = await getCachedProducts({searchParams});
+  const sortedParams = JSON.stringify(
+    Object.fromEntries(Object.entries(searchParams).sort())
+  );
+  
+  const getCachedProducts = unstable_cache(
+    async () => {
+      return await getProducts({
+        searchParams,
+        itemsPerPage: ITEMS_PER_PAGE,
+      });
+    },
+    ['products', sortedParams],
+    { revalidate: 60 }
+  )
+
+  const { products, total, totalPages, currentPage } = await getCachedProducts();
 
   return (
     <>
