@@ -11,19 +11,14 @@ import { unstable_cache } from "next/cache";
 const ITEMS_PER_PAGE = 18;
 
 export async function generateMetadata({ params }: { params: { categoryLink: string } }) {
-  const getCachedCategory = unstable_cache(
-    async () =>
-      prisma.category.findFirst({
-        where: { categoryUrl: params.categoryLink },
-        select: { name: true },
-      }),
-    [`category-metadata-${params.categoryLink}`],
-    { revalidate: 60 }
-  );
+  const category = await prisma.category.findFirst({
+    where: { categoryUrl: params.categoryLink },
+    select: { name: true },
+  });
 
-  const category = await getCachedCategory();
   return generateOptimizedMetadata({ categoryLink: category?.name });
 }
+
 
 export default async function CatalogCategory({
   searchParams,
