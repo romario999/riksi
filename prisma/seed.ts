@@ -1021,7 +1021,7 @@ const products = [
     description: 'Сорочка Marmalade виготовлена ​​​​із штапелю. 100% бавовна. Вільного краю, має маленькі гудзики та кишеню.',
     imageUrl: ["https://riksi.ua/content/images/1/579x869l95mc0/sorochka-marmalade-47765427949621.webp", "https://riksi.ua/content/images/1/579x869l95mc0/sorochka-marmalade-99961977019212.webp"],
     productUrl: 'sorochka-marmalade',
-    price: 698,
+    price: 500,
     oldPrice: 1195,
     currency: 'UAH',
     color: 'Молочний',
@@ -1033,12 +1033,12 @@ const products = [
       {id: 8}
     ],
     items: [
-      { price: 698, oldPrice: 1195, size: 'XS', sku: 'СОРО-92-XS', stock: true },
-      { price: 698, oldPrice: 1195, size: 'S', sku: 'СОРО-92-S', stock: true },
-      { price: 698, oldPrice: 1195, size: 'M', sku: 'СОРО-92-M', stock: true },
-      { price: 698, oldPrice: 1195, size: 'L', sku: 'СОРО-92-L', stock: true },
-      { price: 698, oldPrice: 1195, size: 'XL', sku: 'СОРО-92-XL', stock: true },
-      { price: 698, oldPrice: 1195, size: 'XXL', sku: 'СОРО-92-XXL', stock: true },
+      { price: 500, oldPrice: 1195, size: 'S', sku: 'СОРО-92-S', stock: true },
+      { price: 500, oldPrice: 1195, size: 'XS', sku: 'СОРО-92-XS', stock: true },
+      { price: 500, oldPrice: 1195, size: 'M', sku: 'СОРО-92-M', stock: true },
+      { price: 500, oldPrice: 1195, size: 'L', sku: 'СОРО-92-L', stock: true },
+      { price: 500, oldPrice: 1195, size: 'XL', sku: 'СОРО-92-XL', stock: true },
+      { price: 500, oldPrice: 1195, size: 'XXL', sku: 'СОРО-92-XXL', stock: true },
     ],
   },
 ];

@@ -27,5 +27,4 @@ export default async function ProfilePage() {
     }
 
     return <ProfileTabs data={user} />
-    // return <ProfileEditForm data={user} />
 }

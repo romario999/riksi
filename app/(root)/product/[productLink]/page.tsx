@@ -4,47 +4,65 @@ import { notFound } from "next/navigation";
 import { ProductForm } from "@/shared/components/shared/product-form";
 import { RecommendedProducts } from "@/shared/components/shared/recommended-products";
 import { generateOptimizedMetadata } from "@/shared/lib";
+import { unstable_cache } from "next/cache";
 
 export async function generateMetadata({ params }: { params: { productLink: string } }) {
   return generateOptimizedMetadata({ productLink: params.productLink });
 }
 
-
 export default async function ProductPage({ params: { productLink } }: { params: { productLink: string } }) {
-    const product = await prisma.product.findUnique({
+  // Використовуємо єдиний кеш для продукту та категорії
+  const getCachedData = unstable_cache(
+    async ({ productLink }: { productLink: string }) => {
+      const product = await prisma.product.findUnique({
         where: { productUrl: String(productLink) },
         include: {
-            categories: {
+          categories: {
+            include: {
+              product: {
                 include: {
-                    product: {
-                        include: {
-                            items: true,
-                        },
-                    },
+                  items: true,
                 },
+              },
             },
-            items: true,
-            complects: {
-                include: {
-                    products: true,
-                },
+          },
+          items: true,
+          complects: {
+            include: {
+              products: true,
             },
+          },
         },
-    });
+      });
 
-    const category = await prisma.category.findUnique({
-        where: { id: Number(product?.categories[0].categoryId) },
+      if (!product) {
+        return null; // Якщо продукт не знайдено, повертаємо null
+      }
+
+      const category = await prisma.category.findUnique({
+        where: { id: Number(product.categories[0]?.categoryId) },
         select: { id: true, categoryUrl: true, name: true },
-    });
+      });
 
-    if (!product) {
-        return notFound();
-    }
-    return (
-        <Container className="flex flex-col px-1 my-5 ml:my-10 sm:px-10 pb-10">
-           <ProductForm product={product} category={category} />
-           <hr />
-           <RecommendedProducts productId={product.id} category={category?.id}/>
-        </Container>
-    );
+      return { product, category };
+    },
+    [`product-${productLink}`],
+    { revalidate: 60 }
+  );
+
+  const cachedData = await getCachedData({ productLink });
+
+  if (!cachedData) {
+    return notFound();
+  }
+
+  const { product, category } = cachedData;
+
+  return (
+    <Container className="flex flex-col px-1 my-5 ml:my-10 sm:px-10 pb-10">
+      <ProductForm product={product} category={category} />
+      <hr />
+      <RecommendedProducts productId={product.id} category={category?.id} />
+    </Container>
+  );
 }

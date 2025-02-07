@@ -2,6 +2,7 @@ import { prisma } from '@/prisma/prisma-client';
 import { Container } from '@/shared/components';
 import { generateOptimizedMetadata } from '@/shared/lib';
 import { Slash } from 'lucide-react';
+import { unstable_cache } from 'next/cache';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import React from 'react';
@@ -12,10 +13,29 @@ export async function generateMetadata({ params }: { params: { footerUrl: string
 
 
 export default async function FooterPage({ params: { footerUrl } }: { params: { footerUrl: string } }) {
-  const pages = await prisma.footerPage.findMany();
-  const pageInfo = await prisma.footerPage.findUnique({
-    where: { footerUrl: footerUrl },
-  });
+
+  const getCachedFooterPages = unstable_cache(
+    async () => {
+      console.log('query footerPages');
+      return await prisma.footerPage.findMany()
+    },
+    ['footerPages'],
+    { revalidate: 120 }
+  );
+
+  const getCachedPageInfo = unstable_cache(
+    async ({ footerUrl }: { footerUrl: string }) => {
+      console.log('query footerPage', footerUrl);
+      return await prisma.footerPage.findUnique({
+        where: { footerUrl: footerUrl },
+      });
+    },
+    ['footerPage', footerUrl],
+    { revalidate: 120 }
+  );
+  
+  const pages = await getCachedFooterPages();
+  const pageInfo = await getCachedPageInfo({ footerUrl });
 
   // Якщо сторінка не знайдена, перенаправляємо на 404
   if (!pageInfo) {
