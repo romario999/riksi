@@ -37,16 +37,6 @@ export default async function CatalogCategory({
     { revalidate: 60 }
   );
 
-  const getCachedSubcategory = unstable_cache(
-    async () =>
-      prisma.subcategory.findFirst({
-        where: { subcategoryUrl: params.categoryLink },
-        select: { id: true, name: true, category: true },
-      }),
-    [`subcategory-${params.categoryLink}`],
-    { revalidate: 60 }
-  );
-
   const sortedParams = JSON.stringify(
     Object.fromEntries(Object.entries(searchParams).sort())
   );
@@ -64,12 +54,10 @@ export default async function CatalogCategory({
   
 
   // Виконуємо кешовані запити
-  const [category, subcategory, { products, total, totalPages, currentPage }] = await Promise.all([
+  const [category, { products, total, totalPages, currentPage }] = await Promise.all([
     getCachedCategory(),
-    getCachedSubcategory(),
     getCachedProducts(),
   ]);
-
   return (
     <>
       <div className="shadow-lg shadow-black/5 py-5">
@@ -94,7 +82,6 @@ export default async function CatalogCategory({
           currentPage={currentPage}
           searchParams={searchParams}
           category={category}
-          subcategory={subcategory}
         />
         <CategoryDescription description={category?.description} page={currentPage} />
       </Container>

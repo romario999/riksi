@@ -8,6 +8,7 @@ export async function GET(req: Request) {
         const sliderItems = await prisma.sliderImage.findMany({
             where: {
                 position: { not: null },
+                isActive: true,
                 isMobile: isMobile,
             },
             orderBy: {

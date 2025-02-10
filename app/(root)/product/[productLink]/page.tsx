@@ -57,7 +57,6 @@ export default async function ProductPage({ params: { productLink } }: { params:
   }
 
   const { product, category } = cachedData;
-
   return (
     <Container className="flex flex-col px-1 my-5 ml:my-10 sm:px-10 pb-10">
       <ProductForm product={product} category={category} />
