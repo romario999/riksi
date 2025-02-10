@@ -14,7 +14,6 @@ export const ProfileTabs: React.FC<Props> = ({ data }) => {
 
   return (
     <div className="flex flex-col sm:flex-row ">
-      {/* Навігація табів (вертикальна) */}
       <div className="flex my-4 sm:mt-20 flex-row sm:flex-col items-start sm:pr-5 sm:mr-5 pr-0 mr-0 min-w-[150px]">
         {(['profile', 'orders'] as const).map((tab) => (
           <button
@@ -28,7 +27,6 @@ export const ProfileTabs: React.FC<Props> = ({ data }) => {
         ))}
       </div>
 
-      {/* Контент табів */}
       <div className="flex-1 bg-gray-50 max-w-full flex justify-center items-center min-h-[300px]">
         {activeTab === 'profile' && <ProfileEditForm data={data} />}
         {activeTab === 'orders' && <ProfileOrder />}

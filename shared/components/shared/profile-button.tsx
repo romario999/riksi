@@ -35,7 +35,6 @@ export const ProfileButton: React.FC<Props> = ({ className, onClickSignIn }) => 
                 )
             }
 
-            {/* Кнопка з іконкою для маленьких екранів */}
             {
                 !session ? (
                     <Button

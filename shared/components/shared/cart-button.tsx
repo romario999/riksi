@@ -18,9 +18,7 @@ export const CartButton: React.FC<Props> = ({ className }) => {
 
   return (
     <CartDrawer>
-      {/* Обгортаємо всі елементи в один div */}
       <div>
-        {/* Кнопка на великих екранах */}
         <div className="hidden sm:block">
           <Button
             loading={loading}
@@ -36,7 +34,6 @@ export const CartButton: React.FC<Props> = ({ className }) => {
           </Button>
         </div>
 
-        {/* Іконка кошика на маленьких екранах */}
         <div className="block sm:hidden">
         <div className="relative">
   <ShoppingCart size={28} className="text-black duration-200 ease-in-out" strokeWidth={2} />

@@ -42,7 +42,6 @@ export const CheckoutPersonalForm: React.FC<Props> = ({ className }) => {
             <FormInput name="email" className="text-base" placeholder="E-mail" />
           </div>
           <div className="min-w-[30%]">
-            {/* <FormInput name="phone" className="text-base" placeholder="Номер телефону" /> */}
             <FormChoosePhoneNumber name="phone" required />
             <div className="flex items-center space-x-2 mt-3">
               <Checkbox

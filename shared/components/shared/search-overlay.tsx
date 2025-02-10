@@ -68,7 +68,6 @@ const SearchOverlay: React.FC<Props> = ({ closeSearch }) => {
                     isVisible ? 'translate-y-0' : '-translate-y-10'
                 )}
             >
-                {/* Кнопка закриття */}
                 <button
                     onClick={handleClose}
                     className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 transition-colors z-50"
@@ -76,7 +75,6 @@ const SearchOverlay: React.FC<Props> = ({ closeSearch }) => {
                     <span className="text-3xl">&times;</span>
                 </button>
 
-                {/* Пошуковий інтерфейс */}
                 <div className="flex items-center justify-center px-3 relative w-full mb-4">
                     <Search className="absolute top-1/2 left-6 transform -translate-y-1/2 text-gray-400" />
                     <input
@@ -89,7 +87,6 @@ const SearchOverlay: React.FC<Props> = ({ closeSearch }) => {
                     />
                 </div>
 
-                {/* Пошукові результати */}
                 {products.length > 0 && (
                     <div className="w-full bg-white rounded-xl py-2 mt-4 max-h-full overflow-y-auto flex-grow">
                         {products.map((product) => (

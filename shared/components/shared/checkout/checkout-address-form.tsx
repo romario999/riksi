@@ -49,10 +49,8 @@ export const CheckoutAdressForm: React.FC<Props> = ({ className }) => {
   return (
     <WhiteBlock title="3. Доставка" className={className}>
       <div className="flex flex-col">
-        {/* Прихована форма */}
         <input type="hidden" {...register('deliveryType')} />
 
-        {/* Вибір способу доставки */}
         <Select value={deliveryType} onValueChange={handleDeliveryTypeChange}>
           <SelectTrigger className="sm:w-1/2 w-[70%] h-12 text-md text-foreground">
             <SelectValue placeholder="Оберіть спосіб доставки" />

@@ -151,7 +151,7 @@ const Carousel = React.forwardRef<
           {...props}
         >
           {children}
-          <CarouselDots /> {/* Додаємо компонент CarouselDots тут */}
+          <CarouselDots />
         </div>
       </CarouselContext.Provider>
     )

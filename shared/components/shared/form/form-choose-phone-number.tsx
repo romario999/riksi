@@ -83,8 +83,8 @@ export const FormChoosePhoneNumber: React.FC<Props> = ({ className, name, label,
                             className="h-11 w-12 text-md rounded-lg bg-white border-none pl-3 mr-2 focus:outline-none flex items-center justify-between"
                             ref={buttonRef} // Додаємо реф до кнопки
                         >
-                            {selectedCountry.emoji} {/* Прапор вибраної країни */}
-                            <FiChevronDown className="ml-0" /> {/* Стрілка вниз */}
+                            {selectedCountry.emoji}
+                            <FiChevronDown className="ml-0" /> 
                         </button>
                     </div>
 

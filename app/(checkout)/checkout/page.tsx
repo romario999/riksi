@@ -96,9 +96,7 @@ export default function CheckoutPage() {
             <FormProvider {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
                     <div className="flex flex-col p-3 lg:flex-row gap-10 lg:gap-40">
-                        {/* Ліва частина */}
                         <div className="flex flex-col gap-10 flex-1 xl:mb-20 mb-0">
-                            {/* Кошик */}
                             <CheckoutCart
                                 onClickCountButton={onClickCountButton}
                                 removeCartItem={removeCartItem}
@@ -106,17 +104,13 @@ export default function CheckoutPage() {
                                 loading={loading}
                             />
 
-                            {/* Персональна інформація */}
                             <CheckoutPersonalForm className={loading ? "opacity-40 pointer-events-none" : ''} />
 
-                            {/* Адреса */}
                             <CheckoutAdressForm className={loading ? "opacity-40 pointer-events-none" : ''} />
 
-                            {/* Платіжна інформація */}
                             <CheckoutPaymentForm className={loading ? "opacity-40 pointer-events-none" : ''} />
                         </div>
 
-                        {/* Права частина (сайдбар) */}
                         <div className="max-w-[480px] p-5 mx-auto w-full lg:sticky lg:top-28 lg:flex-shrink-0 mb-10 lg:mb-0">
                             <CheckoutSidebar totalAmount={totalAmount} loading={loading || submitting} />
                         </div>

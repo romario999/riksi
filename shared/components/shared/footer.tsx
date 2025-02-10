@@ -24,17 +24,16 @@ export const Footer =  () => {
                 <div className="max-w-[800px] mb-6 xl:mb-0">
                     <Link href="/">
                     <Image
-  src="https://riksi.ua/content/images/2/400x200l90nn0/39929893234509.webp"
-  alt="RIKSI Logo Footer"
-  width={120} // Встановіть ширину в пікселях
-  height={60} // Встановіть висоту в пікселях (пропорційно)
-  className="sm:w-[180px]"
-/>
+                        src="https://riksi.ua/content/images/2/400x200l90nn0/39929893234509.webp"
+                        alt="RIKSI Logo Footer"
+                        width={120} // Встановіть ширину в пікселях
+                        height={60} // Встановіть висоту в пікселях (пропорційно)
+                        className="sm:w-[180px]"
+                    />
                     </Link>
                     <p className="text-sm">©2020-{new Date().getFullYear()}</p>
                 </div>
 
-                {/* Каталог */}
                 <div className="flex-col gap-4 hidden xl:block">
                     <h5 className="font-bold">Каталог</h5>
                     <ul className="flex flex-col gap-1">
@@ -48,7 +47,6 @@ export const Footer =  () => {
                     </ul>
                 </div>
 
-                {/* Клієнтам */}
                 <div className="flex-col gap-4 hidden xl:block">
                     <h5 className="font-bold">Клієнтам</h5>
                     <ul className="flex flex-col gap-1">
@@ -62,7 +60,6 @@ export const Footer =  () => {
                     </ul>
                 </div>
 
-                {/* Контактна інформація */}
                 <div className="flex flex-col gap-4 mb-6 xl:mb-0">
                     <h5 className="font-bold">Контактна інформація</h5>
                     <ul className="flex flex-col gap-1">
@@ -110,7 +107,6 @@ export const Footer =  () => {
                     </span>
                 </div>
 
-                {/* Соціальні мережі */}
                 <div className="flex flex-col gap-4">
                     Приєднуйся до нас:
                     <div className="flex gap-4">

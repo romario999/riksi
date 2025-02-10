@@ -114,7 +114,6 @@ const CarouselProductImg: React.FC<Props> = ({ items, stickers, productName }) =
         </div>
       </Carousel>
 
-      {/* Image Viewer */}
       {isViewerOpen && selectedImage && (
         <ImageViewer
           images={items}

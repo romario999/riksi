@@ -61,13 +61,11 @@ export const FilterProductsSection: React.FC<FilterProductsBlockProps> = ({
   const handleShowFilters = () => {
     setShowFilters((prev) => !prev);
 
-    // Прокручуємо сторінку до самого верху
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
     <div className="flex flex-col sm:flex-row gap-0 sm:gap-0">
-      {/* Контейнер для кнопки фільтру */}
       <div className="sm:hidden sticky top-16 z-10 bg-white p-4 w-full">
         <Button
           variant={'link'}
@@ -78,7 +76,6 @@ export const FilterProductsSection: React.FC<FilterProductsBlockProps> = ({
         </Button>
       </div>
 
-      {/* Секція фільтрів з анімацією */}
       <div
         className={`bg-white sm:w-[290px] mx-auto w-[260px] pr-9 transition-all duration-300 ${showFilters ? 'max-h-[1500px]' : 'max-h-0'} sm:max-h-full overflow-hidden`}
         style={{ transitionProperty: 'max-height' }}
@@ -96,8 +93,6 @@ export const FilterProductsSection: React.FC<FilterProductsBlockProps> = ({
           />
         </Suspense>
       </div>
-
-      {/* Секція списку продуктів */}
       <div className="flex-1">
           <ProductList
             loading={loading}

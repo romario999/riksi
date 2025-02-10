@@ -74,7 +74,6 @@ export const PaginationComponent: React.FC<PaginationComponentProps> = ({ curren
 
     return (
         <div className="flex items-center justify-center gap-4 mt-16">
-            {/* Кнопка попередньої сторінки */}
             <button 
                 onClick={handlePrev} 
                 disabled={currentPage === 1} 
@@ -83,10 +82,8 @@ export const PaginationComponent: React.FC<PaginationComponentProps> = ({ curren
                 ← Назад
             </button>
 
-            {/* Кнопки для відображення сторінок */}
             {renderPageNumbers(pageNumbers)}
 
-            {/* Кнопка наступної сторінки */}
             <button 
                 onClick={handleNext} 
                 disabled={currentPage === totalPages} 
