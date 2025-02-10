@@ -17,7 +17,7 @@ export const useFooter = () => {
     fetchFooterPages,
     {
       revalidateOnFocus: false, // Не оновлювати при поверненні на сторінку
-      dedupingInterval: 300000, // Кешувати дані на 5 хвилин
+      dedupingInterval: 60000, // Кешувати дані на 5 хвилин
     }
   );
 
