@@ -45,6 +45,7 @@ export const MiniProductCard: React.FC<Props> = ({ id, url, name, price, imageUr
                     className='w-full h-[240px] object-cover' // Збільшена висота зображення
                     src={currentImage} 
                     alt={name} 
+                    loading="eager"
                 />
             </div>
             

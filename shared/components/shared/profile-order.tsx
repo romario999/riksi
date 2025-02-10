@@ -36,8 +36,8 @@ const ProfileOrder = () => {
                   </div>
                   <div className="flex justify-between text-sm text-gray-600 mb-2">
                     <span>Статус:</span>
-                    <span className={`font-semibold ${order.status == 'SUCCEEDED' && 'text-green-500'} ${order.status == 'PENDING' && 'text-yellow-500'} ${order.status == 'CANCELLED' && 'text-red-500'}`}>
-                      {order.status == 'PENDING' && 'Очікує оплату'}
+                    <span className={`font-semibold ${order.status == 'SUCCEEDED' && 'text-green-500'} ${order.status == 'PENDING' && 'text-blue-500'} ${order.status == 'CANCELLED' && 'text-red-500'}`}>
+                      {order.status == 'PENDING' && 'Нове'}
                       {order.status == 'SUCCEEDED' && 'Успішно оплачено'}
                       {order.status == 'CANCELLED' && 'Скасовано'}
                     </span>

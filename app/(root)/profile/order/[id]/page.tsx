@@ -45,7 +45,7 @@ export default async function OrderPage({ params }: { params: { id: string } }) 
     const getStatusLabel = (status: string) => {
         switch (status) {
             case 'PENDING':
-                return 'Очікує оплату';
+                return 'Нове';
             case 'SUCCEEDED':
                 return 'Успішно оплачено';
             case 'CANCELLED':

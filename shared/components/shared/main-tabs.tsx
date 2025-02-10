@@ -2,20 +2,9 @@ import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './tabs';
 import { prisma } from '@/prisma/prisma-client';
 import dynamic from 'next/dynamic';
-import { FaSpinner } from 'react-icons/fa6';
+import { SkeletonLoader } from './skeleton-loader';
 
-const SkeletonLoader = () => (
-    <div className="w-full h-[300px] animate-pulse">
-        <div className="h-full flex items-center justify-center">
-            <FaSpinner className="animate-spin" />
-        </div>
-    </div>
-);
-
-const ProductCarousel = dynamic(() => import('./product-carousel'), { 
-    ssr: false, 
-    loading: () => <SkeletonLoader />
-});
+const ProductCarousel = dynamic(() => import('./product-carousel'), { ssr: false, loading: () => <SkeletonLoader/> });
 
 export const MainTabs = async () => {
     const products = await prisma.product.findMany({

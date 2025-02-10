@@ -71,7 +71,7 @@ export default function CheckoutPage() {
                 icon: '✅',
             });
 
-            const paymentPrice = data.paymentType === 'allPayment' ? totalAmount : 200;
+            const paymentPrice = data.paymentType === 'allPayment' ? totalAmount : 1;
             const { paymentUrl, orderReference } = await createPayment(data, items, paymentPrice) as { paymentUrl: string; orderReference: string; };
             await createOrder(data, paymentUrl, orderReference);
             window.location.href = paymentUrl; 
