@@ -1,7 +1,13 @@
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './tabs';
 import { prisma } from '@/prisma/prisma-client';
-import { ProductCarousel } from './product-carousel';
+import dynamic from 'next/dynamic';
+import { FaSpinner } from 'react-icons/fa6';
+
+const ProductCarousel = dynamic(() => import('./product-carousel'), { 
+    ssr: false, 
+    loading: () => <div className='h-[300px] flex items-center justify-center'><FaSpinner className='animate-spin' /></div>
+});
 
 export const MainTabs = async () => {
     const products = await prisma.product.findMany({
@@ -9,7 +15,6 @@ export const MainTabs = async () => {
             items: true,
         },
     });
-
     return (
         <section className="mt-10 flex justify-center">
             <Tabs defaultValue="hits" className="w-full">

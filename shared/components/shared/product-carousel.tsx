@@ -12,7 +12,7 @@ interface ProductCarouselProps {
     products: any[]; 
 }
   
-export const ProductCarousel = ({ stickerType, products }: ProductCarouselProps) => {
+const ProductCarousel = ({ stickerType, products }: ProductCarouselProps) => {
 
 
 const renderStickers = (stickers: string[]) => {
@@ -75,3 +75,5 @@ const isMobile = useIsMobile(680);
     </div>
   );
 };
+
+export default ProductCarousel;
