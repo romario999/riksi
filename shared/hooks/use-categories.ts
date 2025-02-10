@@ -22,7 +22,7 @@ export const useCategories = () => {
     fetchCategoriesAndSubcategories,
     {
       revalidateOnFocus: false, // Не оновлювати при фокусі на сторінку
-      refreshInterval: 60000, // Кешування на 5 хвилин
+      refreshInterval: 300000, // Кешування на 5 хвилин
     }
   );
 

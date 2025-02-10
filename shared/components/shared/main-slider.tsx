@@ -17,7 +17,7 @@ export const MainSlider = () => {
             carousel.map((item: SliderImage, i: number) => (
                 <CarouselItem key={i}>
                     <Link href={item.link || '#'}>
-                        <img loading="lazy" className="rounded-lg mx-auto" src={item.imageUrl} alt={item.altText ?? ''} />
+                        <img className="rounded-lg mx-auto" src={item.imageUrl} alt={item.altText ?? ''} />
                     </Link>
                 </CarouselItem>
             )),

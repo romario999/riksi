@@ -32,7 +32,7 @@ const SearchOverlay = dynamic(() => import("./search-overlay"), { ssr: false });
 export const Header: React.FC<Props> = ({ hasSearch = true, hasCart = true, classname, hasMenu = true, bg = 'bg-white' }) => {
     const router = useRouter();
     const [openAuthModal, setOpenAuthModal] = React.useState(false);
-    const searchParams = useSearchParams();
+    const searchParams = typeof window !== "undefined" ? useSearchParams() : null;
     const [isOpen, setIsOpen] = React.useState(false);
     const [isSearchOverlayOpen, setSearchOverlayOpen] = React.useState(false); // Додаємо стан для пошукового overlay
     const ref = React.useRef<HTMLDivElement>(null);
@@ -47,11 +47,11 @@ export const Header: React.FC<Props> = ({ hasSearch = true, hasCart = true, clas
 
     React.useEffect(() => {
         let toastMessage = '';
-        if (searchParams.has('paid')) {
+        if (searchParams?.has('paid')) {
             toastMessage = 'Замовлення успішно оплачено!';
         }
 
-        if (searchParams.has('verified')) {
+        if (searchParams?.has('verified')) {
             toastMessage = 'Пошта успішно підтверджена!';
         }
 
