@@ -21,7 +21,7 @@ export const MainBanners = () => {
                             priority
                             width={0}
                             height={0}
-                            sizes="100vw"
+                            sizes='250vw'
                             style={{ width: '100%', height: 'auto' }}
                         />
                     </div>
