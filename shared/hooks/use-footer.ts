@@ -1,27 +1,29 @@
+import useSWR from "swr";
 import { Api } from "@/shared/services/api-client";
 import { FooterPage } from "@prisma/client";
-import React from "react";
+
+const fetchFooterPages = async () => {
+  try {
+    return await Api.footerPages.getAll();
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
 
 export const useFooter = () => {
-    const [footerPages, setFooterPages] = React.useState<FooterPage[]>([]);
-    const [loading, setLoading] = React.useState(true);
-    React.useEffect(() => {
-        async function fetchFooterPages() {
-            try {
-                setLoading(true);
-                const footer = await Api.footerPages.getAll();
-                setFooterPages(footer);
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setLoading(false);
-            }
-        }
-        fetchFooterPages();
-    }, []);
+  const { data: footerPages, error, isLoading } = useSWR<FooterPage[]>(
+    "footer-pages",
+    fetchFooterPages,
+    {
+      revalidateOnFocus: false,
+      refreshInterval: 60000,
+    }
+  );
 
-    return {
-        footerPages,
-        loading,
-    };
+  return {
+    footerPages: footerPages || [],
+    loading: isLoading,
+    error,
+  };
 };

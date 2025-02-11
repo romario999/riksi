@@ -1,5 +1,7 @@
 import { prisma } from "@/prisma/prisma-client";
 
+export const dynamic = "force-dynamic"
+
 export async function GET() {
     try {
         const pages = await prisma.footerPage.findMany();
