@@ -124,7 +124,7 @@ export const DropdownMenu = ({ isOpen, onClose }: { isOpen: boolean, onClose: ()
                         category.subcategories.length > 3 ? "grid grid-cols-2" : "flex flex-col"
                       }`}
                     >
-                      {category.subcategories.map(subcategory => (
+                      {category.subcategories.sort((a, b) => a.id - b.id).map(subcategory => (
                         <Link 
                           key={subcategory.id} 
                           href={`/catalog/${category.categoryUrl}/${subcategory.subcategoryUrl}`} 
