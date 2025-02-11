@@ -37,7 +37,7 @@ export const Footer =  () => {
                 <div className="flex-col gap-4 hidden xl:block">
                     <h5 className="font-bold">Каталог</h5>
                     <ul className="flex flex-col gap-1">
-                        {categories.map((item, i) => (
+                        {categories.sort((a, b) => a.id - b.id).map((item, i) => (
                             <li key={i}>
                                 <Link href={`/catalog/${item.categoryUrl}`} className="text-sm">
                                     {item.name}
@@ -50,7 +50,7 @@ export const Footer =  () => {
                 <div className="flex-col gap-4 hidden xl:block">
                     <h5 className="font-bold">Клієнтам</h5>
                     <ul className="flex flex-col gap-1">
-                        {footerPages.map((item, i) => (
+                        {footerPages.sort((a, b) => a.id - b.id).map((item, i) => (
                             <li key={i}>
                                 <Link href={`/${item.footerUrl}`} className="text-sm">
                                     {item.title}
