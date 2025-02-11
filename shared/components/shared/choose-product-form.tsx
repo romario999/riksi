@@ -74,11 +74,19 @@ export const ChooseProductForm: React.FC<Props> = ({
 }) => {
     const [openSizeModal, setOpenSizeModal] = useState(false);
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
-    const sizes = items.map((item) => [item.size, item.stock]);
+    const [selectedPrice, setSelectedPrice] = useState<number>(price);
     const hasInStock = selectedSize
         ? !!items.find((item) => item.size === selectedSize)?.stock
         : items.some((item) => item.stock);
     const sku = items.find((item) => item.size === selectedSize)?.sku;
+
+    const handleSizeClick = (size: string) => {
+        const selectedItem = items.find((item) => item.size === size);
+        if (selectedItem) {
+            setSelectedSize(size);
+            setSelectedPrice(selectedItem.price); // Оновлюємо ціну вибраного розміру
+        }
+    };
 
     return (
         <div className={cn(className, 'flex flex-col ml:flex-row gap-4 md:gap-14 mb-[10px] md:mb-[130px]')}>
@@ -126,25 +134,25 @@ export const ChooseProductForm: React.FC<Props> = ({
                 <b className="mt-3 text-3xl mb-5">
                     {discountPrice ? (
                         <>
-                            <span>{price}₴</span>
+                            <span>{selectedPrice}₴</span>
                             <span className="ml-3 text-gray-400 line-through text-[21px]">{discountPrice}₴</span>
                         </>
                     ) : (
-                        <span>{price}₴</span>
+                        <span>{selectedPrice}₴</span>
                     )}
                 </b>
                 <hr />
                 <div className="mt-5">
                     <p className="text-lg font-bold">Розміри</p>
                     <div className="flex gap-3 items-center flex-wrap">
-                        {sizes.map((size, i) => (
+                        {items.map((item) => (
                             <Button
-                                key={i}
-                                onClick={() => setSelectedSize(size[0] as string)}
-                                variant={selectedSize === size[0] ? 'default' : 'outline'}
-                                className={`h-[40px] px-5 text-base w-[40px] mt-4 ${size[1] === false && 'border-gray-300 text-gray-400'} ${size[0] === selectedSize && 'text-white'}`}
+                                key={item.size}
+                                onClick={() => handleSizeClick(item.size)}
+                                variant={selectedSize === item.size ? 'default' : 'outline'}
+                                className={`h-[40px] px-5 text-base w-[40px] mt-4 ${!item.stock && 'border-gray-300 text-gray-400'} ${selectedSize === item.size && 'text-white'}`}
                             >
-                                {size}
+                                {item.size}
                             </Button>
                         ))}
                         <Button onClick={() => setOpenSizeModal(true)} variant="link" className="mt-4">
