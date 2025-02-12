@@ -4,7 +4,7 @@ import { cn } from '@/shared/lib/utils';
 import React, { useState } from 'react';
 import { Title } from './title';
 import { Button } from '../ui';
-import { Ban, ShoppingCart, Slash } from 'lucide-react';
+import { Ban, Heart, ShoppingCart, Slash } from 'lucide-react';
 import { ProductComplect, ProductItem } from '@prisma/client';
 import { TabsProduct } from './tabs-product';
 import CarouselProductImg from './carousel-product-img';
@@ -141,6 +141,7 @@ export const ChooseProductForm: React.FC<Props> = ({
                         <span>{selectedPrice}₴</span>
                     )}
                 </b>
+                <div className='flex gap-3 mb-5 cursor-pointer'> <Heart /> <span className='font-thin'>Додати до списку обраного</span></div>
                 <hr />
                 <div className="mt-5">
                     <p className="text-lg font-bold">Розміри</p>

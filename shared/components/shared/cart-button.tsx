@@ -19,7 +19,7 @@ export const CartButton: React.FC<Props> = ({ className }) => {
   return (
     <CartDrawer>
       <div>
-        <div className="hidden sm:block">
+        <div className="hidden md:block">
           <Button
             loading={loading}
             className={cn('group relative', { 'w-[105px]': loading }, className)}
@@ -34,16 +34,14 @@ export const CartButton: React.FC<Props> = ({ className }) => {
           </Button>
         </div>
 
-        <div className="block sm:hidden">
-        <div className="relative">
-  <ShoppingCart size={28} className="text-black duration-200 ease-in-out" strokeWidth={2} />
-  <div className="absolute top-[-8px] right-[-8px] bg-black text-white text-[10px] font-medium rounded-full w-4 h-4 flex items-center justify-center shadow-lg ring-2 ring-white">
-    {items.length}
-  </div>
-</div>
-
-</div>
-
+        <div className="block md:hidden">
+          <div className="relative">
+            <ShoppingCart size={28} className="text-black duration-200 ease-in-out" strokeWidth={2} />
+            <span className="absolute -top-2.5 -right-3.5 bg-gray-900 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
+              {items.length}
+            </span>
+          </div>
+        </div>
       </div>
     </CartDrawer>
   );

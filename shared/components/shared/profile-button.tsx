@@ -20,14 +20,14 @@ export const ProfileButton: React.FC<Props> = ({ className, onClickSignIn }) => 
                     <Button
                         onClick={onClickSignIn}
                         variant="outline"
-                        className="items-center gap-1 hidden sm:flex"
+                        className="items-center gap-1 hidden md:flex"
                     >
                         <User size={18} />
                         <span>Увійти</span>
                     </Button>
                 ) : (
                     <Link href="/profile">
-                        <Button variant="secondary" className="items-center gap-2 hidden sm:flex">
+                        <Button variant="secondary" className="items-center gap-2 hidden md:flex">
                             <CircleUser size={18} />
                             <span>Профіль</span>
                         </Button>
@@ -40,13 +40,13 @@ export const ProfileButton: React.FC<Props> = ({ className, onClickSignIn }) => 
                     <Button
                         onClick={onClickSignIn}
                         variant="outline"
-                        className="flex items-center gap-1 sm:hidden border-0"
+                        className="flex items-center gap-1 md:hidden border-0"
                     >
                         <User size={28} />
                     </Button>
                 ) : (
                     <Link href="/profile">
-                        <Button variant="outline" className="flex items-center gap-2 sm:hidden border-0">
+                        <Button variant="outline" className="flex items-center gap-2 md:hidden border-0">
                             <CircleUser size={28} />
                         </Button>
                     </Link>

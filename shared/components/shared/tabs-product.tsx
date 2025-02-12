@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './tabs';
 export const TabsProduct = () => {
   return (
     <div>
-        <Tabs defaultValue="delivery" className="max-w-[700px]">
+        <Tabs defaultValue="delivery" className="max-w-[700px] overflow-hidden">
             <TabsList>
                 <TabsTrigger className='data-[state=active]:border-t-2 data-[state=active]:border-black data-[state=active]:text-black' value="delivery">Доставка</TabsTrigger>
                 <TabsTrigger className='data-[state=active]:border-t-2 data-[state=active]:border-black data-[state=active]:text-black' value="payment">Оплата</TabsTrigger>

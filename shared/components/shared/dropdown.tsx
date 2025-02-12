@@ -4,7 +4,7 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "../ui/accordion";
 import { useCategories, useFooter } from "@/shared/hooks";
 import Link from "next/link";
-import { ArrowRight, ChevronRight } from "lucide-react";
+import { ArrowRight, ChevronRight, Heart } from "lucide-react";
 
 interface Category {
   name: string;
@@ -82,8 +82,16 @@ export const DropdownMenu = ({ isOpen, onClose }: { isOpen: boolean, onClose: ()
   <div className={`right-0 bg-white shadow-none sm:shadow-lg mt-0 pb-10 rounded-b-lg min-h-[400px] w-full max-h-full overflow-y-auto`}>
     {visible && (
       <Accordion type="multiple" value={openItems}>
-        <div className="flex justify-center">
-          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4 mt-9 w-[90%] mx-auto">
+        <div className="flex flex-col justify-center">
+          <div className="w-[90%] mt-9 px-4 pt-4 mx-auto block md:hidden">
+            <Link href='#'>
+              <span className="flex items-center px-4 text-gray-800 text-xl w-full">
+                Мої уподобання <Heart className="ml-2" size={20} />
+              </span>
+            </Link>
+            <hr className="-mx-1 mt-4" />
+          </div>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4 md:mt-9 mt-0 w-[90%] mx-auto">
             {categories.sort((a, b) => a.id - b.id).map((category: Category) => (
               category.subcategories && category.subcategories.length > 0 ? (
                 <AccordionItem
@@ -156,7 +164,7 @@ export const DropdownMenu = ({ isOpen, onClose }: { isOpen: boolean, onClose: ()
           </ul>
         </div>
         <div className="block xl:hidden">
-  <hr />
+  <hr className="mx-9" />
   <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4 w-[90%] mx-auto">
     {footerPages.map((page) => (
       <li key={page.id} className="border-none hover:underline cursor-pointer">

@@ -3,7 +3,6 @@
 import React from "react";
 import { cn } from "@/shared/lib/utils";
 import { Container } from "./container";
-import Image from "next/image";
 import Link from "next/link";
 import { SearchInput } from "./search-input";
 import { CartButton } from "./cart-button";
@@ -16,6 +15,7 @@ import { MenuButton } from "./menu-button";
 import { useClickAway } from "react-use";
 import { Search } from "lucide-react";
 import dynamic from "next/dynamic";
+import LikeButton from "./like-button";
 
 interface Props {
     hasSearch?: boolean;
@@ -94,7 +94,7 @@ export const Header: React.FC<Props> = ({ hasSearch = true, hasCart = true, clas
             />
 
             <header className={cn('fixed top-0 left-0 right-0 z-50 border-b bg-white', classname, `${bg}`)}>
-                <Container className="flex items-center justify-between py-2 px-4 sm:py-5">
+                <Container className="flex items-center justify-between py-2 px-4 md:py-5">
                     {hasMenu && (
                         <div ref={menuButtonRef}>
                             <MenuButton isOpen={isOpen} setIsOpen={handleMenuButtonClick} />
@@ -102,7 +102,7 @@ export const Header: React.FC<Props> = ({ hasSearch = true, hasCart = true, clas
                     )}
 
                     {hasSearch && (
-                        <div className="sm:hidden ml-4">
+                        <div className="md:hidden ml-4">
                             <Search size={24} className="text-black" onClick={handleSearchClick} />
                         </div>
                     )}
@@ -114,7 +114,7 @@ export const Header: React.FC<Props> = ({ hasSearch = true, hasCart = true, clas
                     </Link>
 
                     {hasSearch && (
-                        <div className="mx-10 flex-1 hidden sm:block">
+                        <div className="mx-10 flex-1 hidden md:block">
                             <SearchInput />
                         </div>
                     )}
@@ -122,6 +122,7 @@ export const Header: React.FC<Props> = ({ hasSearch = true, hasCart = true, clas
                     <div className="flex items-center gap-3">
                         <AuthModal open={openAuthModal} onClose={() => setOpenAuthModal(false)} />
                         <ProfileButton onClickSignIn={() => setOpenAuthModal(true)} />
+                        <LikeButton />
                         {hasCart && (
                             <div>
                                 <CartButton />
