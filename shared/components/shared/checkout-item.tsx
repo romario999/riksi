@@ -35,7 +35,7 @@ export const CheckoutItem: React.FC<Props> = ({
         </Link>
         <div className="flex flex-col gap-2">
           <Link href={productUrl || '/'}>
-            <CartItemDetails.Info name={name} details={details} className='' />
+            <CartItemDetails.Info name={name} details={details} className='max-w-[160px] sm:max-w-full' />
           </Link>
           <div className="flex items-center gap-5">
             <CartItemDetails.CountButton onClick={onClickCountButton} value={quantity} />
