@@ -5,6 +5,7 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "..
 import { useCategories, useFooter } from "@/shared/hooks";
 import Link from "next/link";
 import { ArrowRight, ChevronRight, Heart } from "lucide-react";
+import { useSession } from "next-auth/react";
 
 interface Category {
   name: string;
@@ -28,6 +29,7 @@ interface Subcategory {
 export const DropdownMenu = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => {
   const { categories } = useCategories();
   const {footerPages} = useFooter();
+  const session = useSession().data?.user;
 
   const [visible, setVisible] = useState(isOpen);
   const [openItems, setOpenItems] = useState<string[]>([]);
@@ -83,7 +85,8 @@ export const DropdownMenu = ({ isOpen, onClose }: { isOpen: boolean, onClose: ()
     {visible && (
       <Accordion type="multiple" value={openItems}>
         <div className="flex flex-col justify-center">
-          <div className="w-[90%] mt-9 px-4 pt-4 mx-auto block md:hidden">
+          {session && (
+            <div className="w-[90%] mt-9 px-4 pt-4 mx-auto block md:hidden">
             <Link href='#'>
               <span className="flex items-center px-4 text-gray-800 text-xl w-full">
                 Мої уподобання <Heart className="ml-2" size={20} />
@@ -91,7 +94,8 @@ export const DropdownMenu = ({ isOpen, onClose }: { isOpen: boolean, onClose: ()
             </Link>
             <hr className="-mx-1 mt-4" />
           </div>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4 md:mt-9 mt-0 w-[90%] mx-auto">
+          )}
+          <ul className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4 md:mt-9 mt-0 w-[90%] mx-auto ${session ? '' : 'mt-9'}`}>
             {categories.sort((a, b) => a.id - b.id).map((category: Category) => (
               category.subcategories && category.subcategories.length > 0 ? (
                 <AccordionItem

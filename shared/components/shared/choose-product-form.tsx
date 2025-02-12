@@ -13,6 +13,7 @@ import Link from 'next/link';
 import { Category } from './product-form';
 import { Tooltip } from 'react-tooltip';
 import dynamic from 'next/dynamic';
+import { useSession } from 'next-auth/react';
 
 interface Props {
     id: number;
@@ -88,6 +89,8 @@ export const ChooseProductForm: React.FC<Props> = ({
         }
     };
 
+    const session = useSession().data?.user;
+
     return (
         <div className={cn(className, 'flex flex-col ml:flex-row gap-4 md:gap-14 mb-[10px] md:mb-[130px]')}>
             <div className="block ml:hidden mx-auto">
@@ -141,7 +144,11 @@ export const ChooseProductForm: React.FC<Props> = ({
                         <span>{selectedPrice}₴</span>
                     )}
                 </b>
-                <div className='flex gap-3 mb-5 cursor-pointer'> <Heart /> <span className='font-thin'>Додати до списку обраного</span></div>
+                <div className={`add-like flex max-w-[250px] gap-3 mb-5 cursor-pointer`}> 
+                    <Heart /> 
+                    <span className='font-thin'>Додати до списку обраного</span>
+                    {!session && <Tooltip content="Увійдіть, щоб додати до списку обраного" anchorSelect='.add-like' place="top"></Tooltip>}
+                </div>
                 <hr />
                 <div className="mt-5">
                     <p className="text-lg font-bold">Розміри</p>

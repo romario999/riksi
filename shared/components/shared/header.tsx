@@ -137,7 +137,7 @@ export const Header: React.FC<Props> = ({ hasSearch = true, hasCart = true, clas
 
             <div
                 ref={ref}
-                className={`fixed sm:top-[80px] top-[30px] right-0 bg-white shadow-lg rounded-b-lg w-full transition-transform duration-500 ease-in-out transform z-40 ${
+                className={`fixed md:top-[80px] top-[30px] right-0 bg-white shadow-lg rounded-b-lg w-full transition-transform duration-500 ease-in-out transform z-40 ${
                     isOpen ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-10 pointer-events-none"
                 }`}
                 style={{
