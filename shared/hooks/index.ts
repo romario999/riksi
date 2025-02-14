@@ -7,3 +7,4 @@ export { useCarousel } from './use-carousel';
 export { useBanner } from './use-banner';
 export { useFooter } from './use-footer';
 export { useOrders } from './use-orders';
+export { useFavorites } from './use-favorite';

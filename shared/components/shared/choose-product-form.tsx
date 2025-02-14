@@ -14,6 +14,7 @@ import { Category } from './product-form';
 import { Tooltip } from 'react-tooltip';
 import dynamic from 'next/dynamic';
 import { useSession } from 'next-auth/react';
+import { useFavorites } from '@/shared/hooks';
 
 interface Props {
     id: number;
@@ -25,6 +26,7 @@ interface Props {
     loading?: boolean;
     className?: string;
     onSubmit?: (id: number | undefined) => void;
+    onSubmitFavorite?: (isFavorite: boolean) => void;
     description?: string | null;
     items: ProductItem[];
     complects?: ProductComplect[] | any;
@@ -64,6 +66,7 @@ export const ChooseProductForm: React.FC<Props> = ({
     imageUrl,
     price,
     onSubmit,
+    onSubmitFavorite,
     className,
     loading,
     description,
@@ -88,7 +91,9 @@ export const ChooseProductForm: React.FC<Props> = ({
             setSelectedPrice(selectedItem.price); // Оновлюємо ціну вибраного розміру
         }
     };
-
+    
+    const { favoriteItems, favoriteLoading } = useFavorites();
+    const isFavorite = favoriteItems.some((item: { id: number }) => item.id === id);
     const session = useSession().data?.user;
 
     return (
@@ -144,11 +149,32 @@ export const ChooseProductForm: React.FC<Props> = ({
                         <span>{selectedPrice}₴</span>
                     )}
                 </b>
-                <div className={`add-like flex max-w-[250px] gap-3 mb-5 cursor-pointer`}> 
-                    <Heart /> 
-                    <span className='font-thin'>Додати до списку обраного</span>
-                    {!session && <Tooltip content="Увійдіть, щоб додати до списку обраного" anchorSelect='.add-like' place="top"></Tooltip>}
+                <div
+                    onClick={() => {
+                        if (!session) return;
+                        onSubmitFavorite?.(isFavorite);
+                    }}
+                    className={`add-like flex max-w-[250px] gap-3 mb-5 ${
+                        favoriteLoading
+                        ? 'pointer-events-none text-gray-400'
+                        : session
+                        ? 'cursor-pointer'
+                        : 'cursor-not-allowed'
+                    }`}
+                    >
+                    <Heart color={favoriteLoading ? 'gray' : isFavorite ? 'red' : 'black'} />
+                    <span className='font-thin'>
+                        {isFavorite ? 'В обраному' : 'Додати до cписку обраного'}
+                    </span>
+                    {!session && (
+                        <Tooltip
+                        content="Увійдіть, щоб додати до списку обраного"
+                        anchorSelect='.add-like'
+                        place="top"
+                        />
+                    )}
                 </div>
+
                 <hr />
                 <div className="mt-5">
                     <p className="text-lg font-bold">Розміри</p>

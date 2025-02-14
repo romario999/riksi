@@ -19,6 +19,7 @@ model User {
     createdAt           DateTime @default(now())
     updatedAt           DateTime @updatedAt
     cart                Cart?
+    liked               Liked?
     orders              Order[]
     verificationCode    VerificationCode?
     passwordResetTokens PasswordResetToken[]
@@ -68,6 +69,7 @@ model Product {
   currency      String                 @default("UAH")
   color         String?
   items         ProductItem[]
+  likedItems    LikedItem[]
   categories    ProductCategory[]
   subcategories ProductSubcategory[]
   complects     ProductComplect[]      @relation("ProductComplects")
@@ -134,6 +136,23 @@ model CartItem {
     productItemId Int
     cart         Cart        @relation(fields: [cartId], references: [id])
     cartId       Int
+}
+
+model Liked {
+  id          Int @id @default(autoincrement())
+  user        User? @relation(fields: [userId], references: [id])
+  userId      Int? @unique
+  items       LikedItem[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+}
+
+model LikedItem {
+  id         Int @id @default(autoincrement())
+  product    Product @relation(fields: [productId], references: [id])
+  productId  Int
+  liked      Liked   @relation(fields: [likedId], references: [id])
+  likedId     Int
 }
 
 model Order {

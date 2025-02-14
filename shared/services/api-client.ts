@@ -7,6 +7,7 @@ import * as carousel from './carousel';
 import * as banner from './banner';
 import * as footerPages from './footer';
 import * as orders from './orders';
+import * as favorites from './favorite';
 
 export const Api = {
     products,
@@ -17,5 +18,6 @@ export const Api = {
     carousel,
     banner,
     footerPages,
-    orders
+    orders,
+    favorites
 }

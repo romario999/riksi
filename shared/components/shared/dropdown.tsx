@@ -87,9 +87,9 @@ export const DropdownMenu = ({ isOpen, onClose }: { isOpen: boolean, onClose: ()
         <div className="flex flex-col justify-center">
           {session && (
             <div className="w-[90%] mt-9 px-4 pt-4 mx-auto block md:hidden">
-            <Link href='#'>
+            <Link href='/wishlist'>
               <span className="flex items-center px-4 text-gray-800 text-xl w-full">
-                Мої уподобання <Heart className="ml-2" size={20} />
+                Обране <Heart className="ml-2" size={20} />
               </span>
             </Link>
             <hr className="-mx-1 mt-4" />
