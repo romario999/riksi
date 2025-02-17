@@ -94,7 +94,7 @@ export const Header: React.FC<Props> = ({ hasSearch = true, hasCart = true, clas
             />
 
             <header className={cn('fixed top-0 left-0 right-0 z-50 border-b bg-white', classname, `${bg}`)}>
-                <Container className="flex items-center justify-between py-2 px-4 md:py-5">
+                <Container className="flex items-center justify-between py-2 px-4 pl-0 sm:pl-4 md:py-5">
                     {hasMenu && (
                         <div ref={menuButtonRef}>
                             <MenuButton isOpen={isOpen} setIsOpen={handleMenuButtonClick} />
@@ -108,7 +108,7 @@ export const Header: React.FC<Props> = ({ hasSearch = true, hasCart = true, clas
                     )}
 
                     <Link href="/" className={`${!hasSearch && !hasMenu && !hasCart ? '' : 'mx-auto'}`}>
-                        <div className="flex items-center gap-4 justify-center">
+                        <div className="md:ml-0 ml-6 flex items-center gap-4 justify-center">
                             <img src="/riksi.webp" alt="Logo" className="w-24 h-12" />
                         </div>
                     </Link>
