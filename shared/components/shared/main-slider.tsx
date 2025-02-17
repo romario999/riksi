@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Skeleton } from '../ui';
 import { useCarousel, useIsMobile } from '@/shared/hooks';
 import { SliderImage } from '@prisma/client';
-import Image from 'next/image';
+// import Image from 'next/image';
 
 
 export const MainSlider = () => {
@@ -18,7 +18,7 @@ export const MainSlider = () => {
             carousel.map((item: SliderImage, i: number) => (
                 <CarouselItem key={i}>
                     <Link href={item.link || '#'}>
-                    <Image 
+                    {/* <Image 
                         className="rounded-lg mx-auto" 
                         src={item.imageUrl} 
                         alt={item.altText ?? ''} 
@@ -27,6 +27,10 @@ export const MainSlider = () => {
                         height={0}
                         sizes="100vw"
                         style={{ width: '100%', height: 'auto' }}
+                    /> */}
+                    <img src={item.imageUrl} alt={item.altText ?? ''}
+                        className="rounded-lg mx-auto"
+                            
                     />
                     </Link>
                 </CarouselItem>
