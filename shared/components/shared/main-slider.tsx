@@ -28,7 +28,6 @@ export const MainSlider = () => {
                         sizes="100vw"
                         style={{ width: '100%', height: 'auto' }}
                         loading="eager"
-                        fill
                     />
                     </Link>
                 </CarouselItem>
