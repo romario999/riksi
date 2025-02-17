@@ -23,7 +23,8 @@ export const MainSlider = () => {
                         src={item.imageUrl} 
                         alt={item.altText ?? ''} 
                         priority
-                        fill
+                        width={0}
+                        height={0}
                         sizes="100vw"
                         style={{ width: '100%', height: 'auto' }}
                     />

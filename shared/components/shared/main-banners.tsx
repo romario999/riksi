@@ -19,7 +19,8 @@ export const MainBanners = () => {
                             className="cursor-pointer rounded-lg transition-shadow duration-300 ease-in-out transform hover:shadow-lg"
                             alt={item.altText ?? 'Banner'}
                             priority
-                            fill
+                            width={0}
+                            height={0}
                             sizes='250vw'
                             style={{ width: '100%', height: 'auto' }}
                         />
