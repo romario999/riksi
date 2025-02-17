@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 import Link from 'next/link';
 import { Skeleton } from '../ui';
 import { useBanner } from '@/shared/hooks';
-// import Image from 'next/image';
+import Image from 'next/image';
 
 export const MainBanners = () => {
     const { banner, loading } = useBanner();
@@ -14,18 +14,14 @@ export const MainBanners = () => {
             banner.map((item, i) => (
                 <Link href={item.link || '#'} key={i}>
                     <div>
-                        {/* <Image
+                        <Image
                             src={item.imageUrl}
                             className="cursor-pointer rounded-lg transition-shadow duration-300 ease-in-out transform hover:shadow-lg"
                             alt={item.altText ?? 'Banner'}
                             priority
-                            width={0}
-                            height={0}
+                            fill
                             sizes='250vw'
                             style={{ width: '100%', height: 'auto' }}
-                        /> */}
-                        <img src={item.imageUrl} alt={item.altText ?? 'Banner'}
-                            className="cursor-pointer rounded-lg transition-shadow duration-300 ease-in-out transform hover:shadow-lg"
                         />
                     </div>
                 </Link>
