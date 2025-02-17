@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 type ReturnProps = {
     favoriteItems: FavoriteItems[];
     favoriteLoading: boolean;
+    toggleLoading: boolean;
     toggleFavorite: (product: FavoriteItems) => void;
 };
 

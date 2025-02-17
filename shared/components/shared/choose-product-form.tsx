@@ -92,7 +92,7 @@ export const ChooseProductForm: React.FC<Props> = ({
         }
     };
     
-    const { favoriteItems, favoriteLoading } = useFavorites();
+    const { favoriteItems, toggleLoading, favoriteLoading } = useFavorites();
     const isFavorite = favoriteItems.some((item: { id: number }) => item.id === id);
     const session = useSession().data?.user;
 
@@ -155,14 +155,14 @@ export const ChooseProductForm: React.FC<Props> = ({
                         onSubmitFavorite?.(isFavorite);
                     }}
                     className={`add-like flex max-w-[250px] gap-3 mb-5 ${
-                        favoriteLoading
+                        toggleLoading || favoriteLoading
                         ? 'pointer-events-none text-gray-400'
                         : session
                         ? 'cursor-pointer'
                         : 'cursor-not-allowed'
                     }`}
                     >
-                    <Heart color={favoriteLoading ? 'gray' : isFavorite ? 'red' : 'black'} />
+                    <Heart color={favoriteLoading || toggleLoading ? 'gray' : isFavorite ? 'red' : 'black'} />
                     <span className='font-thin'>
                         {isFavorite ? 'В обраному' : 'Додати до cписку обраного'}
                     </span>

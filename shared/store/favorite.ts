@@ -5,6 +5,7 @@ export interface FavoriteState {
   favoriteLoading: boolean;
   error: boolean;
   favoriteItems: FavoriteItems[];
+  toggleLoading: boolean;
   fetchFavorites: () => Promise<void>;
   toggleFavorite: (product: FavoriteItems) => Promise<void>;
 }
@@ -23,6 +24,7 @@ export const useFavoriteStore = create<FavoriteState>((set, get) => ({
   favoriteItems: [],
   error: false,
   favoriteLoading: true,
+  toggleLoading: false,
 
   fetchFavorites: async () => {
       try {
@@ -48,7 +50,7 @@ export const useFavoriteStore = create<FavoriteState>((set, get) => ({
       const isFavorite = favoriteItems.some(item => item.id === product.id);
 
       try {
-          set({ favoriteLoading: true, error: false });
+          set({ toggleLoading: true, error: false });
 
           if (isFavorite) {
               await Api.favorites.removeFavorite(product.id);
@@ -61,7 +63,7 @@ export const useFavoriteStore = create<FavoriteState>((set, get) => ({
           console.error(error);
           set({ error: true });
       } finally {
-          set({ favoriteLoading: false });
+          set({ toggleLoading: false });
       }
   },
 }));

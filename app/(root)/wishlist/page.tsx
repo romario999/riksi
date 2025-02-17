@@ -1,20 +1,28 @@
-'use client';
-
+import { prisma } from '@/prisma/prisma-client';
 import { Container } from '@/shared/components/shared/container';
-import { Title } from '@/shared/components/shared/title';
 import { WishlistList } from '@/shared/components/shared/wishlist-list';
-import { useFavorites } from '@/shared/hooks';
+import { getUserSession } from '@/shared/lib/get-user-session';
+import { redirect } from 'next/navigation';
 
-export default function WishlistPage() {
-  const {favoriteItems, favoriteLoading} = useFavorites();
-  console.log(favoriteItems);
+export default async function WishlistPage() {
+  const session = await getUserSession();
+  
+  if(!session) {
+    return redirect('/not-auth');
+  }
+  
+  const user = await prisma.user.findFirst({
+    where: {
+      id: Number(session?.id)
+    }
+  });
+
+  if(!user) {
+    return redirect('/not-auth');
+  }
   return (
     <Container className='my-10'>
-      <Title text="Обране" size="md" className="font-bold" />
-      <hr className='my-6' />
-      {favoriteLoading ? <div className="flex justify-center items-center">Завантаження...</div> : (
-        <WishlistList products={favoriteItems} />
-      )}
+      <WishlistList />
     </Container>
   );
 }
