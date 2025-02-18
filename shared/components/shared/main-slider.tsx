@@ -18,22 +18,25 @@ export const MainSlider = () => {
             carousel.map((item: SliderImage, i: number) => (
                 <CarouselItem key={i}>
                     <Link href={item.link || '#'}>
-                    <Image 
-    className="rounded-lg mx-auto" 
-    src={item.imageUrl} 
-    alt={item.altText ?? ''} 
-    priority
-    width={isMobile ? 640 : 1440} 
-    height={isMobile ? 800 : 576} 
-    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 1440px"
-    style={{ width: '100%', height: 'auto' }}
-/>
-
+                        <Image 
+                            className="rounded-lg mx-auto" 
+                            src={item.imageUrl} 
+                            alt={item.altText ?? ''} 
+                            width={isMobile ? 640 : 1440} 
+                            height={isMobile ? 800 : 576} 
+                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 1440px"
+                            style={{ width: '100%', height: 'auto' }}
+                            priority={i === 0} // ✅ Пріоритет тільки для першої картинки
+                            loading={i === 0 ? "eager" : "lazy"} // ✅ Перша картинка завантажується швидше
+                            fetchPriority={i === 0 ? "high" : "auto"} // ✅ Пріоритет першої картинки
+                            decoding="async" // ✅ Прискорює обробку
+                        />
                     </Link>
                 </CarouselItem>
             )),
         [carousel]
     );
+    
 
     if (carousel.length === 0 || loading) {
         return (
