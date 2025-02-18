@@ -25,7 +25,7 @@ export const MainSlider = () => {
                         priority
                         width={1440} // Розмір для desktop
                         height={576} // Вказані тобою розміри для мобільного
-                        sizes="(max-width: 768px) 100vw, 1440px"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 1440px"
                         style={{ width: '100%', height: 'auto' }}
                     />
                     </Link>
