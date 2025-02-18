@@ -26,10 +26,11 @@ export const MainSlider = () => {
                             height={isMobile ? 800 : 576} 
                             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 1440px"
                             style={{ width: '100%', height: 'auto' }}
-                            priority={i === 0} // ✅ Пріоритет тільки для першої картинки
-                            loading={i === 0 ? "eager" : "lazy"} // ✅ Перша картинка завантажується швидше
-                            fetchPriority={i === 0 ? "high" : "auto"} // ✅ Пріоритет першої картинки
-                            decoding="async" // ✅ Прискорює обробку
+                            priority={i === 0}
+                            loading='eager'
+                            fetchPriority={i === 0 ? "high" : "auto"}
+                            decoding="async"
+                            unoptimized={false}
                         />
                     </Link>
                 </CarouselItem>
