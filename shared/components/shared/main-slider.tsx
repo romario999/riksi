@@ -23,9 +23,9 @@ export const MainSlider = () => {
                         src={item.imageUrl} 
                         alt={item.altText ?? ''} 
                         priority
-                        width={0}
-                        height={0}
-                        sizes="100vw"
+                        width={1440} // Розмір для desktop
+                        height={576} // Вказані тобою розміри для мобільного
+                        sizes="(max-width: 768px) 100vw, 1440px"
                         style={{ width: '100%', height: 'auto' }}
                     />
                     </Link>

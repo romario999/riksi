@@ -1,8 +1,13 @@
 import { prisma } from '@/prisma/prisma-client';
 import { Container } from '@/shared/components/shared/container';
 import { WishlistList } from '@/shared/components/shared/wishlist-list';
+import { generateOptimizedMetadata } from '@/shared/lib';
 import { getUserSession } from '@/shared/lib/get-user-session';
 import { redirect } from 'next/navigation';
+
+export async function generateMetadata() {
+  return generateOptimizedMetadata({ wishlist: true });
+}
 
 export default async function WishlistPage() {
   const session = await getUserSession();
