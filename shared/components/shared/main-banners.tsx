@@ -12,16 +12,16 @@ export const MainBanners = () => {
     const bannerContent = useMemo(
         () =>
             banner.map((item, i) => (
-                <Link href={item.link || '#'} key={i}>
+                <Link href={item.link || '#'} key={i} className="flex-1">
                     <div>
                         <Image
                             src={item.imageUrl}
                             className="cursor-pointer rounded-lg transition-shadow duration-300 ease-in-out transform hover:shadow-lg"
                             alt={item.altText ?? 'Banner'}
                             priority
-                            width={0}
-                            height={0}
-                            sizes='250vw'
+                            width={720}  // Фіксована ширина
+                            height={405} // Фіксована висота (16:9)
+                            sizes="(max-width: 768px) 100vw, 50vw"
                             style={{ width: '100%', height: 'auto' }}
                         />
                     </div>
@@ -33,12 +33,11 @@ export const MainBanners = () => {
     if (banner.length === 0 || loading) {
         return (
             <section className="mt-5 flex gap-5">
-                <Skeleton className="rounded-xl w-full aspect-[16/9]" />
-                <Skeleton className="rounded-xl w-full aspect-[16/9]" />
+                <Skeleton className="rounded-xl flex-1 aspect-[16/9]" />
+                <Skeleton className="rounded-xl flex-1 aspect-[16/9]" />
             </section>
         );
     }
-    
 
     return (
         <section className="mt-5 flex gap-5">
