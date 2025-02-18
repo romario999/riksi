@@ -19,16 +19,16 @@ export const MainSlider = () => {
                 <CarouselItem key={i}>
                     <Link href={item.link || '#'}>
                     <Image 
-                        className="rounded-lg mx-auto" 
-                        src={item.imageUrl} 
-                        alt={item.altText ?? ''} 
-                        priority
-                        width={1440} // Розмір для desktop
-                        height={576} // Вказані тобою розміри для мобільного
-                        layout='responsive'
-                        sizes="(max-width: 768px) 100vw, 1440px"
-                        style={{ width: '100%', height: 'auto' }}
-                    />
+    className="rounded-lg mx-auto" 
+    src={item.imageUrl} 
+    alt={item.altText ?? ''} 
+    priority
+    width={isMobile ? 640 : 1440} 
+    height={isMobile ? 800 : 576} 
+    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 1440px"
+    style={{ width: '100%', height: 'auto' }}
+/>
+
                     </Link>
                 </CarouselItem>
             )),
