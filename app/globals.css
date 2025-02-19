@@ -4,6 +4,13 @@
 
 html {
   scroll-behavior: smooth;
+  @media (min-width: 700px) {
+    overflow-y: scroll; 
+  }
+}
+
+body {
+  min-width: 100% !important;
 }
 
 @media screen and (prefers-reduced-motion: reduce) {
