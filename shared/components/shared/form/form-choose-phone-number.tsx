@@ -91,7 +91,7 @@ export const FormChoosePhoneNumber: React.FC<Props> = ({ className, name, label,
                     {isDropdownOpen && (
                         <div
                             ref={dropdownRef} // Додаємо реф до контейнера меню
-                            className="absolute top-full left-0 p-2 w-full mt-2 max-h-80 overflow-y-auto bg-white border rounded-lg shadow-lg z-10"
+                            className="absolute top-full left-0 p-2 w-full mt-2 max-h-80 bg-white border rounded-lg shadow-lg z-10"
                         >
                             <Input
                                 value={searchTerm}

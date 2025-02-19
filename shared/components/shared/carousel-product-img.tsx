@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import { Flame } from "lucide-react";
 import { ImageViewer } from "./image-viewer";
 import { Carousel, CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "../ui/carousel-product";
@@ -55,10 +56,13 @@ const CarouselProductImg: React.FC<Props> = ({ items, stickers, productName }) =
               className="flex justify-center relative mx-auto"
               onClick={() => openImageViewer(item)}
             >
-              <img
+              <Image
                 src={item}
                 className="rounded-sm max-w-[300px] ml:max-w-[360px] max-h-[520px] overflow-hidden transition-all duration-300 cursor-pointer"
                 alt={`Image ${i}`}
+                width={500}
+                height={700}
+                priority
               />
               {stickers?.map((sticker, i) => (
                 <div
