@@ -40,7 +40,7 @@ const AuthModal: React.FC<Props> = ({ open, onClose }) => {
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="w-[90%] max-h-[85vh] md:max-h-[95vh] overflow-y-scroll max-w-[450px] bg-white p-6 sm:p-10">
+      <DialogContent className="w-[90%] max-h-[85vh] md:max-h-[95vh] overflow-y-auto max-w-[450px] bg-white p-6 sm:p-10">
         {isResetPassword ? (
           <ResetPassword onClose={handleClose} /> // Відображення форми для відновлення паролю
         ) : isRegistered ? (
