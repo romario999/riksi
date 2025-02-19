@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 export const useIsMobile = (threshold: number = 784) => {
-  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < threshold);
+  const [isMobile, setIsMobile] = useState(true);
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < threshold);
