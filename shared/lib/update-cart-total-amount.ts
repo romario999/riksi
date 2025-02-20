@@ -1,5 +1,6 @@
 import { prisma } from "@/prisma/prisma-client";
 import { calcCartItemTotalPrice } from "./calc-cart-item-total-price";
+import { CartItemDTO } from "../services/dto/cart.dto";
 
 export const updateCartTotalAmount = async (token: string | undefined, userId?: number) => {
     let userCart;
@@ -33,9 +34,15 @@ export const updateCartTotalAmount = async (token: string | undefined, userId?: 
     if (!userCart) return null;
 
     const totalAmount = userCart.items.reduce((acc, item) => {
-        const cartItemDTO = {
+        const cartItemDTO: CartItemDTO = {
             ...item,
-            ProductItem: item.productItem,
+            productItem: {
+                ...item.productItem,
+                product: {
+                    ...item.productItem.product,
+                    categories: []
+                }, // продукт вже є в productItem
+            },
         };
         return acc + (calcCartItemTotalPrice(cartItemDTO) ?? 0);
     }, 0);

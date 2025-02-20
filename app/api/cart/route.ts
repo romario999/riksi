@@ -28,7 +28,19 @@ export async function GET(req: NextRequest) {
             include: {
                 items: {
                     orderBy: { id: "desc" },
-                    include: { productItem: { include: { product: true } } },
+                    include: { 
+                        productItem: { 
+                            include: { 
+                                product: { 
+                                    include: { 
+                                        categories: {
+                                            select: { categoryId: true } // Отримуємо лише ID категорій
+                                        } 
+                                    } 
+                                } 
+                            } 
+                        } 
+                    },
                 },
             },
         });

@@ -10,6 +10,7 @@ export type CartStateItem = {
     disabled?: boolean;
     sku: string;
     size: string;
+    categoryId: number[];
 }
 
 interface ReturnProps {
@@ -18,7 +19,10 @@ interface ReturnProps {
 }
 
 export const getCartDetails = (data: CartDTO): ReturnProps => {
-    const items = data.items.map((item, i) => {
+    const items = data.items.map((item) => {
+        // Додаємо перевірку на існування categories
+        const categories = item.productItem.product.categories || []; // Якщо categories не існує, ставимо порожній масив
+        
         return {
             id: item.id,
             quantity: item.quantity,
@@ -29,8 +33,10 @@ export const getCartDetails = (data: CartDTO): ReturnProps => {
             sku: item.productItem.sku,
             productUrl: `/product/${item.productItem.product.productUrl}`,
             size: item.productItem.size,
+            categoryId: categories.map(cat => cat.categoryId) // Мапимо, тільки якщо categories є
         }
     }) as CartStateItem[];
+
     return {
         items,
         totalAmount: data.totalAmount,

@@ -1207,9 +1207,40 @@ const users = [
     password: hashSync('roma2310', 10),
     verified: new Date()
   }
+];
+
+const promocodes = [
+  {
+    active: true,
+    code: 'RIKSI',
+    discountPercent: 10,
+    appliesToAll: true,
+    categoryIds: [] 
+  },
+  {
+    active: true,
+    code: 'RIKSI10',
+    discountPercent: 10,
+    appliesToAll: false,
+    categoryIds: ['3']
+  }
 ]
 
 async function seed() {
+
+  for (const promocode of promocodes) {
+    const createdPromocode = await prisma.promoCode.create({
+      data: {
+        active: promocode.active,
+        code: promocode.code,
+        discountPercent: promocode.discountPercent,
+        appliesToAll: promocode.appliesToAll,
+        categoryIds: promocode.categoryIds
+      }
+    });
+    console.log(`Created promocode: ${createdPromocode.code}`);
+  }
+
   for (const user of users) {
     const createdUser = await prisma.user.create({
       data: {
@@ -1362,6 +1393,7 @@ async function down() {
   await prisma.$executeRaw`TRUNCATE TABLE "BottomBannerImage" RESTART IDENTITY CASCADE`;
   await prisma.$executeRaw`TRUNCATE TABLE "FooterPage" RESTART IDENTITY CASCADE`;
   await prisma.$executeRaw`TRUNCATE TABLE "ProductComplect" RESTART IDENTITY CASCADE`;
+  await prisma.$executeRaw`TRUNCATE TABLE "PromoCode" RESTART IDENTITY CASCADE`;
 }
 
 async function main() {

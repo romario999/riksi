@@ -7,9 +7,10 @@ import { sendEmail } from "@/shared/lib";
 import { getUserSession } from "@/shared/lib/get-user-session";
 import { OrderStatus, Prisma } from "@prisma/client";
 import { hashSync } from "bcrypt";
+import { revalidatePath } from "next/cache";
 import { cookies } from 'next/headers';
 
-export async function createOrder(data: CheckoutFormValues, paymentUrl: string, orderReference: string) {
+export async function createOrder(data: CheckoutFormValues, paymentUrl: string, orderReference: string, finalAmount: number) {
     try {
         const cookieStore = cookies();
         const cartToken = cookieStore.get('cartToken')?.value;
@@ -69,7 +70,7 @@ export async function createOrder(data: CheckoutFormValues, paymentUrl: string, 
 
         const recipientFullName = data.otherRecipient ? (data.fullNameRecipient ?? '') : data.firstName + ' ' + data.lastName;
         const recipientPhone = data.otherRecipient ? (data.phoneNumberRecipient ?? '') : data.phone;
-
+        const discount = userCart.totalAmount !== finalAmount ? userCart.totalAmount - finalAmount : 0;
         const order = await prisma.order.create({
             data: {
                 userId: Number(user?.id) ?? null,
@@ -82,7 +83,9 @@ export async function createOrder(data: CheckoutFormValues, paymentUrl: string, 
                 address: deliveryData,
                 comment: data.comment,
                 status: OrderStatus.PENDING,
-                totalAmount: userCart.totalAmount,
+                subtotalAmount: userCart.totalAmount,  // Зберігаємо суму без знижки
+                discountAmount: discount,  // Зберігаємо суму знижки
+                totalAmount: finalAmount,  // Обчислюємо підсумкову суму
                 items: JSON.stringify(userCart.items),
                 paymentId: orderReference,
                 typeDelivery: deliveryType,
@@ -108,7 +111,6 @@ export async function createOrder(data: CheckoutFormValues, paymentUrl: string, 
         if(!paymentUrl) {
             throw new Error('Payment link not found');
         }
-
 
         await sendEmail(data.email, 'Оплата замовлення ' + order.id, PayOrderTemplate({
             orderId: order.id,
@@ -319,5 +321,41 @@ export async function callMe(body: Prisma.CallMeCreateInput) {
     } catch (error) {
         console.error('Error [CALL_ME]', error);
         throw error;
+    }
+}
+
+export async function applyPromoCode({ code, totalAmount, cartCategoryIds }: {
+    code: string;
+    totalAmount: number;
+    cartCategoryIds: string[];
+}) {
+    try {
+        // Отримуємо промокод із бази даних
+        const promo = await prisma.promoCode.findUnique({
+            where: { code },
+        });
+
+        if (!promo) {
+            return { error: "Промокод недійсний" };
+        }
+
+        // Перевіряємо, чи промокод застосовується до всіх товарів або конкретних категорій
+        if (promo.categoryIds.length > 0) {
+            const applicable = cartCategoryIds.every((id: string) => promo.categoryIds.includes(id));
+            if (!applicable) {
+                return { error: "Цей промокод не застосовується до ваших товарів" };
+            }
+        }
+
+        // Обчислюємо нову суму замовлення
+        const discount = (totalAmount * promo.discountPercent) / 100;
+        const newTotal = Math.max(0, totalAmount - discount);
+
+        revalidatePath("/checkout"); // Оновлюємо сторінку
+
+        return { newTotal, discount };
+    } catch (error) {
+        console.error('Error [APPLY_PROMO_CODE]', error);
+        return { error: "Помилка застосування промокоду" };
     }
 }

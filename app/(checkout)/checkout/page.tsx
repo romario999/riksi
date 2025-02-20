@@ -17,7 +17,11 @@ import { useRouter } from "next/navigation";
 
 export default function CheckoutPage() {
     const { totalAmount, updateItemQuantity, items, removeCartItem, loading } = useCart();
+    const categoryIds = items.map((item) => item.categoryId).flat().map(String);
+
     const [submitting, setSubmitting] = React.useState(false);
+    const [discount, setDiscount] = React.useState(0);
+
     const {data: session} = useSession();
     const router = useRouter();
 
@@ -63,7 +67,6 @@ export default function CheckoutPage() {
         }
     }, [items, router]);
 
-
     const onSubmit = async (data: CheckoutFormValues) => {
         try {
             setSubmitting(true);
@@ -71,9 +74,11 @@ export default function CheckoutPage() {
                 icon: '✅',
             });
 
-            const paymentPrice = data.paymentType === 'allPayment' ? totalAmount : 1;
+            const finalAmount = totalAmount - discount; // Враховуємо знижку
+            const paymentPrice = data.paymentType === 'allPayment' ? finalAmount : 1;
+
             const { paymentUrl, orderReference } = await createPayment(data, items, paymentPrice) as { paymentUrl: string; orderReference: string; };
-            await createOrder(data, paymentUrl, orderReference);
+            await createOrder(data, paymentUrl, orderReference, finalAmount);  // Передаємо finalAmount для обчислення totalAmount
             window.location.href = paymentUrl; 
         } catch (err) {
             console.error(err);
@@ -105,14 +110,13 @@ export default function CheckoutPage() {
                             />
 
                             <CheckoutPersonalForm className={loading ? "opacity-40 pointer-events-none" : ''} />
-
                             <CheckoutAdressForm className={loading ? "opacity-40 pointer-events-none" : ''} />
 
                             <CheckoutPaymentForm className={loading ? "opacity-40 pointer-events-none" : ''} />
                         </div>
 
                         <div className="max-w-[480px] p-5 mx-auto w-full lg:sticky lg:top-28 lg:flex-shrink-0 mb-10 lg:mb-0">
-                            <CheckoutSidebar totalAmount={totalAmount} loading={loading || submitting} />
+                            <CheckoutSidebar totalAmount={totalAmount} loading={loading || submitting} cartCategoryIds={categoryIds} onDiscountChange={setDiscount} />
                         </div>
                     </div>
                 </form>
