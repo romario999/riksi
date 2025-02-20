@@ -10,9 +10,10 @@ interface MetadataParams {
   notAuth?: boolean;
   catalog?: boolean;
   wishlist?: boolean;
+  resetPassword?: boolean;
 }
 
-export const generateOptimizedMetadata = async ({ productLink, categoryLink, subcategoryLink, footerUrl, profile, notAuth, catalog, wishlist }: MetadataParams): Promise<Metadata> => {
+export const generateOptimizedMetadata = async ({ productLink, categoryLink, subcategoryLink, footerUrl, profile, notAuth, catalog, wishlist, resetPassword }: MetadataParams): Promise<Metadata> => {
   let title = "RIKSI";
   let description = "Ознайомтесь з нашими товарами на сайті RIKSI.";
   let url = "https://example.com/";
@@ -70,6 +71,11 @@ export const generateOptimizedMetadata = async ({ productLink, categoryLink, sub
     if (wishlist) {
         title = 'Список бажань | RIKSI',
         description = 'Ознайомтесь з вашим списком бажань'
+    }
+
+    if (resetPassword) {
+        title = 'Скинути пароль | RIKSI',
+        description = 'Скинути пароль'
     }
 
   return {

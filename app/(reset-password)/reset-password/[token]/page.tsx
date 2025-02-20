@@ -4,6 +4,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import React from 'react';
 import { FormResetPassword } from '@/shared/components/shared/form/form-reset-password';
+import { generateOptimizedMetadata } from '@/shared/lib';
+
+export async function generateMetadata() {
+  return generateOptimizedMetadata({ resetPassword: true });
+}
 
 interface ResetPasswordPageProps {
   token: string;
