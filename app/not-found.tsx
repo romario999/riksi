@@ -6,7 +6,7 @@ import Image from 'next/image';
 export default function NotFound() {
   return (
     <div className="flex flex-col items-center justify-center h-screen text-center bg-gray-100">
-      <Image src="/riksi.webp" alt="Logo" width={152} height={152} />
+      <Image src="/riksi.webp" alt="Logo - not found page" width={152} height={152} />
       <h4 className="text-4xl mt-5 font-bold text-gray-800">Сторінку не знайдено</h4>
       <p className="mt-4 text-lg text-gray-600">
         На жаль, сторінка, яку ви шукаєте, не існує.

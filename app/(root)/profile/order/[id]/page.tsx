@@ -100,7 +100,7 @@ export default async function OrderPage({ params }: { params: { id: string } }) 
                                 <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}>
                                     <td className={`p-4 ${index !== arr.length - 1 ? 'border-b border-gray-300' : ''} text-sm sm:text-base`}>
                                         <div className="flex items-center mt-2">
-                                            <Image src={item.productItem.product.imageUrl[0]} alt={item.productItem.product.name} width={64} height={96} className="w-16 h-24 object-cover mr-4 rounded-sm" />
+                                            <Image src={item.productItem.product.imageUrl[0]} alt={`${item.productItem.product.name} image`} width={64} height={96} className="w-16 h-24 object-cover mr-4 rounded-sm" />
                                             <div className="sm:ml-2 ml-0 text-xs sm:text-sm">
                                                 <div className="font-semibold">{item.productItem.product.name}</div>
                                                 <div><span className="font-semibold">Артикул:</span> {item.productItem.sku}</div>

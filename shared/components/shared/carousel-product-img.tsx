@@ -59,7 +59,7 @@ const CarouselProductImg: React.FC<Props> = ({ items, stickers, productName }) =
               <Image
                 src={item}
                 className="rounded-sm max-w-[300px] ml:max-w-[360px] max-h-[520px] overflow-hidden transition-all duration-300 cursor-pointer"
-                alt={`Image ${i}`}
+                alt={`Image ${i} ${productName}`}
                 width={500}
                 height={700}
                 priority
@@ -104,7 +104,7 @@ const CarouselProductImg: React.FC<Props> = ({ items, stickers, productName }) =
               <img
                 className="rounded-sm w-[60px] h-[80px]"
                 src={item}
-                alt="mini-item"
+                alt={`mini-item-image ${productName}`}
               />
             </div>
           ))}
