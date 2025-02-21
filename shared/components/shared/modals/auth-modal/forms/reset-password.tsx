@@ -28,7 +28,7 @@ export const ResetPassword: React.FC<Props> = ({ onClose }) => {
             });
         } catch (e) {
             console.error('[ERROR Login]', e);
-            toast.error(String(e).slice(7), {
+            toast.error("Помилка при відправленні посилання для відновлення паролю", {
                 icon: '❌',
             });
         }

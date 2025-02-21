@@ -35,7 +35,7 @@ export const FormResetPassword: React.FC<Props> = ({token}) => {
             }, 2000);
         } catch (e) {
             console.error('[ERROR Reset Password]', e);
-            toast.error(String(e).slice(7), {
+            toast.error("Помилка при зміні паролю", {
                 icon: '❌',
             });
         }

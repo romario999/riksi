@@ -34,7 +34,7 @@ interface Props {
         sessionStorage.setItem('userData', JSON.stringify({ userId, email }));
       } catch (e) {
         console.error('[ERROR Login]', e);
-        toast.error(String(e).slice(7), {
+        toast.error("Помилка при реєстрації або акаунт вже існує", {
           icon: '❌',
       });
       }
