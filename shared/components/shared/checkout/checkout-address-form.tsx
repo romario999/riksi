@@ -28,6 +28,8 @@ export const CheckoutAdressForm: React.FC<Props> = ({ className }) => {
     setDeliveryType(value);
     setValue('deliveryType', value);
     setValue('novaPostCity', '');
+    setValue('idCity', '');
+    setValue('idDepartment', '');
     clearErrors('deliveryType'); // Очищаємо помилку при виборі
   };
 

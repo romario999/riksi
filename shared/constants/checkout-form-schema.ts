@@ -2,18 +2,19 @@ import { z } from "zod";
 
 export const checkoutFormSchema = z
   .object({
-    firstName: z.string().min(2, { message: "Імʼя повинно містити не менше 2 символів" }),
-    lastName: z.string().min(2, { message: "Прізвище повинно містити не менше 2 символів" }),
+    fullName: z.string().min(4, { message: "Введіть ваше ім'я, прізвище, по-батькові" }),
     email: z.string().email({ message: "Некоректний E-mail" }),
     phone: z.string().min(10, { message: "Некоректний номер телефону" }),
     dontCall: z.boolean().optional(),
     otherRecipient: z.boolean().optional(),
     fullNameRecipient: z.string().optional(),
     phoneNumberRecipient: z.string().optional(),
+    idCity: z.string().optional(),
     novaPostCity: z.string().optional(),
     ukrPostCity: z.string().optional(),
     deliveryType: z.string().min(1, { message: "Оберіть спосіб доставки" }),
     novaPostTypeDelivery: z.string().optional(),
+    idDepartment: z.string().optional(),
     department: z.string().optional(),
     street: z.string().optional(),
     numberStreet: z.string().optional(),

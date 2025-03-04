@@ -29,11 +29,12 @@ export default function CheckoutPage() {
         resolver: zodResolver(checkoutFormSchema),
         defaultValues: {
             email: '',
-            firstName: '',
-            lastName: '',
+            fullName: '',
             deliveryType: '',
             novaPostCity: '',
+            idCity: '',
             ukrPostCity: '',
+            idDepartment: '',
             department: '',
             street: '',
             numberStreet: '',
@@ -50,10 +51,8 @@ export default function CheckoutPage() {
     React.useEffect(() => {
         async function fetchUserInfo() {
             const data = await Api.auth.getMe();
-            const [firstName, lastName] = data.fullName.split(' ');
 
-            form.setValue('firstName', firstName);
-            form.setValue('lastName', lastName);
+            form.setValue('fullName', data.fullName);
             form.setValue('email', data.email);
         }
         if(session) {

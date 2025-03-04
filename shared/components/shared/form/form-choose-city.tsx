@@ -69,6 +69,8 @@ export const FormChooseCity: React.FC<Props> = ({ className, name, label, requir
         setQuery('');
         setCities([]);
         setIsLocked(false); // Розблоковуємо введення після очищення
+        setValue('idCity', '');
+        setValue('idDepartment', '');
     };
 
     return (
@@ -101,6 +103,7 @@ export const FormChooseCity: React.FC<Props> = ({ className, name, label, requir
                                     setCities([]);
                                     setIsLocked(true); // Блокуємо введення після вибору міста
                                     onCitySelect?.(city);
+                                    setValue('idCity', city.Ref);
                                 }}
                                 className={cn(
                                     'cursor-pointer py-2 pl-2 hover:bg-gray-100',

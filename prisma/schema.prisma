@@ -164,6 +164,7 @@ model Order {
     discountAmount      Int @default(0) // Сума знижки
     totalAmount         Int // Підсумкова сума (subtotalAmount - discountAmount)
     status              OrderStatus
+    paymentType         String
     paymentId           String?
     items               Json
     fullName            String

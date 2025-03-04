@@ -74,7 +74,7 @@ export const CheckboxFilterGroup: React.FC<Props> = (
       <div className={className}>
           <p className="font-bold mb-3">{title}</p>
           {
-              showAll && <div className="mb-5 pl-1">
+              showAll && <div className="mb-5">
               <Input onChange={onChangeSearchInput} placeholder={searchInputPlaceholder} className="bg-gray-50 border-none" />
           </div>
           }

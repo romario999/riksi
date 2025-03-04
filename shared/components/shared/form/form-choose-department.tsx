@@ -84,6 +84,7 @@ export const FormChooseDepartment: React.FC<Props> = ({ className, name, label, 
         setQuery('');
         setWarehouses([]);
         setIsLocked(false);
+        setValue('idDepartment', '');
     };
 
     return (
@@ -115,6 +116,7 @@ export const FormChooseDepartment: React.FC<Props> = ({ className, name, label, 
                                     setQuery(warehouse.Description);
                                     setWarehouses([]);
                                     setIsLocked(true);
+                                    setValue('idDepartment', warehouse.Ref);
                                 }}
                                 className={cn(
                                     'cursor-pointer py-2 pl-2 hover:bg-gray-100',

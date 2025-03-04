@@ -26,6 +26,7 @@ const NovaPoshtaInputs = () => {
             setValue('numberStreet', '');
         } else if (selectedType === 'courier') {
             setValue('department', '');
+            setValue('idDepartment', '');
         }
     }, [selectedType, setValue]);
 

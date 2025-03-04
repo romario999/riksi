@@ -31,7 +31,7 @@ export default async function ResetPasswordPage({
   if (!isTokenValid) {
     return (
       <div className="flex flex-col items-center justify-center h-screen text-center bg-gray-100">
-        <Image src="/riksi.webp" alt="Logo reset-password page" width={152} height={152} />
+        <Image src="/riksi.webp" alt="Logo" width={152} height={152} />
         <h4 className="text-4xl mt-5 font-bold text-gray-800">Посилання не дійсне</h4>
         <p className="mt-4 text-lg text-gray-600">
           Посилання для скидання паролю не дійсне або закінчився термін дії
@@ -47,7 +47,7 @@ export default async function ResetPasswordPage({
 
   return (
     <div className="flex flex-col items-center justify-center h-screen text-center bg-gray-100">
-      <Image src="/riksi.webp" alt="Logo reset password page" width={152} height={152} />
+      <Image src="/riksi.webp" alt="Logo" width={152} height={152} />
       <h4 className="text-4xl mt-5 font-bold text-gray-800">Скидання паролю</h4>
       <p className="mt-4 text-lg text-gray-600">Введіть новий пароль</p>
       <FormResetPassword token={token} />

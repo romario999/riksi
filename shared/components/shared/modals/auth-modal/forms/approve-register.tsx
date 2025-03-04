@@ -45,7 +45,7 @@ export const ApproveRegister: React.FC<Props> = ({ onClose }) => {
             onClose?.();
         } catch (e) {
             console.error('[ERROR Login]', e);
-            toast.error("Невірний код або помилка підтвердження", {
+            toast.error('Невірний код', {
                 icon: '❌',
             });
         }
@@ -67,7 +67,7 @@ export const ApproveRegister: React.FC<Props> = ({ onClose }) => {
             });
         } catch (e) {
             console.error('[ERROR Login]', e);
-            toast.error("Помилка при відправленні коду", {
+            toast.error('Виникла помилка', {
                 icon: '❌',
             });
         }

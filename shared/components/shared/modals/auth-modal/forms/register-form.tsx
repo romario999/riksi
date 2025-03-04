@@ -34,7 +34,7 @@ interface Props {
         sessionStorage.setItem('userData', JSON.stringify({ userId, email }));
       } catch (e) {
         console.error('[ERROR Login]', e);
-        toast.error("Помилка при реєстрації або акаунт вже існує", {
+        toast.error("Користувач вже існує або помилка при реєстрації", {
           icon: '❌',
       });
       }
@@ -44,7 +44,7 @@ interface Props {
       <FormProvider {...form}>
         <form className="flex flex-col gap-5" onSubmit={form.handleSubmit(onSubmit)}>
           <FormInput name="email" label="E-mail" required />
-          <FormInput name="fullName" label="Повне імʼя" required />
+          <FormInput name="fullName" label="ПІБ" required />
           <FormInputPassword name="password" label="Пароль" required />
           <FormInputPassword name="confirmPassword" label="Повторіть пароль" required />
   

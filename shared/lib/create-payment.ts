@@ -17,8 +17,8 @@ export const createPayment = async (data: CheckoutFormValues, items: any[], tota
         productNames,
         productCounts,
         productPrices,
-        clientFirstName: data.firstName,
-        clientLastName: data.lastName,
+        clientFirstName: data.fullName,
+        clientLastName: "",
         clientAddress: `${data.street}, ${data.numberStreet}`,
         clientEmail: data.email,
         defaultPaymentSystem: "card"

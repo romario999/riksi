@@ -1200,14 +1200,14 @@ const complects = [
   ]
 ];
 
-const users = [
-  {
-    fullName: 'Roma',
-    email: 'rbondarenko211@gmail.com',
-    password: hashSync('roma2310', 10),
-    verified: new Date()
-  }
-];
+// const users = [
+//   {
+//     fullName: 'Roma',
+//     email: 'rbondarenko211@gmail.com',
+//     password: hashSync('roma2310', 10),
+//     verified: new Date()
+//   }
+// ];
 
 const promocodes = [
   {
@@ -1241,17 +1241,17 @@ async function seed() {
     console.log(`Created promocode: ${createdPromocode.code}`);
   }
 
-  for (const user of users) {
-    const createdUser = await prisma.user.create({
-      data: {
-        fullName: user.fullName,
-        email: user.email,
-        password: user.password,
-        verified: user.verified
-      }
-    })
-    console.log(`Created user: ${createdUser.fullName}`)
-  }
+  // for (const user of users) {
+  //   const createdUser = await prisma.user.create({
+  //     data: {
+  //       fullName: user.fullName,
+  //       email: user.email,
+  //       password: user.password,
+  //       verified: user.verified
+  //     }
+  //   })
+  //   console.log(`Created user: ${createdUser.fullName}`)
+  // }
   for (const category of categories) {
     const createdCategory = await prisma.category.create({
       data: {

@@ -33,10 +33,7 @@ export const CheckoutPersonalForm: React.FC<Props> = ({ className }) => {
       <div className="flex flex-col gap-3">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="min-w-[30%]">
-            <FormInput name="firstName" className="text-base" placeholder="Імʼя" />
-          </div>
-          <div className="min-w-[30%]">
-            <FormInput name="lastName" className="text-base" placeholder="Прізвище" />
+            <FormInput name="fullName" className="text-base" placeholder="ПІБ" />
           </div>
           <div className="min-w-[30%]">
             <FormInput name="email" className="text-base" placeholder="E-mail" />

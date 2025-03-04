@@ -5,6 +5,7 @@ import { PayOrderTemplate, ResetPassword, VerificationUserTemplate } from "@/sha
 import { CheckoutFormValues } from "@/shared/constants";
 import { sendEmail } from "@/shared/lib";
 import { getUserSession } from "@/shared/lib/get-user-session";
+import { sendOrderAutoselling } from "@/shared/lib/send-order-autoselling";
 import { OrderStatus, Prisma } from "@prisma/client";
 import { hashSync } from "bcrypt";
 import { revalidatePath } from "next/cache";
@@ -68,20 +69,21 @@ export async function createOrder(data: CheckoutFormValues, paymentUrl: string, 
 
         const deliveryType = data.deliveryType === 'nova-post' ? 'Нова Пошта' : 'Укрпошта';
 
-        const recipientFullName = data.otherRecipient ? (data.fullNameRecipient ?? '') : data.firstName + ' ' + data.lastName;
+        const recipientFullName = data.otherRecipient ? (data.fullNameRecipient ?? '') : data.fullName;
         const recipientPhone = data.otherRecipient ? (data.phoneNumberRecipient ?? '') : data.phone;
         const discount = userCart.totalAmount !== finalAmount ? userCart.totalAmount - finalAmount : 0;
         const order = await prisma.order.create({
             data: {
                 userId: Number(user?.id) ?? null,
                 token: cartToken,
-                fullName: data.firstName + ' ' + data.lastName,
+                fullName: data.fullName,
                 recipientFullName,
                 recipientPhone,
                 email: data.email,
                 phone: data.phone,
                 address: deliveryData,
-                comment: data.comment,
+                comment: data.comment ?? '',
+                paymentType: data.paymentType === 'allPayment' ? 'Передплата' : 'Післяплата (завдаток 200 грн)',
                 status: OrderStatus.PENDING,
                 subtotalAmount: userCart.totalAmount,  // Зберігаємо суму без знижки
                 discountAmount: discount,  // Зберігаємо суму знижки
@@ -108,9 +110,50 @@ export async function createOrder(data: CheckoutFormValues, paymentUrl: string, 
             },
         });
 
+        const autoSellObj = {
+            comment: data.comment,
+            order_id: order.id,
+            products: userCart.items.map((item) => ({
+                price: item.productItem.price,
+                title: item.productItem.product.name,
+                article: item.productItem.sku,
+                quantity: item.quantity,
+            })),
+            total_sum: finalAmount,
+            payment_type: {
+                id: data.paymentType === 'allPayment' ? 1 : 2,
+                title: data.paymentType === 'allPayment' ? 'Передплата' : 'Післяплата (завдаток 200 грн)'
+            },
+            stat_created: new Date().toLocaleString('sv-SE').replace('T', ' '),
+            delivery_city: data.ukrPostCity || data.novaPostCity,
+            delivery_data: {
+                destination: {
+                    address: {
+                        geoObject: {		
+                            id: data.idCity,
+                            name: data.ukrPostCity || data.novaPostCity,				
+                        },
+                        warehouse: {		
+                            id: data.idDepartment,					
+                            name: data.department	
+                        }
+                    }
+                }
+            },
+            delivery_name: data.fullNameRecipient ?? data.fullName,
+            delivery_type: {
+                id: data.deliveryType === 'nova-post' ? 1 : 2,
+                title: data.deliveryType === 'nova-post' ? 'Новою поштою' : 'Укрпоштою'
+            },
+            delivery_phone: data.phone,
+            delivery_address: `${data.department || data.ukrPostDepartment || data.street + " " + data.numberStreet}`,
+        };
+
         if(!paymentUrl) {
             throw new Error('Payment link not found');
         }
+
+        await sendOrderAutoselling(autoSellObj);
 
         await sendEmail(data.email, 'Оплата замовлення ' + order.id, PayOrderTemplate({
             orderId: order.id,
