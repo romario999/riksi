@@ -49,9 +49,9 @@ interface Order {
     stat_created: string;
     delivery_city: string | undefined | null;
     delivery_data: DeliveryData;
-    delivery_name: string;
+    delivery_name: string | undefined | null;
     delivery_type: DeliveryType;
-    delivery_phone: string;
+    delivery_phone: string | undefined | null;
     delivery_address: string;
 }
   

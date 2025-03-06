@@ -141,12 +141,12 @@ export async function createOrder(data: CheckoutFormValues, paymentUrl: string, 
                     }
                 }
             },
-            delivery_name: data.fullNameRecipient ?? data.fullName,
+            delivery_name: data.otherRecipient ? data.fullNameRecipient : data.fullName,
             delivery_type: {
                 id: data.deliveryType === 'nova-post' ? 1 : 2,
                 title: data.deliveryType === 'nova-post' ? 'Новою поштою' : 'Укрпоштою'
             },
-            delivery_phone: data.phone,
+            delivery_phone: data.otherRecipient ? data.phoneNumberRecipient : data.phone,
             delivery_address: `${data.department || data.ukrPostDepartment || data.street + " " + data.numberStreet}`,
         };
 
