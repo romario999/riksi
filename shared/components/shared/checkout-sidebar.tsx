@@ -26,14 +26,14 @@ export const CheckoutSidebar: React.FC<Props> = ({ className, loading, totalAmou
     const [error, setError] = useState<string | null>(null);
 
     const handleApplyPromo = async () => {
-        const result = await applyPromoCode({ code: promoCode, totalAmount, cartCategoryIds });
+        const result = await applyPromoCode({ code: promoCode, cartCategoryIds });
 
         if (result.error) {
             setError(result.error);
         } else {
-            setDiscount(Number(result.discount));
+            onDiscountChange(result.discountPercent || 0);
             setError(null);
-            onDiscountChange(Number(result.discount)); // Оновлюємо знижку у `CheckoutPage`
+            setDiscount(result.discountPercent || 0);
         }
     };
 
@@ -48,7 +48,7 @@ export const CheckoutSidebar: React.FC<Props> = ({ className, loading, totalAmou
         <WhiteBlock className={cn("p-6 sticky top-28", className)}>
             <div className="flex flex-col gap-1">
                 <span className="text-xl">Всього:</span>
-                {loading ? <Skeleton className="w-48 h-11 bg-gray-200" /> : <span className="h-11 text-[34px] font-extrabold">{totalAmount - discount}₴</span>}
+                {loading ? <Skeleton className="w-48 h-11 bg-gray-200" /> : <span className="h-11 text-[34px] font-extrabold">{totalAmount}₴</span>}
             </div>
 
             <CheckoutItemDetails 
@@ -74,7 +74,7 @@ export const CheckoutSidebar: React.FC<Props> = ({ className, loading, totalAmou
                         </Button>
                     </div>
                     {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-                    {discount > 0 && <p className="text-green-500 text-sm mt-2">Знижка: -{discount}₴</p>}
+                    {discount > 0 && <p className="text-green-500 text-sm mt-2">Знижка: -{discount}%</p>}
                 </div>
             </div>
 

@@ -1,5 +1,6 @@
 'use server';
 
+import { ProductCartItem } from "@/@types/cart-item";
 import { prisma } from "@/prisma/prisma-client";
 import { PayOrderTemplate, ResetPassword, VerificationUserTemplate } from "@/shared/components";
 import { CheckoutFormValues } from "@/shared/constants";
@@ -11,13 +12,13 @@ import { hashSync } from "bcrypt";
 import { revalidatePath } from "next/cache";
 import { cookies } from 'next/headers';
 
-export async function createOrder(data: CheckoutFormValues, paymentUrl: string, orderReference: string, finalAmount: number) {
+export async function createOrder(data: CheckoutFormValues, paymentUrl: string, orderReference: string, finalAmount: number, cartItems: ProductCartItem[]) {
     try {
         const cookieStore = cookies();
         const cartToken = cookieStore.get('cartToken')?.value;
         const user = await getUserSession();
 
-        if (!cartToken) {
+        if (!cartToken && !user) {
             throw new Error('Cart token not found');
         }
 
@@ -75,7 +76,7 @@ export async function createOrder(data: CheckoutFormValues, paymentUrl: string, 
         const order = await prisma.order.create({
             data: {
                 userId: Number(user?.id) ?? null,
-                token: cartToken,
+                token: cartToken ?? '',
                 fullName: data.fullName,
                 recipientFullName,
                 recipientPhone,
@@ -88,7 +89,7 @@ export async function createOrder(data: CheckoutFormValues, paymentUrl: string, 
                 subtotalAmount: userCart.totalAmount,  // Зберігаємо суму без знижки
                 discountAmount: discount,  // Зберігаємо суму знижки
                 totalAmount: finalAmount,  // Обчислюємо підсумкову суму
-                items: JSON.stringify(userCart.items),
+                items: JSON.stringify(cartItems),
                 paymentId: orderReference,
                 typeDelivery: deliveryType,
                 dontCall: data.dontCall || false,
@@ -113,10 +114,10 @@ export async function createOrder(data: CheckoutFormValues, paymentUrl: string, 
         const autoSellObj = {
             comment: data.comment,
             order_id: order.id,
-            products: userCart.items.map((item) => ({
-                price: item.productItem.price,
-                title: item.productItem.product.name,
-                article: item.productItem.sku,
+            products: cartItems.map((item) => ({
+                price: item.price,
+                title: item.name,
+                article: item.sku,
                 quantity: item.quantity,
             })),
             total_sum: finalAmount,
@@ -367,9 +368,8 @@ export async function callMe(body: Prisma.CallMeCreateInput) {
     }
 }
 
-export async function applyPromoCode({ code, totalAmount, cartCategoryIds }: {
+export async function applyPromoCode({ code, cartCategoryIds }: {
     code: string;
-    totalAmount: number;
     cartCategoryIds: string[];
 }) {
     try {
@@ -390,13 +390,10 @@ export async function applyPromoCode({ code, totalAmount, cartCategoryIds }: {
             }
         }
 
-        // Обчислюємо нову суму замовлення
-        const discount = (totalAmount * promo.discountPercent) / 100;
-        const newTotal = Math.max(0, totalAmount - discount);
-
         revalidatePath("/checkout"); // Оновлюємо сторінку
 
-        return { newTotal, discount };
+        // Повертаємо лише відсоток знижки
+        return { discountPercent: promo.discountPercent };
     } catch (error) {
         console.error('Error [APPLY_PROMO_CODE]', error);
         return { error: "Помилка застосування промокоду" };

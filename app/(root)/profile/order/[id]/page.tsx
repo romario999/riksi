@@ -4,16 +4,15 @@ import { getUserSession } from "@/shared/lib/get-user-session";
 import Image from 'next/image';
 
 interface OrderItems {
-    productItem: {
-        product: {
-            name: string,
-            imageUrl: string[],
-        },
-        sku: string,
-        size: string,
-        price: number,
-    },
-    quantity: number
+    id: number,
+    name: string,
+    quantity: number,
+    productItemId: number,
+    imageUrl: string,
+    price: number,
+    sku: string,
+    productUrl: string,
+    size: string,
 }
 
 export default async function OrderPage({ params }: { params: { id: string } }) {
@@ -40,7 +39,7 @@ export default async function OrderPage({ params }: { params: { id: string } }) 
             console.error('Error parsing items JSON:', e);
         }
     }
-
+    console.log(items);
     // Функція для відображення статусу замовлення
     const getStatusLabel = (status: string) => {
         switch (status) {
@@ -100,16 +99,16 @@ export default async function OrderPage({ params }: { params: { id: string } }) 
                                 <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}>
                                     <td className={`p-4 ${index !== arr.length - 1 ? 'border-b border-gray-300' : ''} text-sm sm:text-base`}>
                                         <div className="flex items-center mt-2">
-                                            <Image src={item.productItem.product.imageUrl[0]} alt={item.productItem.product.name} width={64} height={96} className="w-16 h-24 object-cover mr-4 rounded-sm" />
+                                            <Image src={item.imageUrl} alt={item.name} width={64} height={96} className="w-16 h-24 object-cover mr-4 rounded-sm" />
                                             <div className="sm:ml-2 ml-0 text-xs sm:text-sm">
-                                                <div className="font-semibold">{item.productItem.product.name}</div>
-                                                <div><span className="font-semibold">Артикул:</span> {item.productItem.sku}</div>
-                                                <div><span className="font-semibold">Розмір:</span> {item.productItem.size}</div>
+                                                <div className="font-semibold">{item.name}</div>
+                                                <div><span className="font-semibold">Артикул:</span> {item.sku}</div>
+                                                <div><span className="font-semibold">Розмір:</span> {item.size}</div>
                                             </div>
                                         </div>
                                     </td>
                                     <td className={`p-4 text-center ${index !== arr.length - 1 ? 'border-b border-gray-300' : ''} text-sm sm:text-base`}>{item.quantity}</td>
-                                    <td className={`p-4 text-center ${index !== arr.length - 1 ? 'border-b border-gray-300' : ''} text-sm sm:text-base`}>{item.productItem.price} грн</td>
+                                    <td className={`p-4 text-center ${index !== arr.length - 1 ? 'border-b border-gray-300' : ''} text-sm sm:text-base`}>{item.price} грн</td>
                                 </tr>
                             ))
                         ) : (

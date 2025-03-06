@@ -52,7 +52,7 @@ const ProfileOrder = () => {
                           {items.length > 0 ? (
                           items.map((item: any) => (
                               <span className='flex flex-wrap' key={item.id}>
-                              {item.productItem.product.name} ({item.quantity} шт.)
+                              {item.name} ({item.quantity} шт.)
                               </span>  
                           ))
                           ) : (

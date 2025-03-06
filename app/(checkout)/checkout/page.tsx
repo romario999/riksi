@@ -2,7 +2,6 @@
 
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { CheckoutPaymentForm, CheckoutSidebar, Container, Title } from "@/shared/components/shared";
 import { useCart } from "@/shared/hooks";
 import { CheckoutAdressForm, CheckoutCart, CheckoutPersonalForm } from "@/shared/components";
@@ -16,13 +15,14 @@ import { Api } from "@/shared/services/api-client";
 import { useRouter } from "next/navigation";
 
 export default function CheckoutPage() {
-    const { totalAmount, updateItemQuantity, items, removeCartItem, loading } = useCart();
-    const categoryIds = items.map((item) => item.categoryId).flat().map(String);
-
+    const { updateItemQuantity, items, removeCartItem, loading } = useCart();
+    const [cartItems, setCartItems] = React.useState(items);
     const [submitting, setSubmitting] = React.useState(false);
-    const [discount, setDiscount] = React.useState(0);
-
-    const {data: session} = useSession();
+    const [discountPercent, setDiscountPercent] = React.useState(0);
+    
+    const categoryIds = items.map(item => item.categoryId).flat().map(String);
+    
+    const { data: session } = useSession();
     const router = useRouter();
 
     const form = useForm<CheckoutFormValues>({
@@ -51,11 +51,10 @@ export default function CheckoutPage() {
     React.useEffect(() => {
         async function fetchUserInfo() {
             const data = await Api.auth.getMe();
-
             form.setValue('fullName', data.fullName);
             form.setValue('email', data.email);
         }
-        if(session) {
+        if (session) {
             fetchUserInfo();
         }
     }, [session]);
@@ -64,7 +63,25 @@ export default function CheckoutPage() {
         if (items.length === 0) {
             router.push("/");
         }
-    }, [items, router]);
+        if (discountPercent > 0) {
+            const newCartItems = items.map(item => {
+                const newPrice = item.price - (item.price * discountPercent) / 100;
+                return { ...item, price: newPrice };
+            });
+            setCartItems(newCartItems);
+        } else {
+            setCartItems(items);
+        }
+    }, [items, router, discountPercent]);
+
+    const handleDiscountChange = (discountPercentValue: number) => {
+        setDiscountPercent(discountPercentValue);
+        const newCartItems = items.map(item => {
+            const newPrice = item.price - (item.price * discountPercentValue) / 100;
+            return { ...item, price: newPrice };
+        });
+        setCartItems(newCartItems);
+    };
 
     const onSubmit = async (data: CheckoutFormValues) => {
         try {
@@ -72,13 +89,12 @@ export default function CheckoutPage() {
             toast.success('Замовлення оформлено! Перехід на оплату...', {
                 icon: '✅',
             });
-
-            const finalAmount = totalAmount - discount; // Враховуємо знижку
+            const finalAmount = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
             const paymentPrice = data.paymentType === 'allPayment' ? finalAmount : 1;
 
-            const { paymentUrl, orderReference } = await createPayment(data, items, paymentPrice) as { paymentUrl: string; orderReference: string; };
-            await createOrder(data, paymentUrl, orderReference, finalAmount);  // Передаємо finalAmount для обчислення totalAmount
-            window.location.href = paymentUrl; 
+            const { paymentUrl, orderReference } = await createPayment(data, cartItems, paymentPrice) as { paymentUrl: string; orderReference: string; };
+            await createOrder(data, paymentUrl, orderReference, finalAmount, cartItems);
+            window.location.href = paymentUrl;
         } catch (err) {
             console.error(err);
             setSubmitting(false);
@@ -104,18 +120,22 @@ export default function CheckoutPage() {
                             <CheckoutCart
                                 onClickCountButton={onClickCountButton}
                                 removeCartItem={removeCartItem}
-                                items={items}
+                                items={cartItems}
                                 loading={loading}
                             />
 
                             <CheckoutPersonalForm className={loading ? "opacity-40 pointer-events-none" : ''} />
                             <CheckoutAdressForm className={loading ? "opacity-40 pointer-events-none" : ''} />
-
                             <CheckoutPaymentForm className={loading ? "opacity-40 pointer-events-none" : ''} />
                         </div>
 
                         <div className="max-w-[480px] p-5 mx-auto w-full lg:sticky lg:top-28 lg:flex-shrink-0 mb-10 lg:mb-0">
-                            <CheckoutSidebar totalAmount={totalAmount} loading={loading || submitting} cartCategoryIds={categoryIds} onDiscountChange={setDiscount} />
+                            <CheckoutSidebar 
+                                totalAmount={cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0)} 
+                                loading={loading || submitting} 
+                                cartCategoryIds={categoryIds} 
+                                onDiscountChange={handleDiscountChange}
+                            />
                         </div>
                     </div>
                 </form>
