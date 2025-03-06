@@ -39,6 +39,13 @@ interface DeliveryType {
     id: number;
     title: string;
 }
+
+interface Recipient {
+    name: string | undefined | null;
+    phone: string | undefined | null;
+    surname: string | undefined | null;
+    patronymic: string | undefined | null;
+}
   
 interface Order {
     comment: string | undefined | null;
@@ -53,6 +60,7 @@ interface Order {
     delivery_type: DeliveryType;
     delivery_phone: string | undefined | null;
     delivery_address: string;
+    recipient: Recipient;
 }
   
 

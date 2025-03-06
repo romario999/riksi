@@ -148,6 +148,12 @@ export async function createOrder(data: CheckoutFormValues, paymentUrl: string, 
             },
             delivery_phone: data.otherRecipient ? data.phoneNumberRecipient : data.phone,
             delivery_address: `${data.department || data.ukrPostDepartment || data.street + " " + data.numberStreet}`,
+            recipient: {
+                name: data.otherRecipient ? data.fullNameRecipient?.split(" ")[1] : data.fullName.split(" ")[1],
+                phone: data.otherRecipient ? data.phoneNumberRecipient : data.phone,
+                surname: data.otherRecipient ? data.fullNameRecipient?.split(" ")[0] : data.fullName.split(" ")[0],
+                patronymic: data.otherRecipient ? data.fullNameRecipient?.split(" ")[2] : data.fullName.split(" ")[2],
+            }
         };
 
         if(!paymentUrl) {
