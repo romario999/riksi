@@ -30,7 +30,7 @@ export const VerificationUserTemplate: React.FC<Props> = ({ code }) => {
         }}
       >
         <div style={{ marginBottom: '24px' }}>
-          <img src="/riksi.webp" alt="Logo RIKSI" style={{ margin: '0 auto' }} />
+          <img src="/riksi.png" alt="Logo RIKSI" style={{ margin: '0 auto' }} />
         </div>
         <h1 style={{ fontSize: '24px', fontWeight: '600', color: 'black', marginBottom: '16px' }}>
           Підтвердження вашої реєстрації на сайті RIKSI
