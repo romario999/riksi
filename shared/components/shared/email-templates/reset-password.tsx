@@ -30,7 +30,7 @@ export const ResetPassword: React.FC<Props> = ({ resetLink }) => {
         }}
       >
         <div style={{ marginBottom: '24px' }}>
-          <img src="https://www.riksi.com.ua/riksi.png" alt="Logo RIKSI" style={{ margin: '0 auto', width: 120 }} />
+          <img src="https://www.riksi.com.ua/assets/images/riksi.png" alt="Logo RIKSI" style={{ margin: '0 auto', width: 120 }} />
         </div>
         <h1 style={{ fontSize: '24px', fontWeight: '600', color: 'black', marginBottom: '16px' }}>
           Скидання паролю на сайті RIKSI
