@@ -12,6 +12,7 @@ interface Props {
 }
 
 export const CartButton: React.FC<Props> = ({ className }) => {
+
   const totalAmount = useCartStore((state) => state.totalAmount);
   const loading = useCartStore((state) => state.loading);
   const items = useCartStore((state) => state.items);

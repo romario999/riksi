@@ -17,7 +17,8 @@ export default async function FooterPage({ params: { footerUrl } }: { params: { 
   const getCachedFooterPages = unstable_cache(
     async () => {
       console.log('query footerPages');
-      return await prisma.footerPage.findMany()
+      return await prisma.footerPage.findMany({
+        where: { isActive: true },})
     },
     ['footerPages'],
     { revalidate: 120 }
@@ -75,7 +76,7 @@ export default async function FooterPage({ params: { footerUrl } }: { params: { 
         </div>
         <h4 className="text-2xl font-bold">{pageInfo.secondTitle}</h4>
         <div
-          className="mt-5"
+          className="mt-5 ql-editor [&>ul]:pl-6 [&>ul]:list-disc [&>ol]:pl-6 [&>ol]:list-decimal [&>li]:mb-2"
           dangerouslySetInnerHTML={{ __html: pageInfo.content || '' }}
         />
       </div>

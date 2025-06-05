@@ -1,4 +1,4 @@
-import { ProductStickers } from '@prisma/client';
+import { ProductStickers, UserRole } from '@prisma/client';
 import { prisma } from './prisma-client';
 import { hashSync } from 'bcrypt';
 
@@ -1033,8 +1033,8 @@ const products = [
       {id: 8}
     ],
     items: [
-      { price: 500, oldPrice: 1195, size: 'S', sku: 'СОРО-92-S', stock: true },
       { price: 500, oldPrice: 1195, size: 'XS', sku: 'СОРО-92-XS', stock: true },
+      { price: 500, oldPrice: 1195, size: 'S', sku: 'СОРО-92-S', stock: true },
       { price: 500, oldPrice: 1195, size: 'M', sku: 'СОРО-92-M', stock: true },
       { price: 500, oldPrice: 1195, size: 'L', sku: 'СОРО-92-L', stock: true },
       { price: 500, oldPrice: 1195, size: 'XL', sku: 'СОРО-92-XL', stock: true },
@@ -1183,7 +1183,8 @@ const bottomBannerImage = [
     imageUrl: 'https://riksi.ua/content/images/40/1440x216e90nn0/51054835940617.webp',
     altText: 'Price Party Bottom Banner',
     link: 'http://localhost:3000/catalog/price-party',
-    position: 1
+    position: 1,
+    isActive: false
   }
 ];
 
@@ -1204,10 +1205,162 @@ const complects = [
 //   {
 //     fullName: 'Roma',
 //     email: 'rbondarenko211@gmail.com',
-//     password: hashSync('roma2310', 10),
-//     verified: new Date()
+//     password: hashSync('111fdjdhfjksd', 10),
+//     verified: new Date(),
+//     role: UserRole.ADMIN
 //   }
 // ];
+
+const users = [
+  {
+    fullName: 'Roma Bondarenko',
+    email: 'rbondarenko211@gmail.com',
+    password: hashSync('roma2310', 10),
+    verified: new Date(),
+    role: UserRole.ADMIN
+  },
+  {
+    fullName: 'Olena Kravchenko',
+    email: 'olena.kravchenko1@example.com',
+    password: hashSync('pass1234', 10),
+    verified: new Date(),
+    role: UserRole.USER
+  },
+  {
+    fullName: 'Andrii Melnyk',
+    email: 'andrii.melnyk2@example.com',
+    password: hashSync('qwertyui', 10),
+    verified: new Date(),
+    role: UserRole.USER
+  },
+  {
+    fullName: 'Iryna Shevchenko',
+    email: 'iryna.shevchenko3@example.com',
+    password: hashSync('secret987', 10),
+    verified: new Date(),
+    role: UserRole.USER
+  },
+  {
+    fullName: 'Dmytro Kovalenko',
+    email: 'dmytro.kovalenko4@example.com',
+    password: hashSync('password456', 10),
+    verified: new Date(),
+    role: UserRole.USER
+  },
+  {
+    fullName: 'Kateryna Tkachenko',
+    email: 'kateryna.tkachenko5@example.com',
+    password: hashSync('katya2024', 10),
+    verified: new Date(),
+    role: UserRole.USER
+  },
+  {
+    fullName: 'Yevhen Bondar',
+    email: 'yevhen.bondar6@example.com',
+    password: hashSync('zxcvbnm', 10),
+    verified: new Date(),
+    role: UserRole.USER
+  },
+  {
+    fullName: 'Natalia Polishchuk',
+    email: 'natalia.polishchuk7@example.com',
+    password: hashSync('123natalia', 10),
+    verified: new Date(),
+    role: UserRole.USER
+  },
+  {
+    fullName: 'Serhii Ivanov',
+    email: 'serhii.ivanov8@example.com',
+    password: hashSync('ivanovpass', 10),
+    verified: new Date(),
+    role: UserRole.USER
+  },
+  {
+    fullName: 'Anastasiia Hrytsenko',
+    email: 'anastasiia.hrytsenko9@example.com',
+    password: hashSync('ana321', 10),
+    verified: new Date(),
+    role: UserRole.USER
+  },
+  {
+    fullName: 'Oleksandr Zaitsev',
+    email: 'oleksandr.zaitsev10@example.com',
+    password: hashSync('zaitsev10', 10),
+    verified: new Date(),
+    role: UserRole.USER
+  },
+  {
+    fullName: 'Valeriia Lysenko',
+    email: 'valeriia.lysenko11@example.com',
+    password: hashSync('vally123', 10),
+    verified: new Date(),
+    role: UserRole.USER
+  },
+  {
+    fullName: 'Taras Sydorenko',
+    email: 'taras.sydorenko12@example.com',
+    password: hashSync('taraspass', 10),
+    verified: new Date(),
+    role: UserRole.USER
+  },
+  {
+    fullName: 'Yuliia Danylenko',
+    email: 'yuliia.danylenko13@example.com',
+    password: hashSync('danylenko321', 10),
+    verified: new Date(),
+    role: UserRole.USER
+  },
+  {
+    fullName: 'Ihor Babich',
+    email: 'ihor.babich14@example.com',
+    password: hashSync('ihor123456', 10),
+    verified: new Date(),
+    role: UserRole.USER
+  },
+  {
+    fullName: 'Viktoriia Marchenko',
+    email: 'viktoriia.marchenko15@example.com',
+    password: hashSync('vicky2025', 10),
+    verified: new Date(),
+    role: UserRole.USER
+  },
+  {
+    fullName: 'Mykola Shapoval',
+    email: 'mykola.shapoval16@example.com',
+    password: hashSync('shapovalpass', 10),
+    verified: new Date(),
+    role: UserRole.USER
+  },
+  {
+    fullName: 'Svitlana Doroshenko',
+    email: 'svitlana.doroshenko17@example.com',
+    password: hashSync('dorosh321', 10),
+    verified: new Date(),
+    role: UserRole.USER
+  },
+  {
+    fullName: 'Oleh Humenyuk',
+    email: 'oleh.humenyuk18@example.com',
+    password: hashSync('humenyukpass', 10),
+    verified: new Date(),
+    role: UserRole.USER
+  },
+  {
+    fullName: 'Liliia Taran',
+    email: 'liliia.taran19@example.com',
+    password: hashSync('liliapass', 10),
+    verified: new Date(),
+    role: UserRole.USER
+  },
+  // Ще 30
+  ...Array.from({ length: 30 }, (_, i) => ({
+    fullName: `User Test${i + 20}`,
+    email: `usertest${i + 20}@example.com`,
+    password: hashSync(`testpass${i + 20}`, 10),
+    verified: new Date(),
+    role: UserRole.USER
+  }))
+];
 
 const promocodes = [
   {
@@ -1224,7 +1377,7 @@ const promocodes = [
     appliesToAll: false,
     categoryIds: ['3']
   }
-]
+];
 
 async function seed() {
 
@@ -1241,17 +1394,18 @@ async function seed() {
     console.log(`Created promocode: ${createdPromocode.code}`);
   }
 
-  // for (const user of users) {
-  //   const createdUser = await prisma.user.create({
-  //     data: {
-  //       fullName: user.fullName,
-  //       email: user.email,
-  //       password: user.password,
-  //       verified: user.verified
-  //     }
-  //   })
-  //   console.log(`Created user: ${createdUser.fullName}`)
-  // }
+  for (const user of users) {
+    const createdUser = await prisma.user.create({
+      data: {
+        fullName: user.fullName,
+        email: user.email,
+        password: user.password,
+        verified: user.verified,
+        role: user.role
+      }
+    })
+    console.log(`Created user: ${createdUser.fullName}`)
+  }
   for (const category of categories) {
     const createdCategory = await prisma.category.create({
       data: {
@@ -1274,6 +1428,7 @@ async function seed() {
     const createdSliderImage = await prisma.sliderImage.create({
       data: {
         imageUrl: sliderImage.imageUrl,
+        name: sliderImage.altText,
         altText: sliderImage.altText,
         link: sliderImage.link,
         position: sliderImage.position,
@@ -1288,6 +1443,7 @@ async function seed() {
   for (const bannerImage of bannerImages) {
     const createdBannerImage = await prisma.bannerImage.create({
       data: {
+        name: bannerImage.altText,
         imageUrl: bannerImage.imageUrl,
         altText: bannerImage.altText,
         link: bannerImage.link,
@@ -1306,7 +1462,8 @@ async function seed() {
         imageUrl: BottomBannerImage.imageUrl,
         altText: BottomBannerImage.altText,
         position: BottomBannerImage.position,
-        link: BottomBannerImage.link
+        link: BottomBannerImage.link,
+        isActive: BottomBannerImage.isActive
       }
     })
     console.log(`Created bottom banner image: ${createdBottomBannerImage.altText}`)

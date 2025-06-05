@@ -21,10 +21,10 @@ const CategoryDescription = ({ description, page }: any) => {
   return (
     <div>
       {page === 1 && description && (
-        <div>
+        <div className={`${description && description !== "<p><br></p>" ? "block" : "hidden"}`}>
           <div
             ref={descriptionRef}
-            className="mt-24 p-3"
+            className="mt-24 p-3 ql-editor [&>ul]:pl-6 [&>ul]:list-disc [&>ol]:pl-6 [&>ol]:list-decimal [&>li]:mb-2"
             style={{
               maxHeight: isExpanded ? `${descriptionRef.current?.scrollHeight}px` : "220px",
               overflow: "hidden",

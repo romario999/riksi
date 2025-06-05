@@ -11,7 +11,6 @@ export async function generateMetadata({ params }: { params: { productLink: stri
 }
 
 export default async function ProductPage({ params: { productLink } }: { params: { productLink: string } }) {
-  // Використовуємо єдиний кеш для продукту та категорії
   const getCachedData = unstable_cache(
     async ({ productLink }: { productLink: string }) => {
       const product = await prisma.product.findUnique({
@@ -36,13 +35,18 @@ export default async function ProductPage({ params: { productLink } }: { params:
       });
 
       if (!product) {
-        return null; // Якщо продукт не знайдено, повертаємо null
+        return null;
       }
 
-      const category = await prisma.category.findUnique({
-        where: { id: Number(product.categories[0]?.categoryId) },
-        select: { id: true, categoryUrl: true, name: true },
-      });
+      let category = null;
+
+      const firstCategoryId = product.categories[0]?.categoryId;
+      if (firstCategoryId) {
+        category = await prisma.category.findUnique({
+          where: { id: firstCategoryId },
+          select: { id: true, categoryUrl: true, name: true },
+        });
+      }
 
       return { product, category };
     },
@@ -57,6 +61,7 @@ export default async function ProductPage({ params: { productLink } }: { params:
   }
 
   const { product, category } = cachedData;
+
   return (
     <Container className="flex flex-col px-1 my-5 ml:my-10 sm:px-10 pb-10">
       <ProductForm product={product} category={category} />

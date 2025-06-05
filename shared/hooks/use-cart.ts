@@ -15,8 +15,8 @@ type ReturnProps = {
 
 export const useCart = (): ReturnProps => {
     const cartState = useCartStore((state) => state);
-    const session = useSession()
-     
+    const session = useSession();
+
     React.useEffect(() => {
         if (session.status === "authenticated" || session.status === "unauthenticated") {
             cartState.fetchCartItems();

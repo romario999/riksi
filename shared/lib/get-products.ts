@@ -27,21 +27,19 @@ export async function getProducts({
   subcategoryUrl = '',
 }: GetProductsParams) {
   const page = parseInt(searchParams.page as string || "1", 10);
-  const colors = searchParams.color ? searchParams.color?.split(',').map((color) => colorMapping[color] || color) : [];
+  const colors = searchParams.color ? searchParams.color.split(',').map((color) => colorMapping[color] || color) : [];
   const categoriesIdArr = searchParams.categories ? searchParams.categories.split(',').map(Number) : [];
   const subcategoriesIdArr = searchParams.subcategories ? searchParams.subcategories.split(',').map(Number) : [];
   const minPrice = searchParams.priceFrom ? Number(searchParams.priceFrom) : DEFAULT_MIN_PRICE;
   const maxPrice = searchParams.priceTo ? Number(searchParams.priceTo) : DEFAULT_MAX_PRICE;
   const sortOptions = searchParams.sortBy || 'popular';
+
   console.log("⏳ Запит до БД через Prisma...", searchParams);
 
-  const whereConditions: any = {
+  const whereConditions: Prisma.ProductWhereInput = {
     items: {
       some: {
-        OR: [
-          { price: { gte: minPrice, lte: maxPrice } },
-          { oldPrice: { gte: minPrice, lte: maxPrice } },
-        ],
+        price: { gte: minPrice, lte: maxPrice },
       },
     },
     ...(colors.length > 0 && { color: { in: colors } }),
@@ -52,30 +50,17 @@ export async function getProducts({
     subcategoryUrl ? prisma.subcategory.findFirst({ where: { subcategoryUrl, category: { categoryUrl } } }) : null,
   ]);
 
-  if (categoryUrl && !category) {
-    return { products: [], total: 0, totalPages: 0, currentPage: 1 };
-  }
+  if (categoryUrl && !category) return { products: [], total: 0, totalPages: 0, currentPage: 1 };
+  if (subcategoryUrl && !subcategory) return { products: [], total: 0, totalPages: 0, currentPage: 1 };
 
-  if (subcategoryUrl && !subcategory) {
-    return { products: [], total: 0, totalPages: 0, currentPage: 1 };
-  }
+  if (category) whereConditions.categories = { some: { categoryId: category.id } };
+  if (subcategory) whereConditions.subcategories = { some: { subcategoryId: subcategory.id } };
 
-  if (category) {
-    whereConditions.categories = { some: { categoryId: category.id } };
-  }
-
-  if (subcategory) {
-    whereConditions.subcategories = { some: { subcategoryId: subcategory.id } };
-  }
-
-  if (categoriesIdArr.length > 0) {
-    whereConditions.OR = whereConditions.OR || [];
-    whereConditions.OR.push({ categories: { some: { categoryId: { in: categoriesIdArr } } } });
-  }
-
-  if (subcategoriesIdArr.length > 0) {
-    whereConditions.OR = whereConditions.OR || [];
-    whereConditions.OR.push({ subcategories: { some: { subcategoryId: { in: subcategoriesIdArr } } } });
+  if (categoriesIdArr.length > 0 || subcategoriesIdArr.length > 0) {
+    whereConditions.OR = [
+      ...(categoriesIdArr.length > 0 ? [{ categories: { some: { categoryId: { in: categoriesIdArr } } } }] : []),
+      ...(subcategoriesIdArr.length > 0 ? [{ subcategories: { some: { subcategoryId: { in: subcategoriesIdArr } } } }] : []),
+    ];
   }
 
   const validSortOrders: Prisma.SortOrder[] = ['asc', 'desc'];
@@ -97,6 +82,7 @@ export async function getProducts({
       },
       skip: (page - 1) * itemsPerPage,
       take: itemsPerPage,
+      distinct: ['id'],
       orderBy: [
         { stock: 'desc' },
         ...(orderBy ? [orderBy] : []),
@@ -104,12 +90,10 @@ export async function getProducts({
     }),
     prisma.product.count({ where: whereConditions }),
   ]);
-  
 
   const totalPages = Math.ceil(totalCount / itemsPerPage);
 
   console.log("✅ Отримано продукти з БД:", products.length);
-
 
   return { products, total: totalCount, totalPages, currentPage: page };
 }

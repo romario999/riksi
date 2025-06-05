@@ -33,14 +33,15 @@ model CallMe {
 }
 
 model Category {
-  id            Int           @id @default(autoincrement())
-  name          String
-  description   String?
-  categoryUrl   String @unique
-  subcategories Subcategory[]
-  products      ProductCategory[]
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  id              Int           @id @default(autoincrement())
+  name            String
+  description     String?
+  categoryUrl     String @unique
+  subcategories   Subcategory[]
+  products        ProductCategory[]
+  discountPercent String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 }
 
 model Subcategory {
@@ -72,7 +73,7 @@ model Product {
   likedItems    LikedItem[]
   categories    ProductCategory[]
   subcategories ProductSubcategory[]
-  complects     ProductComplect[]      @relation("ProductComplects")
+  complects     ProductComplect[]   @relation("ProductComplects")
   createdAt     DateTime               @default(now())
   updatedAt     DateTime               @default(now())
 }
@@ -83,7 +84,6 @@ model ProductComplect {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @default(now())
 }
-
 
 model ProductCategory {
   productId  Int
@@ -172,6 +172,8 @@ model Order {
     recipientPhone      String 
     typeDelivery        String
     address             String
+    deliveryCity        String
+    deliveryDepartment  String
     email               String
     phone               String
     dontCall            Boolean
@@ -204,6 +206,7 @@ model PasswordResetToken {
 
 model SliderImage {
   id          Int      @id @default(autoincrement())
+  name        String
   imageUrl    String
   altText     String? 
   link        String?
@@ -216,6 +219,7 @@ model SliderImage {
 
 model BannerImage {
   id          Int      @id @default(autoincrement())
+  name        String
   imageUrl    String
   altText     String?
   link        String? 
@@ -231,6 +235,7 @@ model BottomBannerImage {
   imageUrl    String
   altText     String?
   link        String? 
+  isActive    Boolean
   position    Int      
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())

@@ -35,7 +35,7 @@ export const ProductCard: React.FC<Props> = ({ id, url, name, price, imageUrl, c
     };
 
     return (
-        <div className={cn('max-w-[270px] relative transition-all duration-300 hover:translate-y-[-2px]', className)}>
+        <div className={cn('max-w-[270px] z-[1] relative transition-all duration-300 hover:translate-y-[-2px]', className)}>
             {children}
             <Link href={`/product/${url}`}>
                 <div className="relative flex justify-center p-6 bg-secondary rounded-lg hover:cursor-pointer"

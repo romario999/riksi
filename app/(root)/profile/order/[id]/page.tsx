@@ -39,7 +39,7 @@ export default async function OrderPage({ params }: { params: { id: string } }) 
             console.error('Error parsing items JSON:', e);
         }
     }
-    console.log(items);
+
     // Функція для відображення статусу замовлення
     const getStatusLabel = (status: string) => {
         switch (status) {

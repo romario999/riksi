@@ -156,7 +156,7 @@ export default function ProductList({
   );
 }
 
-const Sticker = ({ sticker, index }: { sticker: string; index: number }) => {
+export const Sticker = ({ sticker, index }: { sticker: string; index: number }) => {
   const bgClass =
     sticker === 'HITS' ? 'bg-[#28a745] text-white' :
     sticker === 'NEW' ? 'bg-[#e80aa4] text-white' :
@@ -164,7 +164,7 @@ const Sticker = ({ sticker, index }: { sticker: string; index: number }) => {
 
   return (
     <div
-      className={`absolute ${index === 0 ? 'top-4' : 'top-12'} ${bgClass} left-2 rounded-l-full rounded-r-sm py-1 px-2 text-sm`}
+      className={`z-[10] absolute ${index === 0 ? 'top-4' : 'top-12'} ${bgClass} left-2 rounded-l-full rounded-r-sm py-1 px-2 text-sm`}
     >
       {sticker === 'HITS' ? <Flame size={18} /> : sticker === 'NEW' ? 'New' : 'Price Party'}
     </div>

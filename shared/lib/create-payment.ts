@@ -9,7 +9,7 @@ export const createPayment = async (data: CheckoutFormValues, items: any[], tota
 
     const inputs = {
         merchantAccount: process.env.NEXT_PUBLIC_WAYFORPAY_MERCHANT_ACCOUNT ?? '',
-        merchantDomainName: "https://localhost:3000",
+        merchantDomainName: "https://riksi.com.ua",
         orderReference: `ORDER-${Date.now()}`,
         orderDate: Math.floor(Date.now() / 1000).toString(),
         amount: totalAmount.toString(),
@@ -21,6 +21,7 @@ export const createPayment = async (data: CheckoutFormValues, items: any[], tota
         clientLastName: "",
         clientAddress: `${data.street}, ${data.numberStreet}`,
         clientEmail: data.email,
+        clientPhone: data.phone,
         defaultPaymentSystem: "card"
     };
 
@@ -42,6 +43,7 @@ export const createPayment = async (data: CheckoutFormValues, items: any[], tota
         clientLastName: inputs.clientLastName,
         clientAddress: inputs.clientAddress,
         clientEmail: inputs.clientEmail,
+        clientPhone: inputs.clientPhone,
         defaultPaymentSystem: inputs.defaultPaymentSystem,
         language: 'AUTO',
     };

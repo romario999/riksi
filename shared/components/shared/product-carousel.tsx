@@ -5,6 +5,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { ProductCard } from './product-card';
 import { Flame } from 'lucide-react';
 import { useIsMobile } from '@/shared/hooks';
+import { Sticker } from './products-list';
 
 
 interface ProductCarouselProps {
@@ -17,15 +18,7 @@ const ProductCarousel = ({ stickerType, products }: ProductCarouselProps) => {
 
 const renderStickers = (stickers: string[]) => {
     return stickers.map((sticker, i) => (
-        <div
-            key={i}
-            className={`absolute ${i === 0 ? 'top-4' : 'top-12'} 
-                        ${sticker === 'HITS' ? 'bg-[#28a745] text-white' : ''} 
-                        ${sticker === 'NEW' ? 'bg-[#e83e8c] text-white' : ''} 
-                        ${sticker === 'PRICEPARTY' ? 'bg-yellow-300' : ''} 
-                        left-2 rounded-l-full rounded-r-sm text-black py-1 px-2 text-sm`}>
-            {sticker === 'HITS' ? <Flame size={18} /> : sticker === 'NEW' ? 'New' : sticker === 'PRICEPARTY' ? 'Price Party' : null}
-        </div>
+      <Sticker key={i} sticker={sticker} index={i} />
     ));
 };
 

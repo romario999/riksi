@@ -24,10 +24,10 @@ export const CheckoutSidebar: React.FC<Props> = ({ className, loading, totalAmou
     const [promoCode, setPromoCode] = useState("");
     const [discount, setDiscount] = useState(0);
     const [error, setError] = useState<string | null>(null);
+    console.log(cartCategoryIds);
 
     const handleApplyPromo = async () => {
         const result = await applyPromoCode({ code: promoCode, cartCategoryIds });
-
         if (result.error) {
             setError(result.error);
         } else {

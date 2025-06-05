@@ -7,13 +7,18 @@ export const MainBottomBanner =  async ({  }) => {
         orderBy: {
           position: 'asc'
         },
+        where: {
+          isActive: true
+      }
     });
   return (
-    <section className='mt-10'>
+    <section>
       {bannerItems.map((item, i) => (
-          <Link key={i} href={bannerItems[i].link || '#'}>
-            <img src={bannerItems[i].imageUrl} alt={String(bannerItems[i].altText)} />
-          </Link>
+          <div className='mt-10'>
+            <Link key={i} href={bannerItems[i].link || '#'}>
+              <img src={bannerItems[i].imageUrl} alt={String(bannerItems[i].altText)} />
+            </Link>
+          </div>
       ))}
     </section>
   );

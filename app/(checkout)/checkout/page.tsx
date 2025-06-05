@@ -20,7 +20,7 @@ export default function CheckoutPage() {
     const [submitting, setSubmitting] = React.useState(false);
     const [discountPercent, setDiscountPercent] = React.useState(0);
     
-    const categoryIds = items.map(item => item.categoryId).flat().map(String);
+    const categoryIds = items.map(item => item.categoryId).map(String);
     
     const { data: session } = useSession();
     const router = useRouter();

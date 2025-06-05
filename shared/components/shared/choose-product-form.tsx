@@ -179,7 +179,7 @@ export const ChooseProductForm: React.FC<Props> = ({
                 <div className="mt-5">
                     <p className="text-lg font-bold">Розміри</p>
                     <div className="flex gap-3 items-center flex-wrap">
-                        {items.map((item) => (
+                        {items.sort((a, b) => Number(a.id) - Number(b.id)).map((item) => (
                             <Button
                                 key={item.size}
                                 onClick={() => handleSizeClick(item.size)}

@@ -7,7 +7,7 @@ import { Filter } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { ProductSkeleton } from './product-skeleton';
 
-interface FilterProductsBlockProps {
+export interface FilterProductsBlockProps {
   isCatalog?: boolean;
   isCategory?: boolean;
   isSubcategory?: boolean;

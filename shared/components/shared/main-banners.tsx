@@ -30,7 +30,7 @@ export const MainBanners = () => {
         [banner]
     );
 
-    if (banner.length === 0 || loading) {
+    if (loading) {
         return (
             <section className="mt-5 flex gap-5">
                 <Skeleton className="rounded-xl flex-1 aspect-[16/9]" />
@@ -40,7 +40,7 @@ export const MainBanners = () => {
     }
 
     return (
-        <section className="mt-5 flex gap-5">
+        <section className="my-5 flex gap-5">
             {bannerContent}
         </section>
     );

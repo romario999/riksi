@@ -38,9 +38,15 @@ export const callMeSchema = z.object({
     callMePhone: z.string().min(9, { message: 'Некоректний номер телефону' }),
 });
 
+export const formAdminLogin = z.object({
+    email: z.string().email({ message: 'Введіть коректний email' }),
+    password: passwordSchema,
+});
+
 export type TFormLoginValues = z.infer<typeof formLoginSchema>;
 export type TFormRegisterValues = z.infer<typeof formRegisterSchema>;
 export type TFormVerifyEmailValues = z.infer<typeof verifyEmailSchema>;
 export type TFormResetPasswordEmailValues = z.infer<typeof resetPasswordEmailSchema>;
 export type TFormResetPasswordValues = z.infer<typeof resetPasswordSchema>;
+export type TFormAdminLoginValues = z.infer<typeof formAdminLogin>;
 export type TFormCallMeValues = z.infer<typeof callMeSchema>;

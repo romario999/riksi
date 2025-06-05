@@ -1,13 +1,18 @@
 'use server';
 
+import { AdminAddProduct } from "@/@types/admin-add-product";
+import { AdminAddSubcategoryType } from "@/@types/admin-add-subcategory";
+import { AdminCarouselBannerUpdate } from "@/@types/admin-carousel-banner-update";
+import { ProductUpdate } from "@/@types/admin-product-update";
 import { ProductCartItem } from "@/@types/cart-item";
 import { prisma } from "@/prisma/prisma-client";
 import { PayOrderTemplate, ResetPassword, VerificationUserTemplate } from "@/shared/components";
+import { AddProductItem } from "@/shared/components/shared/admin/productItem/admin-add-product-item";
 import { CheckoutFormValues } from "@/shared/constants";
 import { sendEmail } from "@/shared/lib";
 import { getUserSession } from "@/shared/lib/get-user-session";
 import { sendOrderAutoselling } from "@/shared/lib/send-order-autoselling";
-import { OrderStatus, Prisma } from "@prisma/client";
+import { OrderStatus, Prisma, Product } from "@prisma/client";
 import { hashSync } from "bcrypt";
 import { revalidatePath } from "next/cache";
 import { cookies } from 'next/headers';
@@ -82,6 +87,8 @@ export async function createOrder(data: CheckoutFormValues, paymentUrl: string, 
                 recipientPhone,
                 email: data.email,
                 phone: data.phone,
+                deliveryCity: data.deliveryType === 'nova-post' ? (data.novaPostCity ?? '') : (data.ukrPostCity ?? ''),
+                deliveryDepartment: data.deliveryType === 'nova-post' ? (data.department ?? '') : (data.ukrPostDepartment ?? ''),
                 address: deliveryData,
                 comment: data.comment ?? '',
                 paymentType: data.paymentType === 'allPayment' ? 'Передплата' : 'Післяплата (завдаток 200 грн)',
@@ -388,14 +395,25 @@ export async function applyPromoCode({ code, cartCategoryIds }: {
             return { error: "Промокод недійсний" };
         }
 
+        if(!promo.active) {
+            return { error: "Промокод неактивний" };
+        }
+
+        if(promo.expiresAt && promo.expiresAt < new Date()) {
+            return { error: "Промокод закінчився" };
+        }
+
         // Перевіряємо, чи промокод застосовується до всіх товарів або конкретних категорій
         if (promo.categoryIds.length > 0) {
-            const applicable = cartCategoryIds.every((id: string) => promo.categoryIds.includes(id));
-            if (!applicable) {
+            const hasMatchingCategory = cartCategoryIds.every((id: string | null | undefined) =>
+                id && promo.categoryIds.includes(id) && cartCategoryIds.map(Number).includes(Number(id))
+            );
+        
+            if (!hasMatchingCategory) {
                 return { error: "Цей промокод не застосовується до ваших товарів" };
             }
         }
-
+        
         revalidatePath("/checkout"); // Оновлюємо сторінку
 
         // Повертаємо лише відсоток знижки
@@ -403,5 +421,545 @@ export async function applyPromoCode({ code, cartCategoryIds }: {
     } catch (error) {
         console.error('Error [APPLY_PROMO_CODE]', error);
         return { error: "Помилка застосування промокоду" };
+    }
+}
+
+export async function deleteProduct(productId: number) {
+    try {
+        await prisma.productCategory.deleteMany({
+            where: { productId },
+        });
+
+        await prisma.productSubcategory.deleteMany({
+            where: { productId },
+        });
+
+        const carts = await prisma.cart.findMany({
+            where: {
+                items: {
+                    some: {
+                        productItem: { productId },
+                    },
+                },
+            },
+            include: {
+                items: {
+                    include: {
+                        productItem: true,
+                    },
+                },
+            },
+        });
+
+        for (const cart of carts) {
+            const updatedTotalAmount = cart.items
+                .filter((item) => item.productItem.productId !== productId) // Exclude the deleted product
+                .reduce((acc, item) => acc + item.productItem.price * item.quantity, 0); // Recalculate total
+
+            await prisma.cart.update({
+                where: { id: cart.id },
+                data: { totalAmount: updatedTotalAmount },
+            });
+        }
+
+        await prisma.cartItem.deleteMany({
+            where: {
+                productItem: { productId },
+            },
+        });
+
+        await prisma.productItem.deleteMany({
+            where: { productId },
+        });
+
+        await prisma.likedItem.deleteMany({
+            where: { productId },
+        });
+
+        await prisma.product.delete({
+            where: { id: productId },
+        });
+
+    } catch (error) {
+        console.error('Error [DELETE_PRODUCT]', error);
+        throw error;
+    }
+}
+
+export async function deleteAdminProductItem(sku: string) {
+    try {
+        await prisma.productItem.delete({
+            where: { sku },
+        });
+    } catch (error) {
+        console.error('Error [DELETE_ADMIN_PRODUCT_ITEM]', error);
+        throw error;
+    }
+}
+
+export async function updateAdminProductItem(sku: string, updatedItem: AddProductItem) {
+    try {
+        await prisma.productItem.update({
+            where: { sku },
+            data: updatedItem,
+        });
+        
+    } catch (error) {
+        console.error('Error [UPDATE_ADMIN_PRODUCT_ITEM]', error);
+        throw error;
+    }
+}
+
+export async function adminUpdateProductData(id: number, data: ProductUpdate) {
+    try {
+
+        await prisma.product.update({
+            where: { id },
+            data: {
+                name: data.name,
+                price: data.price,
+                oldPrice: data.oldPrice,
+                description: data.description,
+                stock: data.stock,
+                popularity: data.popularity || 0,
+                productUrl: data.url,
+                sticker: data.selectedStickers,
+                color: data.color,
+                imageUrl: data.images,
+                items: {
+                    upsert: data.items.map((item) => ({
+                        where: { sku: item.sku }, // Шукаємо товар за SKU
+                        update: {
+                            price: item.price,
+                            oldPrice: item.oldPrice,
+                            stock: item.stock,
+                            size: item.size,
+                        },
+                        create: {
+                            sku: item.sku,
+                            price: item.price,
+                            oldPrice: item.oldPrice,
+                            stock: item.stock,
+                            size: item.size,
+                        }
+                    }))
+                },
+                
+                categories: {
+                    deleteMany: {}, // Видаляє всі зв'язані категорії
+                    createMany: {
+                        data: data.categories.map((category) => ({
+                            categoryId: category.categoryId,
+                        })),
+                    },
+                },
+                subcategories: {
+                    deleteMany: {}, // Видаляє всі зв'язані підкатегорії
+                    createMany: {
+                        data: data.subcategories.map((subcategory) => ({
+                            subcategoryId: subcategory.subcategoryId,
+                        })),
+                    },
+                },
+                complects: {
+                    deleteMany: {}, // Видаляє всі зв'язані комплекти
+                    create: data.complects.map((complect) => ({
+                      productId: complect.productId, // assuming `productId` is the foreign key
+                    })),
+                } 
+            }
+        });
+
+        const existingComplect = await prisma.productComplect.findMany({
+            where: {
+                products: {
+                    some: { id }
+                }
+            },
+            include: {
+                products: true
+            }
+        });
+
+        if(existingComplect && existingComplect.length > 0) {
+
+            await prisma.productComplect.update({
+                where: { id: existingComplect[0].id },
+                data: {
+                  products: {
+                    set: data.complects[0].products.map((product: Product) => ({ id: product.id })) // встановлюємо нові продукти для комплекту
+                  }
+                }
+            });
+        }
+
+        if(existingComplect.length === 0) {
+            if(data.complects.length > 0) {
+                await prisma.productComplect.create({
+                    data: {
+                        products: {
+                            connect: data.complects[0].products.map((product: Product) => ({ id: product.id })),  // з'єднуємо продукти з комплектом
+                        }
+                    }
+                });
+            }
+        }
+        
+    } catch (error) {
+        console.error('Error [ADMIN_UPDATE_PRODUCT_DATA]', error);
+        throw error;
+    }
+}
+
+export async function addAdminProduct(data: AdminAddProduct) {
+    try {
+        const newProduct = await prisma.product.create({
+            data: {
+                name: data.name,
+                price: data.price,
+                oldPrice: data.oldPrice || null,
+                description: data.description,
+                stock: data.stock,
+                popularity: data.popularity || 0,
+                productUrl: data.productUrl,    
+                sticker: data.selectedStickers,
+                color: data.color,
+                imageUrl: data.images,
+                categories: {
+                    createMany: {
+                        data: data.categories.map((category) => ({
+                            categoryId: category.categoryId,
+                        })),
+                    },
+                },
+                subcategories: {
+                    createMany: {
+                        data: data.subcategories.map((subcategory) => ({
+                            subcategoryId: subcategory.subcategoryId,
+                        })),
+                    },
+                },
+                items: {
+                    createMany: {
+                        data: data.items.map((item) => ({
+                            sku: item.sku,
+                            price: item.price,
+                            oldPrice: item.oldPrice,
+                            stock: item.stock,
+                            size: item.size,
+                        })),
+                    },
+                }
+            }
+        });
+
+        return newProduct.id;
+    } catch (error) {
+        console.error('Error [ADD_ADMIN_PRODUCT]', error);
+        throw error;
+    }
+}
+
+export async function AdminUpdateWebsiteEditData(id: number, data: AdminCarouselBannerUpdate, type: string) {
+    try {
+        if(type === 'slider') {
+            await prisma.sliderImage.update({
+                where: { id },
+                data: data,
+            });   
+        }
+
+        if(type === 'banner') {
+            await prisma.bannerImage.update({
+                where: { id },
+                data: data,
+            });
+        }
+    } catch (error) {
+        console.error('Error [ADMIN_UPDATE_WEBSITE_EDIT_DATA]', error);
+        throw error;
+    }
+}
+
+export async function AdminDeleteWebsiteEditData(id: number, type: string) {
+    try {
+        if(type === 'slider') {
+            await prisma.sliderImage.delete({
+                where: { id },
+            });
+        }
+
+        if(type === 'banner') {
+            await prisma.bannerImage.delete({
+                where: { id },
+            });
+        }
+    } catch (error) {
+        console.error('Error [ADMIN_DELETE_WEBSITE_EDIT_DATA]', error);
+        throw error;
+    }
+}
+
+export async function AdminAddSliderImage(data: AdminCarouselBannerUpdate) {
+    try {
+        await prisma.sliderImage.create({
+            data,
+        });
+
+    } catch (error) {
+        console.error('Error [ADMIN_ADD_SLIDER_IMAGE]', error);
+        throw error;
+    }
+}
+
+export async function AdminAddBannerImage(data: AdminCarouselBannerUpdate) {
+    try {
+        await prisma.bannerImage.create({
+            data,
+        });
+
+    } catch (error) {
+        console.error('Error [ADMIN_ADD_BANNER_IMAGE]', error);
+        throw error;
+    }
+}
+
+export async function AdminUpdateUser(data: Prisma.UserUpdateInput, userId: number) {
+    try {
+        await prisma.user.update({
+            where: { id: userId },
+            data: {
+                fullName: data.fullName,
+                email: data.email,
+                password: data.password ? hashSync(data.password as string, 10) : undefined,
+            },
+        });
+    } catch (error) {
+        console.error('Error [ADMIN_UPDATE_USER]', error);
+        throw error;
+    }
+    
+}
+
+export async function AdminUpdateCategory(data: Prisma.CategoryUpdateInput, id: number) {
+    try {
+        await prisma.category.update({
+            where: { id },
+            data,
+        });
+
+        const hasDiscount = data.discountPercent !== undefined && data.discountPercent !== null;
+
+        const productsInCategory = await prisma.product.findMany({
+            where: {
+                categories: {
+                    some: {
+                        categoryId: id,
+                    },
+                },
+            },
+            select: {
+                id: true,
+                price: true,
+                oldPrice: true,
+            },
+        });
+
+        if (hasDiscount) {
+            const discount = Number(data.discountPercent);
+
+            const updateWithDiscount = productsInCategory.map(product => {
+                // Якщо вже є oldPrice — не чіпай його, щоб не втратити стару ціну
+                const basePrice = product.oldPrice ?? product.price;
+                const newPrice = Math.round(basePrice * (1 - discount / 100));
+
+                return prisma.product.update({
+                    where: { id: product.id },
+                    data: {
+                        oldPrice: basePrice,
+                        price: newPrice,
+                    },
+                });
+            });
+
+            await Promise.all(updateWithDiscount);
+        } else {
+            const resetPrices = productsInCategory
+                .filter(product => product.oldPrice !== null)
+                .map(product =>
+                    prisma.product.update({
+                        where: { id: product.id },
+                        data: {
+                            price: product.oldPrice!,
+                            oldPrice: null,
+                        },
+                    })
+                );
+
+            await Promise.all(resetPrices);
+        }
+
+    } catch (e) {
+        console.error('Error [ADMIN_UPDATE_CATEGORY]', e);
+        throw e;
+    }
+}
+
+
+
+export async function AdminAddCategory(data: Prisma.CategoryCreateInput) {
+    try {
+        await prisma.category.create({
+            data,
+        })
+    } catch (e) {
+        console.error('Error [ADMIN_ADD_CATEGORY]', e);
+        throw e;
+    }
+}
+
+export async function AdminDeleteCategory(id: number) {
+    try {
+        const subcategories = await prisma.subcategory.findMany({
+            where: { categoryId: id },
+            select: { id: true },
+        });
+    
+        const subcategoryIds = subcategories.map((sub) => sub.id);
+
+        if (subcategoryIds.length > 0) {
+            await prisma.productSubcategory.deleteMany({
+                where: {
+                    subcategoryId: { in: subcategoryIds },
+                },
+            });
+
+            await prisma.subcategory.deleteMany({
+                where: { id: { in: subcategoryIds } },
+            });
+        }
+
+        await prisma.productCategory.deleteMany({
+            where: { categoryId: id },
+        });
+  
+        // 5. Видаляємо саму категорію
+        await prisma.category.delete({
+            where: { id },
+        });
+  
+    } catch (e) {
+        console.error('Error [ADMIN_DELETE_CATEGORY]', e);
+        throw e;
+    }
+}
+  
+
+export async function AdminDeleteSubcategory(id: number) {
+    try {
+        // Видаляємо всі зв'язки продуктів з підкатегорією
+        await prisma.productSubcategory.deleteMany({
+            where: { subcategoryId: id },
+        });
+    
+        // Видаляємо саму підкатегорію
+        await prisma.subcategory.delete({
+            where: { id },
+        });
+    } catch (e) {
+        console.error("Error [ADMIN_DELETE_SUBCATEGORY]", e);
+        throw e;
+    }
+  }
+  
+
+export async function AdminUpdateSubcategory(data: Prisma.SubcategoryUpdateInput, id: number) {
+    try {
+        await prisma.subcategory.update({
+            where: { id },
+            data,
+        })
+    } catch (e) {
+        console.error('Error [ADMIN_UPDATE_SUBCATEGORY]', e);
+        throw e;
+    }
+}
+
+export async function AdminAddSubcategory(data: AdminAddSubcategoryType) {
+    try {
+        await prisma.subcategory.create({
+            data,
+        })
+    } catch (e) {
+        console.error('Error [ADMIN_ADD_SUBCATEGORY]', e);
+        throw e;
+    }
+}
+
+export async function AdminDeleteFooterPage(id: number) {
+    try {
+        await prisma.footerPage.delete({
+            where: { id },
+        })
+    } catch (e) {
+        console.error('Error [ADMIN_DELETE_FOOTER_PAGE]', e);
+        throw e;
+    }
+}
+
+export async function AdminFooterPageSave(data: Prisma.FooterPageUpdateInput, id: number) {
+    try {
+        await prisma.footerPage.update({
+            where: { id },
+            data,
+        })
+    } catch (e) {
+        console.error('Error [ADMIN_FOOTER_PAGE_SAVE]', e);
+        throw e;
+    }
+}
+
+export async function AdminFooterPageAdd(data: Prisma.FooterPageCreateInput) {
+    try {
+        await prisma.footerPage.create({
+            data,
+        })
+    } catch (e) {
+        console.error('Error [ADMIN_FOOTER_PAGE_ADD]', e);
+        throw e;
+    }
+}
+
+export async function AdminDeletePromoCode(id: number) {
+    try {
+        await prisma.promoCode.delete({
+            where: { id },
+        })
+    } catch (e) {
+        console.error('Error [ADMIN_DELETE_PROMOCODE]', e);
+        throw e;
+    }
+}
+
+export async function AdminDiscountSave(id: number, data: Prisma.PromoCodeUpdateInput) {
+    try {
+        await prisma.promoCode.update({
+            where: { id },
+            data,
+        })
+    } catch (e) {
+        console.error('Error [ADMIN_DISCOUNT_SAVE]', e);
+        throw e;
+    }
+}
+
+export async function AdminDiscountCreate(data: Prisma.PromoCodeCreateInput) {
+    try {
+        await prisma.promoCode.create({
+            data,
+        })
+    } catch (e) {
+        console.error('Error [ADMIN_DISCOUNT_ADD]', e);
+        throw e;
     }
 }
