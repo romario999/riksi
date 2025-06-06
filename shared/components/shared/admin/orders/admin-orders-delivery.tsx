@@ -4,6 +4,7 @@ import { useState, useRef } from 'react';
 
 interface Props {
     order: {
+        comment: any;
         typeDelivery: string;
         deliveryCity: string;
         deliveryDepartment?: string;
@@ -48,6 +49,12 @@ export const AdminOrdersDelivery: React.FC<Props> = ({ order }) => {
           >
             {order.deliveryCity}, {order.deliveryDepartment}
           </div>
+        )}
+        {order.comment && (
+           <span className="text-sm text-gray-500">
+          <br />
+          <span className="font-medium">Коментар:</span> {order.comment}
+        </span>
         )}
       </div>
     </td>
