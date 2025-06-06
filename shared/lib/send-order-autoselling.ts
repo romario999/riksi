@@ -67,9 +67,9 @@ interface Order {
 export const sendOrderAutoselling = async (obj: Order) => {
     try {
         console.log(obj);
-        await axios.post(
-            `${process.env.AUTOSELLING_POST_URL}`
-        , obj);
+        // await axios.post(
+        //     `${process.env.AUTOSELLING_POST_URL}`
+        // , obj);
     } catch (err) {
         console.error(err);
     }

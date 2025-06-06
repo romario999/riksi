@@ -167,7 +167,7 @@ export async function createOrder(data: CheckoutFormValues, paymentUrl: string, 
             throw new Error('Payment link not found');
         }
 
-        // await sendOrderAutoselling(autoSellObj);
+        await sendOrderAutoselling(autoSellObj);
 
         await sendEmail(data.email, 'Оплата замовлення ' + order.id, PayOrderTemplate({
             orderId: order.id,
