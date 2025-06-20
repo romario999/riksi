@@ -169,11 +169,12 @@ export const AdminOrdersList: React.FC<Props> = ({
                 <td className="py-3 px-6 text-sm text-gray-900">{order.fullName}
 
                   {order.fullName !== order.recipientFullName && (
-                  <td>
+                  <>
+                    <br />
                     <span className="text-gray-500">Отримувач: {order.recipientFullName}</span>
                     <br />
                     <span className="text-gray-500">Телефон: {order.recipientPhone}</span>
-                  </td>
+                  </>
                 )}
                 </td>
                 

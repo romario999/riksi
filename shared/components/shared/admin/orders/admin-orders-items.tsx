@@ -4,6 +4,7 @@ import React, { useState, useRef } from 'react';
 import Link from 'next/link';
 import { Order } from '@prisma/client';
 import { pluralizeUa } from '@/shared/lib/pluralize-ua';
+import { ReceiptText } from 'lucide-react';
 
 interface Props {
     order: Order;
@@ -33,8 +34,13 @@ export const AdminOrdersItems: React.FC<Props> = ({ order, totalAmount }) => {
 
   return (
     <td className="py-3 px-6 text-sm text-gray-900">
-      {order.totalAmount}₴
-      <br />
+      <div className="flex gap-2">
+        {order.totalAmount}₴
+        <Link target='_blank' href={`/receipt/${order.id}`}>
+          <button className='flex bg-[#e8f1fd] text-[#0073e6] px-1 rounded'><ReceiptText size={16} className='my-auto mr-1' />Чек</button>
+        </Link>
+        <br />
+      </div>
       <div className="relative inline-block">
         <span
           onMouseEnter={handleMouseEnter}

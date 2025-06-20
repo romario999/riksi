@@ -40,6 +40,7 @@
     "clsx": "^2.1.1",
     "crypto-js": "^4.2.0",
     "embla-carousel-react": "^8.5.1",
+    "formidable": "^3.5.4",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.451.0",
     "next": "14.2.15",
@@ -64,11 +65,14 @@
     "translit-english-ukrainian": "^1.0.1",
     "transliterate": "^1.0.1",
     "vaul": "^1.0.0",
+    "written-number": "^0.11.1",
+    "xlsx": "^0.18.5",
     "zod": "^3.23.8",
     "zustand": "^5.0.0-rc.2"
   },
   "devDependencies": {
     "@types/crypto-js": "^4.2.2",
+    "@types/formidable": "^3.4.5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

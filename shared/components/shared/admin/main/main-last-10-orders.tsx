@@ -28,15 +28,18 @@ export const Last10Orders = ({ last10Orders }: { last10Orders: Order[] }) => {
                 last10Orders.map((order) => (
                     <tr key={order.id} className="bg-white border-b">
                     <td className="py-3 px-6 text-sm text-gray-900">{order.id}</td>
-                    <td className="py-3 px-6 text-sm text-gray-900">{order.fullName}
+                    <td className="py-3 px-6 text-sm text-gray-900">
+                        {order.fullName}
                         {order.fullName !== order.recipientFullName && (
-                  <td>
-                    <span className="text-gray-500">Отримувач: {order.recipientFullName}</span>
-                    <br />
-                    <span className="text-gray-500">Телефон: {order.recipientPhone}</span>
-                  </td>
-                )}
+                            <>
+                                <br />
+                                <span className="text-gray-500">Отримувач: {order.recipientFullName}</span>
+                                <br />
+                                <span className="text-gray-500">Телефон: {order.recipientPhone}</span>
+                            </>
+                        )}
                     </td>
+
                     <AdminOrdersItems order={order} totalAmount={order.totalAmount} />
                     <td className="py-3 px-6 text-sm text-gray-900">
                         {new Date(order.createdAt).toLocaleDateString("uk-UA")} <br />

@@ -52,17 +52,17 @@ export const authOptions: AuthOptions = {
             }
         })
     ],
-    cookies: {
-        sessionToken: {
-            name: `__Host-next-auth.session-token`,
-            options: {
-                httpOnly: true,
-                sameSite: "lax",       // або "none" + secure: true для https
-                path: "/",
-                secure: true,
-            },
-        },
-    },
+    // cookies: {
+    //     sessionToken: {
+    //         name: `__Host-next-auth.session-token`,
+    //         options: {
+    //             httpOnly: true,
+    //             sameSite: "lax",       // або "none" + secure: true для https
+    //             path: "/",
+    //             secure: true,
+    //         },
+    //     },
+    // },
     secret: process.env.NEXTAUTH_SECRET,
     session: {
         strategy: 'jwt',

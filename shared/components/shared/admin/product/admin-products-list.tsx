@@ -10,6 +10,7 @@ import { Api } from '@/shared/services/api-client';
 import { deleteProduct } from '@/app/actions';
 import Link from 'next/link';
 import { Button } from '@/shared/components/ui';
+import { AdminImportModal } from './admin-import-modal';
 
 interface AdminProductsListProps {
   initialProducts: Product[];
@@ -30,6 +31,15 @@ export const AdminProductsList: React.FC<AdminProductsListProps> = ({
   const [loading, setLoading] = React.useState<boolean>(false);
   const searchParams = useSearchParams();
   const router = useRouter();
+  const [modalOpen, setModalOpen] = React.useState(false);
+  const [importMessage, setImportMessage] = React.useState("");
+
+  // При успішному імпорті можна оновити список або вивести повідомлення
+  const onImportSuccess = (msg: string) => {
+    setImportMessage(msg);
+    setModalOpen(false);
+    // Тут можна додати логіку оновлення списку, наприклад, зробити fetch оновлених даних
+  };
 
   const [search, setSearch] = React.useState<string>(searchParams.get('search') || '');
   const sortBy = searchParams.get('sortBy') || '';
@@ -123,7 +133,30 @@ export const AdminProductsList: React.FC<AdminProductsListProps> = ({
         </button>
       </form>
 
-      <div className='my-3 flex justify-end'>
+      <div className="my-6 flex justify-end gap-4 items-center">
+        <Button onClick={() => setModalOpen(true)} variant="outline">
+          Імпортувати
+        </Button>
+
+        {/* Вивід повідомлення про імпорт (поза модалкою) */}
+        {importMessage && (
+          <p
+            className={`text-sm ${
+              importMessage.toLowerCase().includes("помилка")
+                ? "text-red-600"
+                : "text-green-600"
+            } max-w-xs`}
+          >
+            {importMessage}
+          </p>
+        )}
+
+        {/* Експорт */}
+        <Link href={"/api/export-products"} target="_blank">
+          <Button variant={'outline'}>Експорт</Button>
+        </Link>
+
+        {/* Додати товар */}
         <Link href={'products/add-product'}>
           <Button>Додати товар</Button>
         </Link>
@@ -200,6 +233,7 @@ export const AdminProductsList: React.FC<AdminProductsListProps> = ({
           <PaginationComponent currentPage={page} totalPages={totalPages} onPageChange={handlePageChange} />
         </div>
       )}
+      <AdminImportModal isOpen={modalOpen} onClose={() => setModalOpen(false)} onImportSuccess={onImportSuccess} />
     </div>
   );
 };
